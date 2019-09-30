@@ -14,7 +14,7 @@ Date::Date(int mn, int dy, int yr){
     cout << endl;
 }
 void Date::print() const {
-    cout << month << "/" << day "/" << year;
+    cout << month << "/" << day <<"/" << year;
 }
 Date::~Date(){
     cout << "DISTRUZIONE!";
