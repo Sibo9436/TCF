@@ -9,3 +9,12 @@ Repo del gruppo DDoS
 
 ## Progetto 2 - Raga qualche idea??
 
+
+```flow
+    st=>start:TCF
+    op=>condition:Lo passiamo sto esame?
+    e=>end:Fin.
+    st->op
+    op(eccerto)->e
+    op->(manno)->op
+```
