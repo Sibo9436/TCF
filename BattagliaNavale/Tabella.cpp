@@ -10,15 +10,19 @@ Tabella::~Tabella()
     {
       delete[] _flotta[i];
     }
+    if (_radarato)
+    {
     delete[] _radar[i];
-    delete[] _radar;
-    delete[] _flotta;
+    }
   }
+  delete[] _radar;
+  delete[] _flotta;
 
 }
 
 void Tabella::createRadar()
 {
+  _radarato = true;
   _radar = new Radar*[8];
   for (int i = 0; i < 8; i++)
   {
@@ -42,8 +46,7 @@ void Tabella::createFlotta()
       _flotta[i][j] = Flotta::Sea;
     }
   }
-  _flotta[3][3] = Flotta::Ship;
-  _flotta[3][2] = Flotta::Ship;
+
 }
 
 
@@ -85,4 +88,11 @@ void Tabella::PrintRadar()
     }
     cout << "\n";
   }
+}
+
+
+
+Flotta * & Tabella::operator[](int i) const
+{
+  return _flotta[i];
 }

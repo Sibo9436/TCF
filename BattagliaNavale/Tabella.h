@@ -29,10 +29,12 @@ public:
   //void Print();
   void createRadar();
   void createFlotta();
+  Flotta * & operator[](int) const;
 
 private:
   int n=8;
   bool _flottato=false;
+  bool _radarato=false;
   Flotta **_flotta;
   Radar **_radar;
 

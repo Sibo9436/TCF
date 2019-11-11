@@ -7,7 +7,11 @@
 Player::Player()
 {
 
+  _Plancia.createFlotta();
+  _Plancia.createRadar();
+  _Screen.createRadar();
 }
+
 std::string Player::getName()
 {
   return _nome;
@@ -20,6 +24,10 @@ void Player::setName(std::string Nome)
 bool Player::Check(int x1, int y1, int x2, int y2)
 {
 
+  if (x2 < 0 || x2 > 7)
+    return false;
+  if (y2 < 0 || y2 > 7)
+    return false;
   if (x1==x2) {
     int max = (y2 > y1)? y2 : y1;
     int min = (y2 < y1)? y2 : y1;
@@ -40,24 +48,25 @@ bool Player::Check(int x1, int y1, int x2, int y2)
     return true;
   } else {
     std::cout << "hai cazziato";
+    return false;
   }
 
 }
 
 
 
-Nave Player::setShips(int l, int x1, int y1){
+Nave Player::setShips(int len, int x1, int y1){
 
-
+    int l = len - 1;
     bool r = Check(x1,y1,x1+l,y1);
     bool le = Check(x1,y1,x1-l,y1);
     bool u = Check(x1,y1,x1,y1-l);
     bool d = Check(x1,y1,x1,y1+l);
-    if(!(u && d && r && l)){
+    if(!u && !d && !r && !le){
       std::cout << "not valid\n Prova coordinate valide\n";
       int x,y;
       std::cin >> x >> y;
-      return setShips(l,x,y);
+      return setShips(len,x,y);
     }
     if (u)
     {
@@ -92,7 +101,7 @@ Nave Player::setShips(int l, int x1, int y1){
     } else
     {
       std::cout << "not valid \n Prova direzione valida\n";
-      return setShips(l,x1,y1);
+      return setShips(len,x1,y1);
     }
 }
 

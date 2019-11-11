@@ -12,18 +12,18 @@ int main()
 
   Player Andrea;
   Player Daniel;
-  Player Daniel2 ; //deceased
 
   Andrea.setName("Andrea");
   Daniel.setName("Daniel");
 
 
+  // Tabella _Plancia;
+  // _Plancia.createFlotta();
+  // _Plancia.createRadar();
 
   int i = 0;
-  for (i;i < 4;i++)
-  {
-    Andrea.Mozzo(i,2);
-  }
+  //Nave navetta(1,1,1,5);
+  Andrea.Mozzo(0,4);
 
 
   // Tabella Plancia;
