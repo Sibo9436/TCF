@@ -121,3 +121,25 @@ Flotta * & Tabella::operator[](int i) const
 {
   return _flotta[i];
 }
+
+bool Tabella::getRadar(int x, int y)
+{
+  if(_radar[y][x] == Radar::Sea) return true;
+  if(_radar[y][x] == Radar::Hit || _radar[y][x] == Radar::Miss) return false;
+}
+
+void Tabella::setRadar(int x, int y,Flotta flo)
+{
+  Radar rad;
+  if (flo==Flotta::Sea)
+  {
+    cout << "Mancato!\n";
+    rad= Radar::Miss;
+  }
+  if (flo == Flotta::Ship)
+  {
+    cout << "Colpito!\n";
+    rad= Radar::Hit;
+  }
+  _radar[y][x] = rad;
+}

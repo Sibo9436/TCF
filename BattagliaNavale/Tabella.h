@@ -23,15 +23,17 @@ class Tabella
 public:
   //Tabella();  //Questo crea radar
   //lTabella();  //Questo crea flotta
+  //void Print();
   ~Tabella();
   void PrintRadar();
   void PrintFlotta();
-  //void Print();
   void createRadar();
   void createFlotta();
   void setNave(int,int,int,int);
-
+  bool getRadar(int, int);
+  void setRadar(int,int,Flotta);
   Flotta * & operator[](int) const;
+
 
 private:
   int n=8;

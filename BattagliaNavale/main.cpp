@@ -7,10 +7,9 @@
 int main()
 {
 
-
-
-
+//
   Player Andrea;
+
   Player Daniel;
 
   Andrea.setName("Andrea");
@@ -25,7 +24,11 @@ int main()
   Nave navetta(1,1,1,5);
   Andrea.Mozzo(0,4);
   Andrea.Print();
-
+  while (true)
+  {
+  Daniel.Attack(Andrea);
+  Daniel.Print();
+  }
 
   // Tabella Plancia;
   // // Plancia.createRadar();

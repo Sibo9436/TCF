@@ -15,6 +15,9 @@ public:
   void Mozzo(int, int);
   Nave pushNave(int,int,int,int);
   void Print();
+  void Attack(Player&);
+
+
 
 private:
   Tabella  _Screen;

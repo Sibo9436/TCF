@@ -115,11 +115,43 @@ void Player::Mozzo(int i, int lunghezza)
   int x,y;
   std::cout << "Inserisci x e y:" << '\n';
   std::cin >> x>>y;
+  if((x<0 || y < 0 )||(x >7 || y > 7))
+  {
+    std::cout << "Coordinate fuori range \n";
+    Mozzo(i, lunghezza);
+
+  }else
+  {
   _navi[i] = setShips(lunghezza,x,y);
+  }
 }
 
 void Player::Print()
 {
   _Plancia.PrintFlotta();
-  _Plancia.PrintRadar();
+  _Screen.PrintRadar();
+
+}
+void Player::Attack(Player &Other)
+{
+  int x, y;
+  std::cout << "Coordinate di attacco (x,y): ";
+  std::cin >> x >> y;
+  if((x>7 || y>7) || (x < 0 || y <0))
+  {
+    std::cout << "Coordinate fuori range \n";
+    Attack(Other);
+  }
+  if (!_Screen.getRadar(x,y))
+  {
+    std::cout << "Quadrante già colpito" << '\n';
+    Attack(Other);
+  }else
+  {
+
+    _Screen.setRadar(x,y,Other._Plancia[y][x]);
+
+  }
+
+
 }
