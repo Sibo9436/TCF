@@ -78,36 +78,58 @@ void Tabella::createFlotta()
 
 void Tabella::PrintFlotta()
 {
+  cout << "\n\n";
+  cout << " \t";
   for (size_t i = 0; i < 8; i++)
   {
-    cout << (char)(97+i);
+    cout <<"  " << (char)(97+i) << "  ";
   }
-  cout << "\n";
+  cout << "\n\n";
   for (int i = 0 ; i < 8 ; i++)
   {
+    cout << i << "\t";
     for (int j =0; j < 8; j++)
     {
-      if (_flotta[i][j]==Flotta::Sea)
-        cout << "Star";
-      if (_flotta[i][j]==Flotta::Ship)
-        cout << "Ship";
+      if (_radar[i][j]==Radar::Sea)
+      {
+        if (_flotta[i][j]==Flotta::Sea)
+          cout << "\033[35;1;1m  ~  \033[0m";
+        if (_flotta[i][j]==Flotta::Ship)
+          cout << "\033[31;1;1m  #  \033[0m";
+      }else
+      {
+        if (_radar[i][j]==Radar::Hit)
+          cout << "  H  ";
+        if (_radar[i][j]==Radar::Miss)
+          cout <<"  M  ";
+      }
     }
     cout <<"\n";
   }
 }
 void Tabella::PrintRadar()
 {
+  cout << "\n\n";
+  cout << " \t";
+  for (size_t i = 0; i < 8; i++)
+  {
+    cout <<"  " << (char)(97+i) << "  ";
+  }
+  cout << "\n\n";
+
   for (int i=0; i< 8; i++){
+    cout << i <<" \t";
+
     for(int j=0; j<8; j++){
       switch (_radar[i][j]) {
         case Radar::Sea :
-          cout << 0;
+          cout <<  "\033[35;1;1m  ~  \033[0m";
           break;
         case Radar::Hit :
-          cout << "H";
+          cout << "  H  ";
           break;
         case Radar::Miss :
-          cout << "M";
+          cout << "  M  ";
           break;
       }
     }

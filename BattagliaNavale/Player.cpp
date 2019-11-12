@@ -148,7 +148,7 @@ void Player::Attack(Player &Other)
     Attack(Other);
   }else
   {
-
+    Other._Plancia.setRadar(x,y,Other._Plancia[y][x]); //Possibilità di fare overload di setradar per non prendere necessariamente flo
     _Screen.setRadar(x,y,Other._Plancia[y][x]);
 
   }

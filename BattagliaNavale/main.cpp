@@ -28,6 +28,7 @@ int main()
   {
   Daniel.Attack(Andrea);
   Daniel.Print();
+  Andrea.Print();
   }
 
   // Tabella Plancia;
