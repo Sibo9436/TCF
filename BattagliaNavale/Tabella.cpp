@@ -1,7 +1,8 @@
 #include "Tabella.h"
+#include <cmath>
 #include <iostream>
 using namespace std;
-Tabella::~Tabella()
+Tabella::~Tabella() //distrugge flotta e radar se creati
 {
 
   for (int i = 0; i < 8 ; i++)
@@ -15,12 +16,36 @@ Tabella::~Tabella()
     delete[] _radar[i];
     }
   }
-  delete[] _radar;
-  delete[] _flotta;
+  // delete[] _radar;
+  // std::cout << "RODARORADA" << '\n';
+  // delete[] _flotta;
 
 }
+void Tabella::setNave(int x1, int y1, int x2, int y2) //Nome provvisorio, riempie le caselle di flotta con" "Ship"
+{
+  if (x1==x2)
+  {
+    int max = (y2 > y1)? y2 : y1;
+    int min = (y2 < y1)? y2 : y1;
+    for (int i = min; i <= max; i++)
+    {
+      _flotta[i][x1] = Flotta::Ship;
+    }
+  } else if (y1==y2)
+   {
+    int max = (x2 > x1)? x2 : x1;
+    int min = (x2 < x1)? x2 : x1;
+    for (int i = min; i <= max; i++)
+    {
+      _flotta[y1][i] = Flotta::Ship;
 
-void Tabella::createRadar()
+    }
+  } else
+  {
+    std::cout << "hai cazziato";
+  }
+}
+void Tabella::createRadar() //crea una matrice radar con puntatori e le riempie di "Sea"
 {
   _radarato = true;
   _radar = new Radar*[8];

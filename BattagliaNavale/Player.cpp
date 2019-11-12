@@ -88,15 +88,19 @@ Nave Player::setShips(int len, int x1, int y1){
     std::cin >> direzione;
     if (direzione == "u" && u )
     {
+      _Plancia.setNave(x1,y1,x1,y1-l);
       return Nave(x1,y1,x1,y1-l);
     } else if (direzione == "d" && d)
     {
+      _Plancia.setNave(x1,y1,x1,y1+l);
       return Nave(x1,y1,x1,y1+l);
     } else if (direzione == "l" && le)
     {
+      _Plancia.setNave(x1,y1,x1-l,y1);
       return Nave(x1,y1,x1-l,y1);
     } else if (direzione == "r" && r)
     {
+      _Plancia.setNave(x1,y1,x1+l,y1);
       return Nave(x1,y1,x1+l,y1);
     } else
     {
@@ -106,11 +110,16 @@ Nave Player::setShips(int len, int x1, int y1){
 }
 
 
-
 void Player::Mozzo(int i, int lunghezza)
 {
   int x,y;
   std::cout << "Inserisci x e y:" << '\n';
   std::cin >> x>>y;
   _navi[i] = setShips(lunghezza,x,y);
+}
+
+void Player::Print()
+{
+  _Plancia.PrintFlotta();
+  _Plancia.PrintRadar();
 }

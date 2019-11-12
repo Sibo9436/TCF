@@ -29,6 +29,8 @@ public:
   //void Print();
   void createRadar();
   void createFlotta();
+  void setNave(int,int,int,int);
+
   Flotta * & operator[](int) const;
 
 private:

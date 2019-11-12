@@ -16,14 +16,15 @@ int main()
   Andrea.setName("Andrea");
   Daniel.setName("Daniel");
 
-
+  //
   // Tabella _Plancia;
   // _Plancia.createFlotta();
-  // _Plancia.createRadar();
+  //_Plancia.createRadar();
 
   int i = 0;
-  //Nave navetta(1,1,1,5);
+  Nave navetta(1,1,1,5);
   Andrea.Mozzo(0,4);
+  Andrea.Print();
 
 
   // Tabella Plancia;

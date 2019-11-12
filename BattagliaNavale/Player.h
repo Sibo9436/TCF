@@ -13,9 +13,10 @@ public:
   Nave setShips(int, int, int);
   bool Check(int, int, int, int);
   void Mozzo(int, int);
+  Nave pushNave(int,int,int,int);
+  void Print();
 
 private:
-  
   Tabella  _Screen;
   Tabella _Plancia;
   int n = 10;
