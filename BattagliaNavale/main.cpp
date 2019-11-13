@@ -1,6 +1,7 @@
 #include "Tabella.h"
 #include "Nave.h"
 #include "Player.h"
+#include "Game.h"
 #include <iostream>
 //mi sento nel posto sbagliato
 //Al momento giusto <3
@@ -8,28 +9,41 @@ int main()
 {
 
 //
-  Player Andrea;
 
-  Player Daniel;
-
-  Andrea.setName("Andrea");
-  Daniel.setName("Daniel");
-
-  //
-  // Tabella _Plancia;
-  // _Plancia.createFlotta();
-  //_Plancia.createRadar();
-
-  int i = 0;
-  Nave navetta(1,1,1,5);
-  Andrea.Mozzo(0,4);
-  Andrea.Print();
-  while (true)
+  // Player Andrea;
+  // Player Daniel;
+  Game partita;
+  if(partita.Generate())
   {
-  Daniel.Attack(Andrea);
-  Daniel.Print();
-  Andrea.Print();
+    partita.Start();
+  } else
+  {
+    std::cout << "Qualcosa è andato storto" << '\n';
   }
+
+  return 0;
+  //partita.Endgame;
+
+
+  // Andrea.setName("Andrea");
+  // Daniel.setName("Daniel");
+  //
+  // //
+  // // Tabella _Plancia;
+  // // _Plancia.createFlotta();
+  // //_Plancia.createRadar();
+  //
+  // int i = 0;
+  // Nave navetta(1,1,1,5);
+  // Andrea.Riempimento();
+  //
+  // while (true)
+  // {
+  // Daniel.Attack(Andrea);
+  // Andrea.Print();
+  // //Daniel.Print();
+  // }
+
 
   // Tabella Plancia;
   // // Plancia.createRadar();

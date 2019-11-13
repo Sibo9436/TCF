@@ -16,15 +16,19 @@ public:
   Nave pushNave(int,int,int,int);
   void Print();
   void Attack(Player&);
+  void Hit(int, int);
+  void Riempimento();
+  int getContatore() const;
 
 
 
 private:
   Tabella  _Screen;
   Tabella _Plancia;
-  int n = 10;
+  int _n = 10;
   Nave _navi[10];
   int _contatore = 10;
+
   std::string _nome;
 
 };

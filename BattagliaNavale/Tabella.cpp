@@ -99,9 +99,9 @@ void Tabella::PrintFlotta()
       }else
       {
         if (_radar[i][j]==Radar::Hit)
-          cout << "  H  ";
+          cout << "\033[31;1;1m  H  \033[0m";
         if (_radar[i][j]==Radar::Miss)
-          cout <<"  M  ";
+          cout <<"\033[35;1;1m  M  \033[0m";
       }
     }
     cout <<"\n";
@@ -126,10 +126,10 @@ void Tabella::PrintRadar()
           cout <<  "\033[35;1;1m  ~  \033[0m";
           break;
         case Radar::Hit :
-          cout << "  H  ";
+          cout << "\033[31;1;1m  H  \033[0m";
           break;
         case Radar::Miss :
-          cout << "  M  ";
+          cout << "\033[35;1;1m  M  \033[0m";
           break;
       }
     }

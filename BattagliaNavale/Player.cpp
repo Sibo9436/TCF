@@ -31,18 +31,18 @@ bool Player::Check(int x1, int y1, int x2, int y2)
   if (x1==x2) {
     int max = (y2 > y1)? y2 : y1;
     int min = (y2 < y1)? y2 : y1;
-    for (int i = min; i < max; i++)
+    for (int i = min; i <=  max; i++)
     {
-      if (_Plancia[x1][i] != Flotta::Sea)
+      if (_Plancia[i][x1] != Flotta::Sea)
         return false;
     }
     return true;
   } else if (y1==y2) {
     int max = (x2 > x1)? x2 : x1;
     int min = (x2 < x1)? x2 : x1;
-    for (int i = min; i < max; i++)
+    for (int i = min; i <= max; i++)
     {
-      if (_Plancia[i][y1] != Flotta::Sea)
+      if (_Plancia[y1][i] != Flotta::Sea)
         return false;
     }
     return true;
@@ -123,7 +123,9 @@ void Player::Mozzo(int i, int lunghezza)
   }else
   {
   _navi[i] = setShips(lunghezza,x,y);
+  Print();
   }
+
 }
 
 void Player::Print()
@@ -148,10 +150,44 @@ void Player::Attack(Player &Other)
     Attack(Other);
   }else
   {
-    Other._Plancia.setRadar(x,y,Other._Plancia[y][x]); //Possibilità di fare overload di setradar per non prendere necessariamente flo
+    Other.Hit(x,y);
+    Other._Plancia.setRadar(x,y,Other._Plancia[y][x]); //Possibilità di fare overload di setradar per non prendere necessariamente flotta
+    //Spostiamo Other._Plancia.setRadar in Hit()?
     _Screen.setRadar(x,y,Other._Plancia[y][x]);
 
   }
+}
+
+//Eliminiamo Player::Hit e mettiamo direttamente il for in Attack?
+void Player::Hit(int x, int y)
+{
+  for (int i = 0; i < _n; i++)
+  {
+    if(_navi[i].Hit(x,y))
+      std::cout << "AFFONDATO" << '\n';;
+  }
+}
 
 
+int Player::getContatore() const
+{
+  return _contatore;
+}
+void Player::Riempimento()
+{
+  std::cout << _nome << ", inizia la fase di creazione..."<< '\n';
+  std::cout << "Inserisci la tua portaerei" << '\n';
+  Mozzo(0,5);
+  std::cout << "Inserisci le tue corazzate" << '\n';
+  Mozzo(1,4);
+  Mozzo(2,4);
+  std::cout << "Inserisci i tuoi incrociatori" << '\n';
+  Mozzo(3,3);
+  Mozzo(4,3);
+  Mozzo(5,3);
+  std::cout << "Inserisci i tuoi cacciatorpedinieri" << '\n';
+  for (int i =6 ; i < 10; i++)
+  {
+    Mozzo(i,2);
+  }
 }

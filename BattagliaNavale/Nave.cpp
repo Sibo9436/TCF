@@ -69,12 +69,16 @@ bool  Nave::Hit(int x, int y)
 {
   for (int i = 0 ; i < _lunghezza; i++)
   {
-    if (x == _coordinates[0][i]&&y == _coordinates[1][i])
+    if (x == _coordinates[i][0]&&y == _coordinates[i][1])
     {
-      --_contatore;
+      std::cout << "OPLITO" << '\n';
+      std::cout << _contatore << '\n';
+      _contatore--;
+      std::cout << _contatore << '\n';
       if (_contatore==0)
       {
         _affondato = true;
+        std::cout << "Affondato" << '\n';
         return true;
       }
     }
