@@ -6,12 +6,14 @@
 #include <string>
 
 
+
+
 Game::Game()
 {
 
 }
 
-bool Game::Generate()
+bool Game::Generate() //genera il nome dei giocatori e le loro plancie
 {
   std::string nome;
   std::cout << "Giocatore 1 inserisci il tuo nome... " << '\n';
@@ -25,10 +27,14 @@ bool Game::Generate()
   return true;
 }
 
-bool Game::Start()
+bool Game::Start() //contiene il game loop
 {
+  std::string a;
   while(true)
   {
+    std::cout << "Premi un tasto qualsiasi" << '\n';
+    std::cin >> a;
+    std::cout << std::string(100,'\n');//"aggiorna" schermo
     std::cout << " -------------- turno "<< _player1.getName()<<" -------------- ";
     _player1.Print();
     _player1.Attack(_player2);
@@ -40,7 +46,11 @@ bool Game::Start()
       std::cout << "vince il giocatore 2";
       return true;
     }
-
+    std::cout << "Premi un tasto qualsiasi" << '\n';
+    std::cin >> a;
+    std::cout << std::string(100,'\n'); //"aggiorna" schermo
+    std::cout << "Premi un tasto qualsiasi" << '\n';
+    std::cin >> a;
     std::cout << " -------------- turno "<< _player2.getName() <<" -------------- ";
     _player2.Print();
     _player2.Attack(_player1);
@@ -55,7 +65,7 @@ bool Game::Start()
   return false;
 }
 
-bool Game::Endgame()
+bool Game::Endgame()//ancora niente
 {
 
 }

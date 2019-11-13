@@ -36,7 +36,7 @@ public:
 
 
 private:
-  int n=8;
+  int n=10;
   bool _flottato=false;
   bool _radarato=false;
   Flotta **_flotta;

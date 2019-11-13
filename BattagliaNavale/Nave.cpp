@@ -11,7 +11,7 @@ Nave::~Nave()
 
 }
 
-Nave::Nave(int x1, int y1, int x2, int y2):_lunghezza(abs(x1-x2+y1-y2)+1)
+Nave::Nave(int x1, int y1, int x2, int y2):_lunghezza(abs(x1-x2+y1-y2)+1) //costruisce una nave riempiendo la matrice _coordinates delle sue coordinate
 {
 
   _contatore = _lunghezza;
@@ -21,7 +21,7 @@ Nave::Nave(int x1, int y1, int x2, int y2):_lunghezza(abs(x1-x2+y1-y2)+1)
   {
     _coordinates[i] = new int[2];
   }
-  if (x1 == x2)
+  if (x1 == x2) // nave verticale
   {
     for (int k = 0 ; k < _lunghezza; k++)
     {
@@ -40,7 +40,7 @@ Nave::Nave(int x1, int y1, int x2, int y2):_lunghezza(abs(x1-x2+y1-y2)+1)
         _coordinates[i][1] = y2 + i;
       }
     }
-  }else if (y1 == y2)
+  }else if (y1 == y2) //nave orizzontale
   {
     for (int k =0; k < _lunghezza; k++)
     {
