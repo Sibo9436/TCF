@@ -8,7 +8,7 @@ Il makefile serve a compilare tutto con un solo comando: `make battaglia`, verr√
 l'eseguibile battaglia, da chiamare con `./battaglia`.
 ### ToDo
 - [x] Sistema di Attacco
-- [ ] Print flotta + radar con layers
+- [x] Print flotta + radar con layers
 ## Progetto 2 - Raga qualche idea??
 
 
