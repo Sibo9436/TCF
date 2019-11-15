@@ -1,6 +1,7 @@
 #include "Nave.h"
 #include <iostream>
 #include<cmath>
+#include "Coordinate.h"
 Nave::Nave()
 {
 

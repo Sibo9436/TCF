@@ -3,6 +3,8 @@
 #include <string>
 #include "Tabella.h"
 #include "Nave.h"
+#include "Coordinate.h"
+
 
 class Player
 {
@@ -11,7 +13,9 @@ public:
   void setName(std::string);
   std::string getName();
   Nave setShips(int, int, int);
+  Nave setShips(int, Coordinate);
   bool Check(int, int, int, int);
+  bool Check(Coordinate,Coordinate);
   void Mozzo(int, int);
   Nave pushNave(int,int,int,int);
   void Print();

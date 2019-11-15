@@ -1,13 +1,16 @@
 #ifndef NAVE_H
 #define NAVE_H
+#include "Coordinate.h"
 
 class Nave
 {
 public:
   Nave();
   Nave(int, int, int, int);
+  Nave(Coordinate,Coordinate)
   ~Nave();
   bool Hit(int , int );
+  bool Hit(Coordinate,Coordinate);
   void Print();
 
 
