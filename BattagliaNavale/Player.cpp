@@ -64,8 +64,17 @@ Nave Player::setShips(int len, int x1, int y1){ //crea e pone le navi
     bool d = Check(x1,y1,x1,y1+l);
     if(!u && !d && !r && !le){
       std::cout << "not valid\n Prova coordinate valide\n";
+      char k;
       int x,y;
-      std::cin >> x >> y;
+      std::cin >> k >> y;
+      if (std::cin.fail())
+      {
+        std::cin.clear();
+        std::cin.ignore(10000,'\n');
+      }
+      x = (int)k -65;
+      y--;
+
       return setShips(len,x,y);
     }
     if (u)
@@ -153,9 +162,25 @@ void Player::Print() //stampa lo schermo di un giocatore
 }
 void Player::Attack(Player &Other) //dichiara un attacco
 {
-  int x, y;
-  std::cout << "Coordinate di attacco (x,y): ";
-  std::cin >> x >> y;
+  int y;
+  char k;
+  bool err;
+  do
+  {
+    std::cout << "Coordinate di attacco (x,y): ";
+    std::cin >> k >> y;
+    if(std::cin.fail())
+    {
+      std::cout << "Inserimento non valido\n Ritenta\n";
+      err = !std::cin.fail();
+      std::cin.clear();
+    }else
+    {
+      err = true;
+    }
+  }while(!err);
+  y--;
+  int x = (int)k -65;
   if((x>9 || y>9) || (x < 0 || y <0))
   {
     std::cout << "Coordinate fuori range \n";

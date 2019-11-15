@@ -11,8 +11,8 @@ l'eseguibile battaglia, da chiamare con `./battaglia`.
 - [x] Print flotta + radar con layers
 - [ ] Applicare il sistema "aggiusta input" all'input di attacco
 - [ ] Pensare se mettere spazio vuoto tra navi!
-- [ ] Corregge eventuali nomi variabili/output blasfemi
-- [ ] Aggiungere `std::cin.clear()` dopo premi tasto qualunque
+- [x] Corregge eventuali nomi variabili/output blasfemi
+- [x] Aggiungere `std::cin.ignore(10000,'\n')` dopo premi tasto qualunque
 - [ ] Aggiungere istruzioni a inizio partita
 - [ ] Aggiungere congratulazioni a fine partita
 - [ ] Giocare una partita intera
