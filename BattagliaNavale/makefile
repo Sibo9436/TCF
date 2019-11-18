@@ -2,7 +2,7 @@
 
 
 CXX = g++
-CXXFLAGS = -Wall
+CXXFLAGS = -Wall -std=c++11
 RM = rm -f
 all: battaglia
 battaglia: main.o Tabella.o Nave.o Player.o Game.o Coordinate.o
