@@ -29,9 +29,9 @@ public:
 private:
   Tabella  _Screen;
   Tabella _Plancia;
-  int _n = 10;
-  Nave _navi[10];
-  int _contatore = 10;
+  int _n = 1;
+  Nave _navi[1];
+  int _contatore = 1;
 
   std::string _nome;
 

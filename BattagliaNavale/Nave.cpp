@@ -100,9 +100,9 @@ bool  Nave::Hit(Coordinate A)
   {
     if (A  == _coords[i])
     {
-      // std::cout << _contatore << '\n';
+       //std::cout << _contatore << '\n';
       _contatore--;
-      // std::cout << _contatore << '\n';
+       //std::cout << _contatore << '\n';
       if (_contatore==0)
       {
         _affondato = true;

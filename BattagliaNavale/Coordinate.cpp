@@ -86,10 +86,10 @@ int Coordinate::operator-(Coordinate Other) //NON SONO SICURO CHE IL MENO SIA IL
 {
   if (_x == Other._x)
   {
-    return abs(_y - Other._y);
+    return abs(_y - Other._y)+1;
   }else if (_y==Other._y)
   {
-    return abs(_x - Other._x);
+    return abs(_x - Other._x)+1;
   }else
   {
     return -1;

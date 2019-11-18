@@ -6,7 +6,7 @@ using namespace std;
 Tabella::~Tabella() //distrugge flotta e radar se creati
 {
 
-  for (int i = 0; i < 10 ; i++)
+  for (int i = 0; i < n ; i++)
   {
     if (_flottato)
     {
@@ -49,11 +49,11 @@ void Tabella::setNave(Coordinate begin, Coordinate end) //Nome provvisorio, riem
 void Tabella::createRadar() //crea una matrice radar con puntatori e le riempie di "Sea"
 {
   _radarato = true;
-  _radar = new Radar*[100];
-  for (int i = 0; i < 10; i++)
+  _radar = new Radar*[n];
+  for (int i = 0; i < n; i++)
   {
-    _radar[i] = new Radar[10];
-    for (int j = 0; j < 10; j++)
+    _radar[i] = new Radar[n];
+    for (int j = 0; j < n; j++)
     {
       _radar[i][j] = Radar::Sea;
     }
@@ -63,11 +63,11 @@ void Tabella::createRadar() //crea una matrice radar con puntatori e le riempie 
 void Tabella::createFlotta() //crea una matrice flotta con puntatori e le riempie di "Sea"
 {
   _flottato = true;
-  _flotta = new Flotta*[10];
-  for (int i = 0; i < 10; i++)
+  _flotta = new Flotta*[n];
+  for (int i = 0; i < n; i++)
   {
-    _flotta[i] = new Flotta[10];
-    for  (int j = 0; j < 10 ; j++)
+    _flotta[i] = new Flotta[n];
+    for  (int j = 0; j < n ; j++)
     {
       _flotta[i][j] = Flotta::Sea;
     }
@@ -81,15 +81,15 @@ void Tabella::PrintFlotta() //output della Flotta
 {
   cout << "\n\n";
   cout << " \t";
-  for (size_t i = 0; i < 10; i++)
+  for (size_t i = 0; i < n; i++)
   {
     cout <<"  " << (char)(65+i) << "  ";//97
   }
   cout << "\n\n";
-  for (int i = 0 ; i < 10 ; i++)
+  for (int i = 0 ; i < n ; i++)
   {
     cout << i+1 << "\t";
-    for (int j =0; j < 10; j++)
+    for (int j =0; j < n; j++)
     {
       if (_radar[i][j]==Radar::Sea)
       {
@@ -112,16 +112,16 @@ void Tabella::PrintRadar() // output del radar
 {
   cout << "\n\n";
   cout << " \t";
-  for (size_t i = 0; i < 10; i++)
+  for (size_t i = 0; i < n; i++)
   {
     cout <<"  " << (char)(65+i) << "  ";
   }
   cout << "\n\n";
 
-  for (int i=0; i< 10; i++){
+  for (int i=0; i< n; i++){
     cout << i+1 <<" \t";
 
-    for(int j=0; j<10; j++){
+    for(int j=0; j<n; j++){
       switch (_radar[i][j]) {
         case Radar::Sea :
           cout <<  "\033[35;1;1m  ~  \033[0m";
