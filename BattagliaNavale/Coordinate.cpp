@@ -1,6 +1,11 @@
 #include "Coordinate.h"
 #include <iostream>
+#include <cmath>
 
+Coordinate::Coordinate()
+{
+
+}
 
 Coordinate::Coordinate(int x, int y):_x(x),_y(y)
 {
@@ -26,7 +31,7 @@ void Coordinate::setY(int y)
   _y = y;
 }
 
-bool Coordinate::getfromPlayer() // include i cin per impostare le coordinate
+bool Coordinate::getFromPlayer() // include i cin per impostare le coordinate
 {
   char k;
   int y;
@@ -44,10 +49,10 @@ bool Coordinate::getfromPlayer() // include i cin per impostare le coordinate
 
     }else
     {
-      _y = y--;
+      _y = y -1;
       _x = ((int)k < 97) ? (int)k -65 : (int)k -97;
 
-      if((x<0 || y < 0 )||(x >9 || y > 9))
+      if((_x<0 || _y < 0 )||(_x >9 || _y > 9))
       {
         std::cout << "Coordinate fuori range \n";
 
@@ -62,11 +67,10 @@ bool Coordinate::getfromPlayer() // include i cin per impostare le coordinate
 }
 
 
-Coordinate &Coordinate::operator=(Coordinate &Other)
+void Coordinate::operator=(Coordinate Other)
 {
   _x = Other._x;
   _y = Other._y;
-  return *this;
 }
 
 Coordinate Coordinate::operator+(Coordinate Other)
@@ -76,5 +80,25 @@ Coordinate Coordinate::operator+(Coordinate Other)
 
 void Coordinate::print()const
 {
-  std::cout << "(" << (char)(_x + 65) << " , " << _y << ")";
+  std::cout << "(" << (char)(_x + 65) << " , " << _y+1 << ")";
+}
+int Coordinate::operator-(Coordinate Other) //NON SONO SICURO CHE IL MENO SIA IL MIGLIOR OPERATORE POSSIBILE PER STA COSA
+{
+  if (_x == Other._x)
+  {
+    return abs(_y - Other._y);
+  }else if (_y==Other._y)
+  {
+    return abs(_x - Other._x);
+  }else
+  {
+    return -1;
+  }
+}
+
+bool Coordinate::operator==(Coordinate Other) const
+{
+  if (_x == Other._x && _y==Other._y)
+    return true;
+  return false;
 }

@@ -22,23 +22,23 @@ Tabella::~Tabella() //distrugge flotta e radar se creati
   // delete[] _flotta;
 
 }
-void Tabella::setNave(int x1, int y1, int x2, int y2) //Nome provvisorio, riempie le caselle di flotta con" "Ship"
+void Tabella::setNave(Coordinate begin, Coordinate end) //Nome provvisorio, riempie le caselle di flotta con" "Ship"
 {
-  if (x1==x2)
+  if (begin.getX()==end.getX())
   {
-    int max = (y2 > y1)? y2 : y1;
-    int min = (y2 < y1)? y2 : y1;
+    int max = (end.getY() > begin.getY())? end.getY() : begin.getY();
+    int min = (end.getY() < begin.getY())? end.getY() : begin.getY();
     for (int i = min; i <= max; i++)
     {
-      _flotta[i][x1] = Flotta::Ship;
+      _flotta[i][begin.getX()] = Flotta::Ship;
     }
-  } else if (y1==y2)
+  } else if (begin.getY()==end.getY())
    {
-    int max = (x2 > x1)? x2 : x1;
-    int min = (x2 < x1)? x2 : x1;
+    int max = (end.getX() > begin.getX())? end.getX() : begin.getX();
+    int min = (end.getX() < begin.getX())? end.getX() : begin.getX();
     for (int i = min; i <= max; i++)
     {
-      _flotta[y1][i] = Flotta::Ship;
+      _flotta[begin.getY()][i] = Flotta::Ship;
 
     }
   } else

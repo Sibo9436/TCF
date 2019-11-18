@@ -6,16 +6,16 @@ class Nave
 {
 public:
   Nave();
-  Nave(int, int, int, int);
-  Nave(Coordinate,Coordinate)
+  Nave(Coordinate,Coordinate);
   ~Nave();
   bool Hit(int , int );
-  bool Hit(Coordinate,Coordinate);
+  bool Hit(Coordinate);
   void Print();
 
 
 private:
   int **_coordinates;
+  Coordinate * _coords;
   int _lunghezza;
   int _contatore;
   bool _affondato;

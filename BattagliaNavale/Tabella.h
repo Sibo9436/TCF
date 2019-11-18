@@ -1,5 +1,6 @@
 #ifndef TABELLA_H
 #define TABELLA_H
+#include "Coordinate.h"
 
 enum class Flotta
 {  // SI possono chiamare solo es. Flotta::Sea
@@ -30,6 +31,7 @@ public:
   void createRadar();
   void createFlotta();
   void setNave(int,int,int,int);
+  void setNave(Coordinate,Coordinate);
   bool getRadar(int, int);
   void setRadar(int,int,Flotta);
   Flotta * & operator[](int) const;

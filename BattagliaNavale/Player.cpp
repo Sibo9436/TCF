@@ -59,10 +59,11 @@ bool Player::Check(Coordinate c1, Coordinate c2) //controlla se casella di parte
 Nave Player::setShips(int len, Coordinate coord){ //crea e pone le navi
 
     int l = len - 1;
-    Coordinate U = coord + Coordinate(0,-l);
-    Coordinate D = coord + Coordinate(0,+l);
-    Coordinate R = coord + Coordinate(+l,0);
-    Coordinate L = coord + Coordinate(-l,0);
+    Coordinate U,D,R,L;
+    U = coord + Coordinate(0,-l);
+    D = coord + Coordinate(0,+l);
+    R = coord + Coordinate(+l,0);
+    L = coord + Coordinate(-l,0);
 
     bool u = Check(coord, U);
     bool d = Check(coord, D);
@@ -184,9 +185,11 @@ void Player::Attack(Player &Other) //dichiara un attacco
 //Eliminiamo Player::Hit e mettiamo direttamente il for in Attack?
 void Player::Hit(int x, int y) // Dichiara se l'attacco ha Affondato una nave
 {
+  Coordinate A(x,y);
   for (int i = 0; i < _n; i++)
   {
-    if(_navi[i].Hit(x,y))
+
+    if(_navi[i].Hit(A))
       std::cout << "AFFONDATO" << '\n';;
   }
 }

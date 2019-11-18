@@ -12,8 +12,10 @@ public:
   void setY(int);
   void setX(int);
   bool getFromPlayer();
-  Coordinate  &operator=(Coordinate&);
+  void  operator=(Coordinate);
   Coordinate operator+(Coordinate);
+  int operator-(Coordinate);
+  bool operator==(Coordinate)const;
   void print()const;
 
 
