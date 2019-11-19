@@ -36,7 +36,7 @@ bool Game::Start() //contiene il game loop
     std::cin >> a;
     std::cin.ignore(10000,'\n');
     std::cout << std::string(100,'\n');//"aggiorna" schermo
-    std::cout << " -------------------- turno "<< _player1.getName()<<" -------------------- ";
+    std::cout << " -------------------- Turno "<< _player1.getName()<<" -------------------- ";
     _player1.Print();
     _player1.Attack(_player2);
     _player1.Print();
@@ -54,7 +54,7 @@ bool Game::Start() //contiene il game loop
     std::cout << "Premi un tasto qualsiasi" << '\n';
     std::cin >> a;
     std::cout << std::string(100,'\n'); //"aggiorna" schermo
-    std::cout << " --------------------- turno "<< _player2.getName() <<" -------------------- ";
+    std::cout << " --------------------- Turno "<< _player2.getName() <<" -------------------- ";
     _player2.Print();
     _player2.Attack(_player1);
     _player2.Print();
@@ -73,7 +73,17 @@ bool Game::Start() //contiene il game loop
   return false;
 }
 
-bool Game::Endgame()//ancora niente
+void Game::Endgame()//ancora niente
 {
+  std::cout << "Contgratulazioni! Ecco alcune statistiche sulla vostra partita:\n"<< '\n';
+  _player1.Stats();
+  _player2.Stats();
 
+  std::cout << "Grazie per avere giocato al nostro gioco!" << '\n';
+  std::cout << "Autori (in ordine di altezza): \n\tDaniel Ladaniuc\n\tDamiano Cabiati\n\tAndrea Sibona\n\tDaniel Siciliano" << '\n';
+  std::cout << "Si ringraziano inoltre per il loro supporto e per il playtesting: \n\tRiccardo Riente e Marco Mosagna" << '\n';
+  std::cout << "" << '\n';
+  std::cout << "" << '\n';
+  std::cout << "" << '\n';
+  std::cout << "" << '\n';
 }

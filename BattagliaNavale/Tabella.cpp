@@ -153,17 +153,35 @@ bool Tabella::getRadar(int x, int y) //restituisce true se la casella (x,y) è c
   return false; // evitiamo warnings
 }
 
-void Tabella::setRadar(int x, int y,Flotta flo) //chiamato dopo un attacco, dichiara il suo risultato e aggiorna il radar dell'attaccante
+bool Tabella::setRadar(int x, int y,Flotta flo) //chiamato dopo un attacco, dichiara il suo risultato e aggiorna il radar dell'attaccante
 {
   Radar rad;
   if (flo==Flotta::Sea)
   {
     cout << "Mancato!\n";
-    rad= Radar::Miss;
+    _radar[y][x] = Radar::Miss;
+    return false;
   }
   if (flo == Flotta::Ship)
   {
     cout << "Colpito!\n";
+    _radar[y][x] = Radar::Hit;
+    return true;
+  }
+}
+
+
+void Tabella::setRadar(int x, int y) //chiamato dopo un attacco, dichiara il suo risultato e aggiorna il radar dell'attaccante
+{
+  Radar rad;
+  if (_flotta[y][x]==Flotta::Sea)
+  {
+    // cout << "Mancato!\n";
+    rad= Radar::Miss;
+  }
+  if (_flotta[y][x] == Flotta::Ship)
+  {
+    // cout << "Colpito!\n";
     rad= Radar::Hit;
   }
   _radar[y][x] = rad;

@@ -15,7 +15,10 @@ int main()
   Game partita;
   if(partita.Generate())
   {
-    partita.Start();
+    if(partita.Start())
+    {
+      partita.Endgame();
+    }
   } else
   {
     std::cout << "Qualcosa è andato storto" << '\n';

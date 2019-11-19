@@ -11,7 +11,7 @@ public:
   Game();
   bool Generate();
   bool Start();
-  bool Endgame();
+  void Endgame();
 
 
 private:

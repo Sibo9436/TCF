@@ -33,7 +33,8 @@ public:
   void setNave(int,int,int,int);
   void setNave(Coordinate,Coordinate);
   bool getRadar(int, int);
-  void setRadar(int,int,Flotta);
+  bool setRadar(int,int,Flotta);
+  void setRadar(int,int);
   Flotta * & operator[](int) const;
 
 

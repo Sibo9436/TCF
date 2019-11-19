@@ -23,6 +23,7 @@ public:
   void Hit(int, int);
   void Riempimento();
   int getContatore() const;
+  void Stats();
 
 
 
@@ -32,6 +33,9 @@ private:
   int _n = 10;
   Nave _navi[10];
   int _contatore = 10;
+  int colpi_sparati=0;
+  int colpi_a_segno=0;
+  int navi_affondate=0;
 
   std::string _nome;
 

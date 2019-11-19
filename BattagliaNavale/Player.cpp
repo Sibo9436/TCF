@@ -174,9 +174,11 @@ void Player::Attack(Player &Other) //dichiara un attacco
   }else
   {
     Other.Hit(x,y);
-    Other._Plancia.setRadar(x,y,Other._Plancia[y][x]); //Possibilità di fare overload di setradar per non prendere necessariamente flotta
+    Other._Plancia.setRadar(x,y); //Possibilità di fare overload di setradar per non prendere necessariamente flotta
     //Spostiamo Other._Plancia.setRadar in Hit()?
-    _Screen.setRadar(x,y,Other._Plancia[y][x]);
+    if(_Screen.setRadar(x,y,Other._Plancia[y][x]))
+      colpi_a_segno++;
+    colpi_sparati++;
 
   }
 }
@@ -224,4 +226,11 @@ void Player::Riempimento() //Riempie la plancia chiamando mozzo nNavi volte
   std::cin >> a;
   std::cout << std::string(100,'\n');
 
+}
+void Player::Stats()
+{
+  std::cout << _nome << ":" << '\n';
+  std::cout << "\tNumero di colpi sparati: " << colpi_sparati<< '\n';
+  std::cout << "\tNumero di colpi a segno: " << colpi_a_segno<< '\n';
+  std::cout << "\tPrecisione: " << 100*(float)colpi_a_segno/(float)colpi_sparati<< "%\n\n\n";
 }
