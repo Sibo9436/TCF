@@ -81,7 +81,7 @@ void Tabella::PrintFlotta() //output della Flotta
 {
   cout << "\n\n";
   cout << " \t";
-  for (size_t i = 0; i < n; i++)
+  for (int i = 0; i < n; i++)
   {
     cout <<"  " << (char)(65+i) << "  ";//97
   }
@@ -112,7 +112,7 @@ void Tabella::PrintRadar() // output del radar
 {
   cout << "\n\n";
   cout << " \t";
-  for (size_t i = 0; i < n; i++)
+  for (int i = 0; i < n; i++)
   {
     cout <<"  " << (char)(65+i) << "  ";
   }

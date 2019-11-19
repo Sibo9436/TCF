@@ -36,7 +36,7 @@ bool Game::Start() //contiene il game loop
     std::cin >> a;
     std::cin.ignore(10000,'\n');
     std::cout << std::string(100,'\n');//"aggiorna" schermo
-    std::cout << " -------------- turno "<< _player1.getName()<<" -------------- ";
+    std::cout << " -------------------- turno "<< _player1.getName()<<" -------------------- ";
     _player1.Print();
     _player1.Attack(_player2);
     _player1.Print();
@@ -44,7 +44,7 @@ bool Game::Start() //contiene il game loop
 
     if(_player2.getContatore() == 0)
     {
-      std::cout << "vince il giocatore 2";
+      std::cout << "Ha vinto " << _player1.getName() <<"\n";
       return true;
     }
     std::cout << "Premi un tasto qualsiasi" << '\n';
@@ -54,14 +54,14 @@ bool Game::Start() //contiene il game loop
     std::cout << "Premi un tasto qualsiasi" << '\n';
     std::cin >> a;
     std::cout << std::string(100,'\n'); //"aggiorna" schermo
-    std::cout << " -------------- turno "<< _player2.getName() <<" -------------- ";
+    std::cout << " --------------------- turno "<< _player2.getName() <<" -------------------- ";
     _player2.Print();
     _player2.Attack(_player1);
     _player2.Print();
 
     if(_player1.getContatore() == 0)
     {
-      std::cout << "vince il giocatore 2";
+      std::cout << "Ha vinto " << _player2.getName()<<"\n";
       return true;
     }
     std::cout << "Premi un tasto qualsiasi" << '\n';

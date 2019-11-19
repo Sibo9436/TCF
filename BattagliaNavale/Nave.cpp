@@ -18,19 +18,15 @@ Nave::Nave(Coordinate begin, Coordinate end)
   _coords = new Coordinate[_lunghezza];
   if (begin.getX()==end.getX())
   {
-    int min = (begin.getY() < end.getY())? begin.getY() : end.getY();
     for (int i =0; i < _lunghezza; i++)
     {
-      _coords[i] = begin + Coordinate(begin.getX(), min);
-      min++;
+      _coords[i] =(begin.getY() < end.getY())? begin + Coordinate(0, i): end + Coordinate(0,i);//L'ERRORE STA IN MIN(penso)!! NON DIMENTICARLOOOOOO MI SA CHE DEVI METTERE I
     }
   }else if (begin.getY() == end.getY())
   {
-    int min = (begin.getX() < end.getX())? begin.getX() : end.getX();
     for (int i =0; i < _lunghezza; i++)
     {
-      _coords[i] = begin + Coordinate(min, begin.getY());
-      min++;
+      _coords[i] = (begin.getX() < end.getX())? begin + Coordinate(i,0):end +Coordinate(i,0);//L'ERRORE STA IN MIN(penso)!! NON DIMENTICARLOOOOOO MI SA CHE DEVI METTERE I
     }
   }
 }
@@ -119,7 +115,7 @@ void Nave::Print()
 {
   for (int i = 0; i < _lunghezza; i++)
   {
-    std::cout << _coordinates[i][0] << " " << _coordinates[i][1] << "\n";
+    _coords[i].print();
   }
   std::cout << _lunghezza << '\n';
 

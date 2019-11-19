@@ -191,7 +191,7 @@ void Player::Hit(int x, int y) // Dichiara se l'attacco ha Affondato una nave
 
     if(_navi[i].Hit(A))
     {
-      std::cout << "AFFONDATO" << '\n';
+      std::cout << "Affondata nave di"<<_nome << '\n';
       _contatore--;
     }
   }
@@ -207,19 +207,19 @@ void Player::Riempimento() //Riempie la plancia chiamando mozzo nNavi volte
 {
   std::cout << _nome << ", inizia la fase di creazione..."<< '\n';
   std::cout << "Inserisci la tua portaerei" << '\n';
-  Mozzo(0,2);
-  // std::cout << "Inserisci le tue corazzate" << '\n';
-  // Mozzo(1,4);
-  // Mozzo(2,4);
-  // std::cout << "Inserisci i tuoi incrociatori" << '\n';
-  // Mozzo(3,3);
-  // Mozzo(4,3);
-  // Mozzo(5,3);
-  // std::cout << "Inserisci i tuoi cacciatorpedinieri" << '\n';
-  // for (int i =6 ; i < 10; i++)
-  // {
-  //   Mozzo(i,2);
-  // }
+  Mozzo(0,5);
+  std::cout << "Inserisci le tue corazzate" << '\n';
+  Mozzo(1,4);
+  Mozzo(2,4);
+  std::cout << "Inserisci i tuoi incrociatori" << '\n';
+  Mozzo(3,3);
+  Mozzo(4,3);
+  Mozzo(5,3);
+  std::cout << "Inserisci i tuoi cacciatorpedinieri" << '\n';
+  for (int i =6 ; i < 10; i++)
+  {
+    Mozzo(i,2);
+  }
   std::string a;
   std::cout << "Premi un tasto qualsiasi" << '\n';
   std::cin >> a;
