@@ -57,7 +57,6 @@ bool Player::Check(Coordinate c1, Coordinate c2) //controlla se casella di parte
 
 
 Nave Player::setShips(int len, Coordinate coord){ //crea e pone le navi
-
     int l = len - 1;
     Coordinate U,D,R,L;
     U = coord + Coordinate(0,-l);
