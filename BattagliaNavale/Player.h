@@ -20,7 +20,7 @@ public:
   Nave pushNave(int,int,int,int);
   void Print();
   void Attack(Player&);
-  void Hit(int, int);
+  void Sunk(int, int);
   void Riempimento();
   int getContatore() const;
   void Stats();

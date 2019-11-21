@@ -5,7 +5,8 @@
 enum class Flotta
 {  // SI possono chiamare solo es. Flotta::Sea
   Sea,
-  Ship
+  Ship,
+  Near
 };
 
 enum class Radar

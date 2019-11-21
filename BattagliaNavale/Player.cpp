@@ -173,7 +173,7 @@ void Player::Attack(Player &Other) //dichiara un attacco
     Attack(Other);
   }else
   {
-    Other.Hit(x,y);
+    Other.Sunk(x,y);
     Other._Plancia.setRadar(x,y); //Possibilità di fare overload di setradar per non prendere necessariamente flotta
     //Spostiamo Other._Plancia.setRadar in Hit()?
     if(_Screen.setRadar(x,y,Other._Plancia[y][x]))
@@ -184,7 +184,7 @@ void Player::Attack(Player &Other) //dichiara un attacco
 }
 
 //Eliminiamo Player::Hit e mettiamo direttamente il for in Attack?
-void Player::Hit(int x, int y) // Dichiara se l'attacco ha Affondato una nave
+void Player::Sunk(int x, int y) // Dichiara se l'attacco ha Affondato una nave
 {
   Coordinate A(x,y);
   for (int i = 0; i < _n; i++)

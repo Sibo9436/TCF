@@ -31,6 +31,17 @@ void Tabella::setNave(Coordinate begin, Coordinate end) //Nome provvisorio, riem
     for (int i = min; i <= max; i++)
     {
       _flotta[i][begin.getX()] = Flotta::Ship;
+      for(int h = i-1; h <= i+1; h++)
+      {
+        for(int k = begin.getX()-1; k <= begin.getX()+1; k++)
+        {
+          if((h > -1) && (h < 10) && (k > -1) && (k < 10) && (_flotta[h][k] == Flotta::Sea))
+          {
+            _flotta[h][k] = Flotta::Near;
+          }
+        }
+      }
+
     }
   } else if (begin.getY()==end.getY())
    {
@@ -93,16 +104,16 @@ void Tabella::PrintFlotta() //output della Flotta
     {
       if (_radar[i][j]==Radar::Sea)
       {
-        if (_flotta[i][j]==Flotta::Sea)
+        if (_flotta[i][j]==Flotta::Sea || _flotta[i][j]==Flotta::Near)
           cout << "\033[35;1;1m  ~  \033[0m";
         if (_flotta[i][j]==Flotta::Ship)
           cout << "\033[31;1;1m  #  \033[0m";
       }else
       {
         if (_radar[i][j]==Radar::Hit)
-          cout << "\033[31;1;1m  H  \033[0m";
+          cout << "\033[31;1;1m  X  \033[0m";
         if (_radar[i][j]==Radar::Miss)
-          cout <<"\033[35;1;1m  M  \033[0m";
+          cout <<"\033[35;1;1m  0  \033[0m";
       }
     }
     cout <<"\n\n";
@@ -127,10 +138,10 @@ void Tabella::PrintRadar() // output del radar
           cout <<  "\033[35;1;1m  ~  \033[0m";
           break;
         case Radar::Hit :
-          cout << "\033[31;1;1m  H  \033[0m";
+          cout << "\033[31;1;1m  X  \033[0m";
           break;
         case Radar::Miss :
-          cout << "\033[35;1;1m  M  \033[0m";
+          cout << "\033[35;1;1m  0  \033[0m";
           break;
       }
     }
@@ -156,7 +167,7 @@ bool Tabella::getRadar(int x, int y) //restituisce true se la casella (x,y) è c
 bool Tabella::setRadar(int x, int y,Flotta flo) //chiamato dopo un attacco, dichiara il suo risultato e aggiorna il radar dell'attaccante
 {
   Radar rad;
-  if (flo==Flotta::Sea)
+  if (flo==Flotta::Sea || flo == Flotta::Near)
   {
     cout << "Mancato!\n";
     _radar[y][x] = Radar::Miss;
@@ -174,7 +185,7 @@ bool Tabella::setRadar(int x, int y,Flotta flo) //chiamato dopo un attacco, dich
 void Tabella::setRadar(int x, int y) //chiamato dopo un attacco, dichiara il suo risultato e aggiorna il radar dell'attaccante
 {
   Radar rad;
-  if (_flotta[y][x]==Flotta::Sea)
+  if (_flotta[y][x]==Flotta::Sea || _flotta[y][x] == Flotta::Near)
   {
     // cout << "Mancato!\n";
     rad= Radar::Miss;
