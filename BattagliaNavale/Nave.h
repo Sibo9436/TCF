@@ -11,8 +11,8 @@ public:
   bool Hit(int , int );
   bool Hit(Coordinate);
   void Print();
-
-
+  Coordinate operator[](int);
+  
 private:
   int **_coordinates;
   Coordinate * _coords;

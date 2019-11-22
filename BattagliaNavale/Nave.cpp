@@ -121,6 +121,10 @@ void Nave::Print()
 
 }
 
+Coordinate Nave::operator[](int i)
+{
+  return _coords[i];
+}
 //
 //
 // CacciaTorpediniere::CacciaTorpediniere(int x1, int x2, int y1, int y2) : Nave(x1,x2,y1,y2)
