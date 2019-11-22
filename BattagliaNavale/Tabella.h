@@ -36,6 +36,7 @@ public:
   bool getRadar(int, int);
   bool setRadar(int,int,Flotta);
   void setRadar(int,int);
+  void Greta();
   Flotta * & operator[](int) const;
 
 

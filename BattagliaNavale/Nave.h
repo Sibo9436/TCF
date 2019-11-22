@@ -2,6 +2,7 @@
 #define NAVE_H
 #include "Coordinate.h"
 
+
 class Nave
 {
 public:
@@ -11,15 +12,13 @@ public:
   bool Hit(int , int );
   bool Hit(Coordinate);
   void Print();
-
+  Coordinate operator[](int i);
 
 private:
-  int **_coordinates;
   Coordinate * _coords;
   int _lunghezza;
   int _contatore;
   bool _affondato;
-
 };
 
 // class CacciaTorpediniere : public Nave
