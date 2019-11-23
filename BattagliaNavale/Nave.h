@@ -12,13 +12,9 @@ public:
   bool Hit(int , int );
   bool Hit(Coordinate);
   void Print();
-<<<<<<< HEAD
-  Coordinate operator[](int i);
-
-=======
+  int getlunghezza();
   Coordinate operator[](int);
-  
->>>>>>> b3436ff8a04ecaf8727678c3a37439e257c10d89
+
 private:
   Coordinate * _coords;
   int _lunghezza;

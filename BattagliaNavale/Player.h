@@ -23,7 +23,7 @@ public:
   void Stats();
 
 private:
-  Tabella  _Screen;
+  Tabella _Screen;
   Tabella _Plancia;
   int _n = 5;
   Nave _navi[5];
