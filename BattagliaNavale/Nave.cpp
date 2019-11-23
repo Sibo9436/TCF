@@ -118,18 +118,13 @@ void Nave::Print()
     _coords[i].print();
   }
   std::cout << _lunghezza << '\n';
-}
 
-int Nave::getlunghezza()
-{
-  return _lunghezza;
 }
 
 Coordinate Nave::operator[](int i)
 {
   return _coords[i];
 }
-
 //
 //
 // CacciaTorpediniere::CacciaTorpediniere(int x1, int x2, int y1, int y2) : Nave(x1,x2,y1,y2)

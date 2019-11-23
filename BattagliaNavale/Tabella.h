@@ -2,7 +2,6 @@
 #define TABELLA_H
 #include "Coordinate.h"
 
-
 enum class Flotta
 {  // SI possono chiamare solo es. Flotta::Sea
   Sea,
@@ -16,6 +15,10 @@ enum class Radar
   Miss,
   Sea
 };
+
+
+
+
 
 class Tabella
 {
@@ -36,12 +39,16 @@ public:
   void Greta();
   Flotta * & operator[](int) const;
 
+
 private:
   int n=10;
   bool _flottato=false;
   bool _radarato=false;
   Flotta **_flotta;
   Radar **_radar;
+
+
 };
+
 
 #endif

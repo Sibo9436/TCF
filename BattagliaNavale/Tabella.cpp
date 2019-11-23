@@ -66,7 +66,6 @@ void Tabella::setNave(Coordinate begin, Coordinate end) //Nome provvisorio, riem
     std::cout << "ERRORE IN SETNAVE(Tabella.cpp) \n";
   }
 }
-
 void Tabella::createRadar() //crea una matrice radar con puntatori e le riempie di "Sea"
 {
   _radarato = true;
@@ -100,6 +99,7 @@ void Tabella::createFlotta() //crea una matrice flotta con puntatori e le riempi
 
 void Tabella::PrintFlotta() //output della Flotta
 {
+  cout << "\n\n";
   cout << " \t";
   for (int i = 0; i < n; i++)
   {
@@ -132,6 +132,7 @@ void Tabella::PrintFlotta() //output della Flotta
 }
 void Tabella::PrintRadar() // output del radar
 {
+  cout << "\n\n";
   cout << " \t";
   for (int i = 0; i < n; i++)
   {
@@ -176,17 +177,17 @@ bool Tabella::getRadar(int x, int y) //restituisce true se la casella (x,y) è c
 
 bool Tabella::setRadar(int x, int y,Flotta flo) //chiamato dopo un attacco, dichiara il suo risultato e aggiorna il radar dell'attaccante
 {
+  if (flo==Flotta::Sea || flo == Flotta::Near)
+  {
+    cout << "Mancato!\n";
+    _radar[y][x] = Radar::Miss;
+    return false;
+  }
   if (flo == Flotta::Ship)
   {
     cout << "Colpito!\n";
     _radar[y][x] = Radar::Hit;
     return true;
-  }
-  else
-  {
-    cout << "Mancato!\n";
-    _radar[y][x] = Radar::Miss;
-    return false;
   }
 }
 
