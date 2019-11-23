@@ -12,8 +12,8 @@ public:
   bool Hit(int , int );
   bool Hit(Coordinate);
   void Print();
+  int getlunghezza();
   Coordinate operator[](int);
-
 
 private:
   Coordinate * _coords;
