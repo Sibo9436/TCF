@@ -22,7 +22,13 @@ Tabella::~Tabella() //distrugge flotta e radar se creati
   // delete[] _flotta;
 
 }
-
+void Tabella::setNave(Nave boat)
+{
+  for (int i = 0 ; i < boat.getlunghezza() ; i++ )
+  {
+    _flotta[boat[i].getY()][boat[i].getX()] = Flotta::Ship;
+  }
+}
 void Tabella::setNave(Coordinate begin, Coordinate end) //Nome provvisorio, riempie le caselle di flotta con" "Ship"
 {
   if (begin.getX()==end.getX())
