@@ -22,6 +22,13 @@ Tabella::~Tabella() //distrugge flotta e radar se creati
   // delete[] _flotta;
 
 }
+void Tabella::setNave(Nave boat)
+{
+  for (int i = 0 ; i < boat.getlunghezza() ; i++ )
+  {
+    _flotta[boat[i].getY()][boat[i].getX()] = Flotta::Ship;
+  }
+}
 void Tabella::setNave(Coordinate begin, Coordinate end) //Nome provvisorio, riempie le caselle di flotta con" "Ship"
 {
   if (begin.getX()==end.getX())
@@ -41,7 +48,6 @@ void Tabella::setNave(Coordinate begin, Coordinate end) //Nome provvisorio, riem
           }
         }
       }
-
     }
   } else if (begin.getY()==end.getY())
    {
@@ -50,13 +56,23 @@ void Tabella::setNave(Coordinate begin, Coordinate end) //Nome provvisorio, riem
     for (int i = min; i <= max; i++)
     {
       _flotta[begin.getY()][i] = Flotta::Ship;
-
+      for(int h = begin.getY()-1; h <= begin.getY()+1; h++)
+      {
+        for(int k = i-1; k <= i+1; k++)
+        {
+          if((h > -1) && (h < 10) && (k > -1) && (k < 10) && (_flotta[h][k] == Flotta::Sea))
+          {
+            _flotta[h][k] = Flotta::Near;
+          }
+        }
+      }
     }
   } else
   {
     std::cout << "ERRORE IN SETNAVE(Tabella.cpp) \n";
   }
 }
+
 void Tabella::createRadar() //crea una matrice radar con puntatori e le riempie di "Sea"
 {
   _radarato = true;
@@ -90,7 +106,6 @@ void Tabella::createFlotta() //crea una matrice flotta con puntatori e le riempi
 
 void Tabella::PrintFlotta() //output della Flotta
 {
-  cout << "\n\n";
   cout << " \t";
   for (int i = 0; i < n; i++)
   {
@@ -104,8 +119,10 @@ void Tabella::PrintFlotta() //output della Flotta
     {
       if (_radar[i][j]==Radar::Sea)
       {
-        if (_flotta[i][j]==Flotta::Sea || _flotta[i][j]==Flotta::Near)
+        if (_flotta[i][j]==Flotta::Sea)
           cout << "\033[35;1;1m  ~  \033[0m";
+        if (_flotta[i][j]==Flotta::Near)
+          cout << "\033[35;1;1m  0  \033[0m";
         if (_flotta[i][j]==Flotta::Ship)
           cout << "\033[31;1;1m  #  \033[0m";
       }else
@@ -113,7 +130,7 @@ void Tabella::PrintFlotta() //output della Flotta
         if (_radar[i][j]==Radar::Hit)
           cout << "\033[31;1;1m  X  \033[0m";
         if (_radar[i][j]==Radar::Miss)
-          cout <<"\033[35;1;1m  0  \033[0m";
+          cout <<"\033[35;1;1m  @  \033[0m";
       }
     }
     cout <<"\n\n";
@@ -121,7 +138,6 @@ void Tabella::PrintFlotta() //output della Flotta
 }
 void Tabella::PrintRadar() // output del radar
 {
-  cout << "\n\n";
   cout << " \t";
   for (int i = 0; i < n; i++)
   {
@@ -141,7 +157,7 @@ void Tabella::PrintRadar() // output del radar
           cout << "\033[31;1;1m  X  \033[0m";
           break;
         case Radar::Miss :
-          cout << "\033[35;1;1m  0  \033[0m";
+          cout << "\033[35;1;1m  @  \033[0m";
           break;
       }
     }
@@ -166,18 +182,17 @@ bool Tabella::getRadar(int x, int y) //restituisce true se la casella (x,y) è c
 
 bool Tabella::setRadar(int x, int y,Flotta flo) //chiamato dopo un attacco, dichiara il suo risultato e aggiorna il radar dell'attaccante
 {
-  Radar rad;
-  if (flo==Flotta::Sea || flo == Flotta::Near)
-  {
-    cout << "Mancato!\n";
-    _radar[y][x] = Radar::Miss;
-    return false;
-  }
   if (flo == Flotta::Ship)
   {
     cout << "Colpito!\n";
     _radar[y][x] = Radar::Hit;
     return true;
+  }
+  else
+  {
+    cout << "Mancato!\n";
+    _radar[y][x] = Radar::Miss;
+    return false;
   }
 }
 
@@ -196,4 +211,18 @@ void Tabella::setRadar(int x, int y) //chiamato dopo un attacco, dichiara il suo
     rad= Radar::Hit;
   }
   _radar[y][x] = rad;
+}
+
+void Tabella::Greta()
+{
+  for (int i=0; i<10; i++)
+  {
+    for (int j=0; j<10; j++)
+    {
+      if (_flotta[i][j]==Flotta::Near)
+      {
+        _flotta[i][j]=Flotta::Sea;
+      }
+    }
+  }
 }

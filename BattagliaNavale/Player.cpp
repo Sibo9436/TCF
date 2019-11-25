@@ -24,12 +24,12 @@ void Player::setName(std::string Nome)
 
 bool Player::Check(Coordinate c1, Coordinate c2) //controlla se casella di partenza e di arrivo sono compatibili
 {
-
   if (c2.getX() < 0 || c2.getX() > 9)
     return false;
   if (c2.getY() < 0 || c2.getY() > 9)
     return false;
-  if (c1.getX()==c2.getX()) {
+  if (c1.getX()==c2.getX())
+  {
     int max = (c2.getY() > c1.getY())? c2.getY() : c1.getY();
     int min = (c2.getY() < c1.getY())? c2.getY() : c1.getY();
     for (int i = min; i <=  max; i++)
@@ -38,7 +38,8 @@ bool Player::Check(Coordinate c1, Coordinate c2) //controlla se casella di parte
         return false;
     }
     return true;
-  } else if (c1.getY()==c2.getY()) {
+  } else if (c1.getY()==c2.getY())
+  {
     int max = (c2.getX() > c1.getX())? c2.getX() : c1.getX();
     int min = (c2.getX() < c1.getX())? c2.getX() : c1.getX();
     for (int i = min; i <= max; i++)
@@ -47,7 +48,8 @@ bool Player::Check(Coordinate c1, Coordinate c2) //controlla se casella di parte
         return false;
     }
     return true;
-  } else {
+  } else
+  {
     std::cout << "ERRORE IN CHECK(Player.cpp) \n";
     return false;
   }
@@ -107,31 +109,27 @@ Nave Player::setShips(int len, Coordinate coord){ //crea e pone le navi
       R.print();
       std::cout << "\n";
     }
-    std::string direzione;
+    char direzione;
     std::cin >> direzione;
-    if (direzione == "u" && u )
-    {
-      _Plancia.setNave(coord, U);
-      return Nave(coord, U);
-    } else if (direzione == "d" && d)
-    {
-      _Plancia.setNave(coord,D);
-      return Nave(coord,D);
-    } else if (direzione == "l" && le)
-    {
-      _Plancia.setNave(coord,L);
-      return Nave(coord,L);
-    } else if (direzione == "r" && r)
-    {
-      _Plancia.setNave(coord,R);
-      return Nave(coord,R);
-    } else
-    {
-      std::cout << "not valid \n Prova direzione valida\n";
-      return setShips(len,coord);
+    std::cin.ignore(10000,'\n');
+    switch (direzione) {
+      case 'u' :
+        _Plancia.setNave(coord, U);
+        return Nave(coord, U);
+      case 'd' :
+        _Plancia.setNave(coord,D);
+        return Nave(coord,D);
+      case 'l' :
+        _Plancia.setNave(coord,L);
+        return Nave(coord,L);
+      case 'r' :
+        _Plancia.setNave(coord,R);
+        return Nave(coord,R);
+      default :
+        std::cout << "not valid \n Prova direzione valida\n";
+        return setShips(len,coord);
     }
 }
-
 
 void Player::Mozzo(int i, int lunghezza) //chiede le coordinate delle navi da creare
 {
@@ -151,10 +149,13 @@ void Player::Mozzo(int i, int lunghezza) //chiede le coordinate delle navi da cr
 
 void Player::Print() //stampa lo schermo di un giocatore
 {
-  _Plancia.PrintFlotta();
+  std::cout << "\n\t\t\tCampo nemico\n\n";
   _Screen.PrintRadar();
+  std::cout << "\n\t\t\tLa tua Flotta\n\n";
+  _Plancia.PrintFlotta();
 
 }
+
 void Player::Attack(Player &Other) //dichiara un attacco
 {
   Coordinate A;
@@ -173,13 +174,12 @@ void Player::Attack(Player &Other) //dichiara un attacco
     Attack(Other);
   }else
   {
-    Other.Sunk(x,y);
     Other._Plancia.setRadar(x,y); //Possibilità di fare overload di setradar per non prendere necessariamente flotta
+    Other.Sunk(x,y);
     //Spostiamo Other._Plancia.setRadar in Hit()?
     if(_Screen.setRadar(x,y,Other._Plancia[y][x]))
       colpi_a_segno++;
     colpi_sparati++;
-
   }
 }
 
@@ -189,10 +189,23 @@ void Player::Sunk(int x, int y) // Dichiara se l'attacco ha Affondato una nave
   Coordinate A(x,y);
   for (int i = 0; i < _n; i++)
   {
-
     if(_navi[i].Hit(A))
     {
-      std::cout << "Affondata nave di"<<_nome << '\n';
+      std::cout << "Affondata nave di "<<_nome << '\n';
+
+      for (int j = 0; j < _navi[i].getlunghezza(); j++)
+      {
+        for(int h = (_navi[i])[j].getY()-1; h <= (_navi[i])[j].getY()+1; h++)
+        {
+          for(int k = (_navi[i])[j].getX()-1; k <= (_navi[i])[j].getX()+1; k++)
+          {
+            if((h > -1) && (h < 10) && (k > -1) && (k < 10) && (_Plancia[h][k] != Flotta::Ship))
+            {
+              std::cout << "se funzionassi metterei @ in " << h << " " << k << "\n";
+            }
+          }
+        }
+      }
       _contatore--;
     }
   }
@@ -209,24 +222,20 @@ void Player::Riempimento() //Riempie la plancia chiamando mozzo nNavi volte
   std::cout << _nome << ", inizia la fase di creazione..."<< '\n';
   std::cout << "Inserisci la tua portaerei" << '\n';
   Mozzo(0,5);
-  std::cout << "Inserisci le tue corazzate" << '\n';
+  std::cout << "Inserisci la tua corazzata" << '\n';
   Mozzo(1,4);
-  Mozzo(2,4);
   std::cout << "Inserisci i tuoi incrociatori" << '\n';
+  Mozzo(2,3);
   Mozzo(3,3);
-  Mozzo(4,3);
-  Mozzo(5,3);
-  std::cout << "Inserisci i tuoi cacciatorpedinieri" << '\n';
-  for (int i =6 ; i < 10; i++)
-  {
-    Mozzo(i,2);
-  }
+  std::cout << "Inserisci il tuo cacciatorpediniere" << '\n';
+  Mozzo(4,2);
   std::string a;
   std::cout << "Premi un tasto qualsiasi" << '\n';
   std::cin >> a;
+  _Plancia.Greta();
   std::cout << std::string(100,'\n');
-
 }
+
 void Player::Stats()
 {
   std::cout << _nome << ":" << '\n';
