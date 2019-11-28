@@ -75,21 +75,19 @@ Nave Player::setShips(int len, Coordinate coord){ //crea e pone le navi
     //bool u = Check(x1,y1,x1,y1-l);
     //bool d = Check(x1,y1,x1,y1+l);
 
-    if(!u && !d && !r && !le){
+    if(!u && !d && !r && !le)
+    {
       std::cout << "not valid\n Prova coordinate valide\n";
 
       Coordinate A;
       A.getFromPlayer();
       return setShips(len,A);
-
-
     }
     if (u)
     {
       std::cout << "Premi u per mettere la nave in ";
       U.print();
       std::cout << "\n";
-
     }
     if (d)
     {
@@ -112,28 +110,32 @@ Nave Player::setShips(int len, Coordinate coord){ //crea e pone le navi
     char direzione;
     std::cin >> direzione;
     std::cin.ignore(10000,'\n');
-    switch (direzione) {
-      case 'u' :
-        _Plancia.setNave(coord, U);
-        return Nave(coord, U);
-      case 'd' :
-        _Plancia.setNave(coord,D);
-        return Nave(coord,D);
-      case 'l' :
-        _Plancia.setNave(coord,L);
-        return Nave(coord,L);
-      case 'r' :
-        _Plancia.setNave(coord,R);
-        return Nave(coord,R);
-      default :
-        std::cout << "not valid \n Prova direzione valida\n";
-        return setShips(len,coord);
+    if (direzione == 'u' && u)
+    {
+      _Plancia.setNave(coord, U);
+      return Nave(coord, U);
     }
+    if (direzione == 'd' && d)
+    {
+      _Plancia.setNave(coord, D);
+      return Nave(coord, D);
+    }
+    if (direzione == 'l' && le)
+    {
+      _Plancia.setNave(coord, L);
+      return Nave(coord, L);
+    }
+    if (direzione == 'r' && r)
+    {
+      _Plancia.setNave(coord, R);
+      return Nave(coord, R);
+    }
+    std::cout << "not valid \n Prova direzione valida\n";
+    return setShips(len,coord);
 }
 
 void Player::Mozzo(int i, int lunghezza) //chiede le coordinate delle navi da creare
 {
-
   Coordinate A;
   if(A.getFromPlayer())
   {
@@ -219,6 +221,7 @@ int Player::getContatore() const //restituisce il numero delle navi sopravvissut
 
 void Player::Riempimento() //Riempie la plancia chiamando mozzo nNavi volte
 {
+  std::cout << std::string(100,'\n');
   std::cout << _nome << ", inizia la fase di creazione..."<< '\n';
   std::cout << "Inserisci la tua portaerei" << '\n';
   Mozzo(0,5);
