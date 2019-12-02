@@ -7,7 +7,6 @@
 
 Player::Player()
 {
-
   _Plancia.createFlotta();
   _Plancia.createRadar();
   _Screen.createRadar();
@@ -17,6 +16,7 @@ std::string Player::getName()
 {
   return _nome;
 }
+
 void Player::setName(std::string Nome)
 {
   _nome = Nome;
@@ -56,9 +56,8 @@ bool Player::Check(Coordinate c1, Coordinate c2) //controlla se casella di parte
 
 }
 
-
-
-Nave Player::setShips(int len, Coordinate coord){ //crea e pone le navi
+Nave Player::setShips(int len, Coordinate coord)
+{ //crea e pone le navi
     int l = len - 1;
     Coordinate U,D,R,L;
     U = coord + Coordinate(0,-l);
@@ -77,19 +76,15 @@ Nave Player::setShips(int len, Coordinate coord){ //crea e pone le navi
 
     if(!u && !d && !r && !le){
       std::cout << "not valid\n Prova coordinate valide\n";
-
       Coordinate A;
       A.getFromPlayer();
       return setShips(len,A);
-
-
     }
     if (u)
     {
       std::cout << "Premi u per mettere la nave in ";
       U.print();
       std::cout << "\n";
-
     }
     if (d)
     {
@@ -138,21 +133,11 @@ void Player::Mozzo(int i, int lunghezza) //chiede le coordinate delle navi da cr
   if(A.getFromPlayer())
   {
     _navi[i] = setShips(lunghezza, A);
-    Print();
 
   }else
   {
     std::cout << "Qualcosa è andato storto in Mozzo!" << '\n';
   }
-
-}
-
-void Player::Print() //stampa lo schermo di un giocatore
-{
-  std::cout << "\n\t\t\tCampo nemico\n\n";
-  _Screen.PrintRadar();
-  std::cout << "\n\t\t\tLa tua Flotta\n\n";
-  _Plancia.PrintFlotta();
 
 }
 

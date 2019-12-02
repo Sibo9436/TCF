@@ -37,9 +37,9 @@ bool Game::Start() //contiene il game loop
     std::cin.ignore(10000,'\n');
     std::cout << std::string(100,'\n');//"aggiorna" schermo
     std::cout << " -------------------- Turno "<< _player1.getName()<<" -------------------- ";
-    _player1.Print();
+    Print(_player1, _player2);
     _player1.Attack(_player2);
-    _player1.Print();
+    Print(_player1, _player2);
 
 
     if(_player2.getContatore() == 0)
@@ -55,9 +55,9 @@ bool Game::Start() //contiene il game loop
     std::cin >> a;
     std::cout << std::string(100,'\n'); //"aggiorna" schermo
     std::cout << " --------------------- Turno "<< _player2.getName() <<" -------------------- ";
-    _player2.Print();
+    Print(_player2, _player1);
     _player2.Attack(_player1);
-    _player2.Print();
+    Print(_player2, _player1);
 
     if(_player1.getContatore() == 0)
     {
@@ -71,6 +71,14 @@ bool Game::Start() //contiene il game loop
 
   }
   return false;
+}
+
+void Game::Print(Player &attaccante, Player &altro) //stampa lo schermo di un giocatore
+{
+  std::cout << "\n\t\t\tCampo nemico\n\n";
+  altro._Plancia.PrintRadar();
+  std::cout << "\n\t\t\tLa tua Flotta\n\n";
+  attaccante._Plancia.PrintFlotta();
 }
 
 void Game::Endgame()//ancora niente
