@@ -112,29 +112,31 @@ bool OnlineGame::Start()
   {
     if (_player.IsServer())
     {
+      _player.Attack();
+      if (_player.Won())
+      {
+        return true;
+      }
+      _player.Down();
       if (_player.getContatore() == 0 )
       {
         std::cout << "Sorry bro" << '\n';
         return true;
-      }else if (_player.Won())
-      {
-        return true;
       }
-      _player.Attack();
-      _player.Down();
       // _player.Print();
     }else if(_player.IsClient())
     {
+      _player.Down();
       if (_player.getContatore() == 0 )
       {
         std::cout << "Sorry bro" << '\n';
         return true;
-      }else if (_player.Won())
+      }
+      _player.Attack();
+      if (_player.Won())
       {
         return true;
       }
-      _player.Down();
-      _player.Attack();
       // _player.Print();
     }
   }
