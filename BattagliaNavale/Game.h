@@ -20,6 +20,16 @@ private:
 
 };
 
+class OnlineGame : public Game
+{
+public:
+  bool Generate();
+  bool Start();
+  void Endgame();
+
+private:
+  Player _player;
+};
 
 
 #endif

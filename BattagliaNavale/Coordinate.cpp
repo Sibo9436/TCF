@@ -102,3 +102,14 @@ bool Coordinate::operator==(Coordinate Other) const
     return true;
   return false;
 }
+
+Co Coordinate::getStruct()
+{
+  Co a;
+  a._x = _x;
+  a._y = _y;
+  return a;
+}
+Coordinate::Coordinate(Co strutt):_x(strutt._x),_y(strutt._y)
+{
+}
