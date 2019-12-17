@@ -363,6 +363,7 @@ void Player::Attack()
     if (result == -1)
     {
       std::cout << "Grande Frate Hai VINICIO" << '\n';
+      result = 1;
       _win = true;
     }else if (result == 2)
     {
