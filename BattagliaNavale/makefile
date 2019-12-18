@@ -3,7 +3,9 @@
 
 CXX = g++
 CXXFLAGS = -Wall -std=c++11
-ifndef __cxa_throw_bad_array_new_length
+GCCVERSION = $(shell gcc --version | grep ^gcc | sed 's/^.* //g')
+
+ifeq "$(GCCVERSION)" "4.8.5"
 	CXXFLAGS += -D_GLIBCXX_USE_CXX11_ABI=0
 endif
 RM = rm -f
