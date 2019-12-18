@@ -3,7 +3,7 @@
 
 CXX = g++
 CXXFLAGS = -Wall -std=c++11
-GCCVERSION = $(shell gcc --version | grep ^gcc | sed 's/^.* //g')
+GCCVERSION = $(shell gcc -dumpversion)
 
 ifeq "$(GCCVERSION)" "4.8.5"
 	CXXFLAGS += -D_GLIBCXX_USE_CXX11_ABI=0
