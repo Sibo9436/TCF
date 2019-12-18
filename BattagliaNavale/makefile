@@ -2,7 +2,10 @@
 
 
 CXX = g++
-CXXFLAGS = -Wall -std=c++11 
+CXXFLAGS = -Wall -std=c++11
+ifndef __cxa_throw_bad_array_new_length
+	CXXFLAGS += -D_GLIBCXX_USE_CXX11_ABI=0
+endif
 RM = rm -f
 all: battaglia
 battaglia: main.o Tabella.o Nave.o Player.o Game.o Coordinate.o
