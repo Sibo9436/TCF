@@ -35,16 +35,15 @@ bool Game::Start() //contiene il game loop
     std::cout << _player1.getName()<< " premi un tasto qualsiasi per iniziare il tuo turno" << '\n';
     std::cin >> a;
     std::cin.ignore(10000,'\n');
-    std::cout << std::string(100,'\n');//"aggiorna" schermo
-    std::cout << " -------------------- Turno "<< _player1.getName()<<" -------------------- ";
-    Print(_player1, _player2);
-    _player1.Attack(_player2);
-    Print(_player1, _player2);
+    std::cout << std::string(100,'\n'); //"aggiorna" schermo
+    Print(&_player1, &_player2);
+    _player1.Attack(&_player2);
+    Print(&_player1, &_player2);
 
 
     if(_player2.getContatore() == 0)
     {
-      std::cout << "Ha vinto " << _player1.getName() <<"\n";
+      std::cout << "Ha vinto " << _player1.getName() << "!\n";
       return true;
     }
     std::cout << "Premi un tasto qualsiasi e passa il turno a " << _player2.getName() << '\n';
@@ -53,15 +52,15 @@ bool Game::Start() //contiene il game loop
     std::cout << std::string(100,'\n'); //"aggiorna" schermo
     std::cout << _player2.getName()<< " premi un tasto qualsiasi per iniziare il tuo turno" << '\n';
     std::cin >> a;
+    std::cin.ignore(10000,'\n');
     std::cout << std::string(100,'\n'); //"aggiorna" schermo
-    std::cout << " --------------------- Turno "<< _player2.getName() <<" -------------------- ";
-    Print(_player2, _player1);
-    _player2.Attack(_player1);
-    Print(_player2, _player1);
+    Print(&_player2, &_player1);
+    _player2.Attack(&_player1);
+    Print(&_player2, &_player1);
 
     if(_player1.getContatore() == 0)
     {
-      std::cout << "Ha vinto " << _player2.getName()<<"\n";
+      std::cout << "Ha vinto " << _player2.getName() << "!\n";
       return true;
     }
     std::cout << "Premi un tasto qualsiasi e passa il turno a " << _player1.getName() << '\n';
@@ -73,25 +72,47 @@ bool Game::Start() //contiene il game loop
   return false;
 }
 
-void Game::Print(Player &attaccante, Player &altro) //stampa lo schermo di un giocatore
+void Game::Print(Player *giocatore, Player *avversario)
 {
-  std::cout << "\n\t\t\tCampo nemico\n\n";
-  altro._Plancia.PrintRadar();
-  std::cout << "\n\t\t\tLa tua Flotta\n\n";
-  attaccante._Plancia.PrintFlotta();
+//  std::cout << std::string(100,'\n'); //"aggiorna" schermo
+  std::cout << "\n\n --------------------- Turno " << giocatore->getName() <<" -------------------- \n";
+  avversario->PrintRad();
+  giocatore->PrintFlo();
 }
 
-void Game::Endgame()//ancora niente
+bool Game::Endgame()//ancora niente
 {
-  std::cout << "Conygratulazioni! Ecco alcune statistiche sulla vostra partita:\n"<< '\n';
+  std::string a;
+  char go;
+
+  std::cout << "\nPremi un tasto qualsiasi per terminare la partita\n";
+  std::cin >> a;
+  std::cin.ignore(10000,'\n');
+  std::cout << std::string(100,'\n'); //"aggiorna" schermo
+  std::cout << "Congratulazioni! Ecco alcune statistiche sulla vostra partita:\n\n\n"<< '\n';
   _player1.Stats();
+  std::cout << std::string(5,'\n');
   _player2.Stats();
 
-  std::cout << "Grazie per avere giocato al nostro gioco!" << '\n';
-  std::cout << "Autori (in ordine di altezza): \n\tDaniel Ladaniuc\n\tDamiano Cabiati\n\tAndrea Sibona\n\tDaniel Siciliano" << '\n';
-  std::cout << "Si ringraziano inoltre per il loro supporto e per il playtesting: \n\tRiccardo Riente e Marco Mosagna" << '\n';
-  std::cout << "" << '\n';
-  std::cout << "" << '\n';
-  std::cout << "" << '\n';
-  std::cout << "" << '\n';
+  std::cout << std::string(10,'\n');
+  std::cout << "\n\t\t\tVuoi giocare ancora?\n\n\t\t(Premi y per giocare ancora, qualsiasi altro tasto per uscire)";
+  std::cout << std::string(10,'\n');
+  std::cin >> go;
+  std::cin.ignore(10000,'\n');
+  std::cout << std::string(100,'\n'); //"aggiorna" schermo
+
+  if(go=='y')
+  {
+    std::cout << "\t\tD'accordo!\n\n\tAllora premi un tasto qualsiasi per ricominciare\n";
+    std::cin >> a;
+    std::cin.ignore(10000,'\n');
+    std::cout << std::string(100,'\n'); //"aggiorna" schermo
+    return true;
+  }
+
+  std::cout << "Grazie per avere giocato al nostro gioco!\n" << '\n';
+  std::cout << "Autori (in ordine di altezza): \n\tDamiano Cabiati\n\tAndrea Sibona\n\tDaniel Siciliano\n" << '\n';
+  std::cout << "Si ringraziano inoltre per il loro supporto e per il playtesting: \n\tRiccardo Riente, Marco Mosagna, Lidia Albera e Paolo Maria Oreste Carlo Cabiati" << '\n';
+  std::cout << std::string(25,'\n'); //"aggiorna" schermo
+  return false;
 }

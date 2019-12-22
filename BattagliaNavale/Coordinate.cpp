@@ -31,7 +31,7 @@ void Coordinate::setY(int y)
   _y = y;
 }
 
-bool Coordinate::getFromPlayer() // include i cin per impostare le coordinate
+bool Coordinate::getFromPlayer(int N) // include i cin per impostare le coordinate
 {
   char k;
   int y;
@@ -52,7 +52,7 @@ bool Coordinate::getFromPlayer() // include i cin per impostare le coordinate
       _y = y -1;
       _x = ((int)k < 97) ? (int)k -65 : (int)k -97;
 
-      if((_x<0 || _y < 0 )||(_x >9 || _y > 9))
+      if(_x<0 || _y < 0 ||_x > N-1 || _y > N-1)
       {
         std::cout << "Coordinate fuori range \n";
 
@@ -69,27 +69,23 @@ bool Coordinate::getFromPlayer() // include i cin per impostare le coordinate
 
 void Coordinate::operator=(Coordinate Other)
 {
-  _x = Other._x;
-  _y = Other._y;
+  _x = Other.getX();
+  _y = Other.getY();
 }
 
 Coordinate Coordinate::operator+(Coordinate Other)
 {
-  return Coordinate(_x+Other._x,_y+Other._y);
+  return Coordinate(_x+Other.getX(),_y+Other.getY());
 }
 
-void Coordinate::print()const
-{
-  std::cout << "(" << (char)(_x + 65) << " , " << _y+1 << ")";
-}
 int Coordinate::operator-(Coordinate Other) //NON SONO SICURO CHE IL MENO SIA IL MIGLIOR OPERATORE POSSIBILE PER STA COSA
 {
-  if (_x == Other._x)
+  if (_x == Other.getX())
   {
-    return abs(_y - Other._y)+1;
-  }else if (_y==Other._y)
+    return abs(_y - Other.getY())+1;
+  }else if (_y==Other.getY())
   {
-    return abs(_x - Other._x)+1;
+    return abs(_x - Other.getX())+1;
   }else
   {
     return -1;
@@ -98,7 +94,12 @@ int Coordinate::operator-(Coordinate Other) //NON SONO SICURO CHE IL MENO SIA IL
 
 bool Coordinate::operator==(Coordinate Other) const
 {
-  if (_x == Other._x && _y==Other._y)
+  if (_x == Other.getX() && _y==Other.getY())
     return true;
   return false;
+}
+
+void Coordinate::print()const
+{
+  std::cout << "(" << (char)(_x + 65) << " , " << _y+1 << ")";
 }

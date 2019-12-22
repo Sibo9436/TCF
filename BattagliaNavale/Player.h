@@ -15,15 +15,15 @@ public:
   Nave setShips(int, Coordinate);
   bool Check(Coordinate,Coordinate);
   void Mozzo(int, int);
-  void Print();
-  void Attack(Player&);
-  void Sunk(int, int);
+  void PrintRad();
+  void PrintFlo();
+  void Attack(Player *);
+  bool Sunk(int, int);
   void Riempimento();
   int getContatore() const;
   void Stats();
 
 private:
-  Tabella _Screen;
   Tabella _Plancia;
   int _n = 5;
   Nave _navi[5];

@@ -11,7 +11,7 @@ public:
   int getY() const;
   void setY(int);
   void setX(int);
-  bool getFromPlayer();
+  bool getFromPlayer(int);
   void  operator=(Coordinate);
   Coordinate operator+(Coordinate);
   int operator-(Coordinate);

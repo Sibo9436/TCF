@@ -12,8 +12,8 @@ public:
   Game();
   bool Generate();
   bool Start();
-  void Print(Player&, Player&);
-  void Endgame();
+  void Print(Player*, Player*);
+  bool Endgame();
 
 private:
   Player _player1;
