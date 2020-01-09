@@ -102,3 +102,10 @@ bool Coordinate::operator==(Coordinate Other) const
     return true;
   return false;
 }
+
+bool Coordinate::operator!=(Coordinate Other) const
+{
+  if (_x != Other._x || _y!=Other._y)
+    return true;
+  return false;
+}

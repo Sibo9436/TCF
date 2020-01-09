@@ -171,6 +171,8 @@ Flotta * & Tabella::operator[](int i) const // ridefinisce l'operatore [][]
 
 bool Tabella::getRadar(int x, int y) //restituisce true se la casella (x,y) è colpibile
 {
+  if(y<0 || y>9) return false; //soluzione debole
+  if(x<0 || x>9) return false;
   if(_radar[y][x] == Radar::Sea) return true;
   if(_radar[y][x] == Radar::Hit || _radar[y][x] == Radar::Miss) return false;
   cout << "ERRORE IN GETRADAR(Tabella.cpp) \n";

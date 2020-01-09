@@ -16,6 +16,7 @@ public:
   Coordinate operator+(Coordinate);
   int operator-(Coordinate);
   bool operator==(Coordinate)const;
+  bool operator!=(Coordinate)const;
   void print()const;
 
 
