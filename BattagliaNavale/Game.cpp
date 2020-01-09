@@ -116,3 +116,71 @@ bool Game::Endgame()//ancora niente
   std::cout << std::string(25,'\n'); //"aggiorna" schermo
   return false;
 }
+bool OnlineGame::Generate() //genera il nome dei giocatori e le loro plancie
+{
+  std::string nome;
+  std::cout << "Inserisci il tuo nome... " << '\n';
+  std::cin >> nome;
+  _player.setName(nome);
+  int scelta;
+  std::cout << "Sarai server(1) o client(2)?" << '\n';
+  std::cin >> scelta;
+  if (scelta == 1)
+  {
+    _player.Server();
+  } else if(scelta == 2)
+  {
+    _player.Client();
+  }
+  _player.Riempimento();
+  return true;
+}
+bool OnlineGame::Start()
+{
+  while(true)
+  {
+    if (_player.IsServer())
+    {
+      _player.Attack();
+      if (_player.Won())
+      {
+        return true;
+      }
+      _player.Down();
+      if (_player.getContatore() == 0 )
+      {
+        std::cout << "Sorry bro" << '\n';
+        return true;
+      }
+      // _player.Print();
+    }else if(_player.IsClient())
+    {
+      _player.Down();
+      if (_player.getContatore() == 0 )
+      {
+        std::cout << "Sorry bro" << '\n';
+        return true;
+      }
+      _player.Attack();
+      if (_player.Won())
+      {
+        return true;
+      }
+      // _player.Print();
+    }
+  }
+
+}
+void OnlineGame::Endgame()
+{
+  std::cout << "Conygratulazioni! Ecco alcune statistiche sulla vostra partita:\n"<< '\n';
+  _player.Stats();
+
+  std::cout << "Grazie per avere giocato al nostro gioco!" << '\n';
+  std::cout << "Autori (in ordine di altezza): \n\tDaniel Ladaniuc\n\tDamiano Cabiati\n\tAndrea Sibona\n\tDaniel Siciliano" << '\n';
+  std::cout << "Si ringraziano inoltre per il loro supporto e per il playtesting: \n\tRiccardo Riente e Marco Mosagna" << '\n';
+  std::cout << "" << '\n';
+  std::cout << "" << '\n';
+  std::cout << "" << '\n';
+  std::cout << "" << '\n';
+}

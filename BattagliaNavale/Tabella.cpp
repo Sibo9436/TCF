@@ -3,9 +3,9 @@
 #include <iostream>
 using namespace std;
 
+
 Tabella::~Tabella() //distrugge flotta e radar se creati
 {
-
   for (int i = 0; i < n ; i++)
   {
     if (_flottato)
@@ -22,6 +22,15 @@ Tabella::~Tabella() //distrugge flotta e radar se creati
 int Tabella::getN()
 {
   return n;
+
+}
+
+void Tabella::setNave(Nave boat)
+{
+  for (int i = 0 ; i < boat.getlunghezza() ; i++ )
+  {
+    _flotta[boat[i].getY()][boat[i].getX()] = Flotta::Ship;
+  }
 }
 
 void Tabella::setNave(Coordinate begin, Coordinate end) //Nome provvisorio, riempie le caselle di flotta con" "Ship"
@@ -99,7 +108,6 @@ void Tabella::createFlotta() //crea una matrice flotta con puntatori e le riempi
       _flotta[i][j] = Flotta::Sea;
     }
   }
-
 }
 
 
@@ -129,7 +137,7 @@ void Tabella::PrintFlotta() //output della Flotta
         if (_radar[i][j]==Radar::Hit)
           cout << "\033[31;1;1m  X  \033[0m";
         if (_radar[i][j]==Radar::Miss)
-          cout <<"\033[35;1;1m  @  \033[0m";
+          cout << "\033[35;1;1m  @  \033[0m";
       }
     }
     cout <<"\n\n";
@@ -164,8 +172,6 @@ void Tabella::PrintRadar() // output del radar
     cout << "\n\n";
   }
 }
-
-
 
 Flotta * & Tabella::operator[](int i) const // ridefinisce l'operatore [][]
 {

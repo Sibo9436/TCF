@@ -103,3 +103,14 @@ void Coordinate::print()const
 {
   std::cout << "(" << (char)(_x + 65) << " , " << _y+1 << ")";
 }
+Co Coordinate::getStruct()
+{
+  Co a;
+  a._x = _x;
+  a._y = _y;
+  return a;
+}
+Coordinate::Coordinate(Co strutt):_x(strutt._x),_y(strutt._y)
+{
+
+}

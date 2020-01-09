@@ -2,11 +2,19 @@
 #ifndef COORDINATE_H
 #define COORDINATE_H
 
+struct Co
+{
+  int _x;
+  int _y;
+};
+
 class Coordinate
 {
 public:
   Coordinate();
+  Coordinate(Co);
   Coordinate(int,int);
+  Co getStruct();
   int getX() const;
   int getY() const;
   void setY(int);
@@ -19,13 +27,13 @@ public:
   void print()const;
 
 
+
 private:
 
   int _x;
   int _y;
 
 };
-
 
 
 
