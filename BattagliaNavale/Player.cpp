@@ -261,9 +261,7 @@ void Player::Server()
   struct sockaddr_in address;
   int opt = 1;
   int addrlen = sizeof(address);
-  char buffer[1024] = {0};
-  char *hello = "Sta funzionando!";
-  char *ciao = "Incredibbbbile!";
+
 
   if ((server_fd = socket(AF_INET,SOCK_STREAM, 0)) == 0)
   {
@@ -306,7 +304,6 @@ void Player::Server()
 }
 void Player::Client()
 {
-  std::cout << "AAAAAAAAAAAAAA" << '\n';
   struct sockaddr_in serv_addr;
   char buffer[1024] = {0};
   char* indirizzo = new char[15];
