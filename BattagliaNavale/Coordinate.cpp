@@ -116,7 +116,7 @@ Coordinate::Coordinate(Co strutt):_x(strutt._x),_y(strutt._y)
 
 bool Coordinate::operator!=(Coordinate Other) const
 {
-  return !(this==Other);
+  return !(*this==Other);
   // if (_x != Other._x || _y!=Other._y)
   //   return true;
   // return false;

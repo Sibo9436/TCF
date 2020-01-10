@@ -34,6 +34,7 @@ public:
   void setNave(Nave);
   bool getRadar(int, int);
   bool setRadar(int,int);
+  bool setRadar(int x, int y,Flotta flo);
   void Greta();
   Flotta * & operator[](int) const;
 

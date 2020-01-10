@@ -201,6 +201,22 @@ bool Tabella::setRadar(int x, int y) //chiamato dopo un attacco, dichiara il suo
     return false;
   }
 }
+//RITORNA TEMPORANEAMENTE POI VEDREMO
+bool Tabella::setRadar(int x, int y,Flotta flo) //chiamato dopo un attacco, dichiara il suo risultato e aggiorna il radar dell'attaccante
+{
+  if (flo == Flotta::Ship)
+  {
+    // cout << "Colpito!\n";
+    _radar[y][x] = Radar::Hit;
+    return true;
+  }
+  else
+  {
+    // cout << "Mancato!\n";
+    _radar[y][x] = Radar::Miss;
+    return false;
+  }
+}
 
 
 void Tabella::Greta()

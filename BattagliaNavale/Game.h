@@ -6,7 +6,14 @@
 #include <iostream>
 
 
-class Game
+class AbstractGame
+{
+public:
+  virtual bool Generate() = 0;
+  virtual bool Start() = 0;
+  virtual bool Endgame() = 0;
+};
+class Game : public AbstractGame
 {
 public:
   Game();
@@ -16,23 +23,20 @@ public:
   bool Endgame();
 
 private:
-  Bot _player1;
-  Bot _player2;
-
-  Player *_p1 = &_player1;
-  Player *_p2 = &_player2;
+  Player * _player1;
+  Player * _player2;
 
 };
 
-class OnlineGame : public Game
+class OnlineGame : public AbstractGame
 {
 public:
   bool Generate();
   bool Start();
-  void Endgame();
+  bool Endgame();
 
 private:
-  Player _player;
+  Locale _player;
 };
 
 

@@ -23,13 +23,13 @@ Player::Player()
   _Plancia.createRadar();
 }
 
-void Player::Stats()
-{
-  std::cout << _nome << ":" << '\n';
-  std::cout << "\tNumero di colpi sparati: " << colpi_sparati<< '\n';
-  std::cout << "\tNumero di colpi a segno: " << colpi_a_segno<< '\n';
-  std::cout << "\tPrecisione: " << 100*(float)colpi_a_segno/(float)colpi_sparati<< "%\n\n\n";
-}
+// void Player::Stats()
+// {
+//   std::cout << _nome << ":" << '\n';
+//   std::cout << "\tNumero di colpi sparati: " << colpi_sparati<< '\n';
+//   std::cout << "\tNumero di colpi a segno: " << colpi_a_segno<< '\n';
+//   std::cout << "\tPrecisione: " << 100*(float)colpi_a_segno/(float)colpi_sparati<< "%\n\n\n";
+// }
 
 std::string Player::getName()
 {
@@ -176,7 +176,7 @@ void Human::Mozzo(int i, int lunghezza) //chiede le coordinate delle navi da cre
 }
 
 
-void Human::PrintRad() //stampa lo schermo di un giocatore senza la flotta
+void Player::PrintRad() //stampa lo schermo di un giocatore senza la flotta
 {
   std::cout << "\n\t\t\tCampo nemico\n\n";
   _Plancia.PrintRadar();
@@ -335,20 +335,20 @@ Nave Bot::setShips(int len, Coordinate coord){ //crea e pone le navi
     return setShips(len,coord);
 }
 
-void Bot::Mozzo(int i, int lunghezza) //chiede le coordinate delle navi da creare
-{
-  Coordinate A = random();
-  _navi[i] = setShips(lunghezza, A);
-  Print();
-
-}
 
 void Bot::Print() //stampa lo schermo di un giocatore
 {
   std::cout << "\n\t\t\tCampo nemico\n\n";
-  _Screen.PrintRadar();
+  // PrintRadar();
   std::cout << "\n\t\t\tLa tua Flotta\n\n";
   _Plancia.PrintFlotta();
+
+}
+void Bot::Mozzo(int i, int lunghezza) //chiede le coordinate delle navi da creare
+{
+  Coordinate A = random();
+  _navi[i] = setShips(lunghezza, A);
+  PrintFlo();
 
 }
 
@@ -376,7 +376,7 @@ void Bot::Attack(Player * Other) //dichiara un attacco
     int x = A.getX();
     int y = A.getY();
 
-    if (!_Screen.getRadar(x,y))
+    if (!Other->_Plancia.getRadar(x,y))
     {
       std::cout << "Quadrante già colpito -" << '\n';
       Attack(Other);
@@ -385,7 +385,7 @@ void Bot::Attack(Player * Other) //dichiara un attacco
     else
 
     {
-      if(_Screen.setRadar(x,y,Other->_Plancia[y][x])){
+      if(Other->_Plancia.setRadar(x,y)){
        this->targetAcquired=true;
        this->firstStrike = A;
        this->i = i_dist(mt);
@@ -393,7 +393,7 @@ void Bot::Attack(Player * Other) //dichiara un attacco
 
 
       colpi_sparati++;
-      Other->_Plancia.setRadar(x,y);
+      //Other->_Plancia.setRadar(x,y);
       Other->Sunk(x,y);
 
     }
@@ -411,7 +411,7 @@ void Bot::Attack(Player * Other) //dichiara un attacco
     int x = A.getX();
     int y = A.getY();
 
-    if (!_Screen.getRadar(x,y))
+    if (!Other->_Plancia.getRadar(x,y))
     {
       std::cout << "Quadrante già colpito in " << x << " " << y << '\n';
 
@@ -443,7 +443,7 @@ void Bot::Attack(Player * Other) //dichiara un attacco
     else
 
     {
-      if(_Screen.setRadar(x,y,Other->_Plancia[y][x])){
+      if(Other->_Plancia.setRadar(x,y)){
         std::cout << "screen setRadar" << "\n";
 
        this->target = this->isAcquired;
@@ -471,7 +471,7 @@ void Bot::Attack(Player * Other) //dichiara un attacco
 
       }
 
-      Other->_Plancia.setRadar(x,y);
+      //Other->_Plancia.setRadar(x,y);
       std::cout << "plancia setradar" << "\n";
       colpi_sparati++;
 
@@ -554,7 +554,7 @@ void Player::Stats()
 
 
 
-void Player::Server()
+void Locale::Server()
 {
   std::cout << "Inizializzazione server side" << '\n';
   int server_fd;
@@ -604,7 +604,7 @@ void Player::Server()
 
 
 }
-void Player::Client()
+void Locale::Client()
 {
   std::cout << "AAAAAAAAAAAAAA" << '\n';
   struct sockaddr_in serv_addr;
@@ -636,12 +636,12 @@ void Player::Client()
   _isClient = true;
 }
 
-void Player::Attack()
+void Locale::Attack()
 {
 
   Coordinate A;
   int valread;
-  if(!A.getFromPlayer())
+  if(!A.getFromPlayer(_Plancia.getN()))
   {
     std::cout << "Coordinate fuori range \n";
     Attack();
@@ -679,10 +679,11 @@ void Player::Attack()
     if(_Screen.setRadar(x,y,colpo))
       colpi_a_segno++;
     colpi_sparati++;
-    Print();
+    _Screen.PrintRadar();
+    PrintFlo();
   }
 }
-void Player::Down()
+void Locale::Down()
 {
   std::cout << "Turno del giocatore avverso" << '\n';
   Co subito;
@@ -700,9 +701,10 @@ void Player::Down()
   if (getContatore() == 0)
   {
     snd = -1;
-    send(_socket,&snd,sizeof(int),0);
-    return;
+    // send(_socket,&snd,sizeof(int),0);
+    // return;
   }
   send(_socket,&snd,sizeof(int),0);
-  Print();
+  _Screen.PrintRadar();
+  PrintFlo();
 }

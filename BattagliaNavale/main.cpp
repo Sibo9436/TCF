@@ -7,15 +7,29 @@
 
 int main()
 {
-  Game partita;
+
+
+  int scelta;
+  AbstractGame *partita;
+  do {
+    std::cout << "Vuoi giocare in single player(1) o in multiplayer online?(2)" << '\n';
+    std::cin >> scelta;
+    if (scelta == 1)
+    {
+      partita = new Game();
+    }else if ( scelta == 2)
+    {
+      partita = new OnlineGame();
+    }
+  } while(scelta != 1 && scelta != 2);
   bool again = false;
 
   do{
-    if(partita.Generate())
+    if(partita->Generate())
     {
-      if(partita.Start())
+      if(partita->Start())
       {
-        again = partita.Endgame();
+        again = partita->Endgame();
       }
     } else
     {

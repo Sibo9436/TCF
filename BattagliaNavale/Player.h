@@ -15,36 +15,29 @@ class Player
 public:
   Player();
   // void Connect();
-  void Server();
-  void Client();
-  void setName(std::string);
+
+  void setName(std::string)
   std::string getName();
-  Nave setShips(int, Coordinate);
-  bool Check(Coordinate,Coordinate);
-  void Mozzo(int, int);
+  // Nave setShips(int, Coordinate);
+  // bool Check(Coordinate,Coordinate);
+  // void Mozzo(int, int);
   void PrintRad();
   void PrintFlo();
-  void Attack(Player *);
-  bool Sunk(int, int);
-  void Print();
-  void Attack();
-  void Down();
-  void Attack(Player&);
-  void Riempimento();
-  int getContatore() const;
-  inline bool IsServer() {return _isServer;};
-  inline bool IsClient() {return _isClient;};
-  inline bool Won() {return _win;}
-  void Stats();
+  // void Attack(Player *);
+  // bool Sunk(int, int);
+  // void Print();
 
-private:
+  void Attack(Player&);
+  // void Riempimento();
+  // int getContatore() const;
+
+
   bool Check(Coordinate, Coordinate);
-  std::string getName();
   void Stats();
 
   virtual Nave setShips(int, Coordinate) =0;
   virtual void Mozzo(int, int) =0;
-  virtual void Print() =0;
+  // virtual void Print() =0;
   virtual void Attack(Player *) =0;
   virtual bool Sunk(int, int) =0;
   virtual void Riempimento() =0;
@@ -77,7 +70,7 @@ class Human: public Player
 
     Nave setShips(int, Coordinate);
     void Mozzo(int, int);
-    void Print();
+    // void Print();
     void Attack(Player *);
     bool Sunk(int, int);
     void Riempimento();
@@ -110,5 +103,19 @@ private:
   int j=0;
 
 };
+
+class Locale : public Human
+{
+public:
+  void Server();
+  void Client();
+  inline bool IsServer() {return _isServer;};
+  inline bool IsClient() {return _isClient;};
+  inline bool Won() {return _win;}
+  void Attack();
+  void Down();
+};
+//
+
 
 #endif
