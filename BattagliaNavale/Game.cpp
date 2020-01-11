@@ -28,6 +28,7 @@ bool Game::Generate() //genera il nome dei giocatori e le loro plancie
     if (scelta==1)
     {
       _player2 = new Bot();
+
     }else if (scelta == 2)
     {
       _player2 = new Human();
@@ -63,15 +64,18 @@ bool Game::Start() //contiene il game loop
     std::cout << "Premi un tasto qualsiasi e passa il turno a " << _player2->getName() << '\n';
     std::cin >> a;
     std::cin.ignore(10000,'\n');
-    std::cout << std::string(100,'\n'); //"aggiorna" schermo
-    std::cout << _player2->getName()<< " premi un tasto qualsiasi per iniziare il tuo turno" << '\n';
-    std::cin >> a;
-    std::cin.ignore(10000,'\n');
-    std::cout << std::string(100,'\n'); //"aggiorna" schermo
-    Print(_player2, _player1);
+    if (!_player2->isBot())
+    {
+      std::cout << std::string(100,'\n'); //"aggiorna" schermo
+      std::cout << _player2->getName()<< " premi un tasto qualsiasi per iniziare il tuo turno" << '\n';
+      std::cin >> a;
+      std::cin.ignore(10000,'\n');
+      std::cout << std::string(100,'\n'); //"aggiorna" schermo
+      Print(_player2, _player1);
+    }
     _player2->Attack(_player1);
-    Print(_player2, _player1);
-
+    if (!_player2->isBot())
+      Print(_player2, _player1);
     if(_player1->getContatore() == 0)
     {
       std::cout << "Ha vinto " << _player2->getName() << "!\n";

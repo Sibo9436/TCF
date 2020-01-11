@@ -348,7 +348,7 @@ void Bot::Mozzo(int i, int lunghezza) //chiede le coordinate delle navi da crear
 {
   Coordinate A = random();
   _navi[i] = setShips(lunghezza, A);
-  PrintFlo();
+  //PrintFlo();
 
 }
 

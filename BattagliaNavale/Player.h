@@ -14,9 +14,11 @@ class Player
   friend class Bot;
 public:
   Player();
+  virtual void setName(std::string)=0;
+  virtual bool isBot()=0;
   // void Connect();
 
-  void setName(std::string)
+  //void setName(std::string);
   std::string getName();
   // Nave setShips(int, Coordinate);
   // bool Check(Coordinate,Coordinate);
@@ -75,6 +77,11 @@ class Human: public Player
     bool Sunk(int, int);
     void Riempimento();
     int getContatore() const;
+    inline bool isBot(){return _isBot;}
+
+
+  private:
+    bool _isBot=false;
 
 
 };
@@ -91,6 +98,7 @@ public:
   bool Sunk(int, int);
   void Riempimento();
   int getContatore() const;
+  inline bool isBot(){return _isBot;}
 
 
 private:
@@ -101,6 +109,8 @@ private:
   Coordinate targetDirection[4] = {Coordinate(0,1),Coordinate(1,0),Coordinate(0,-1),Coordinate(-1,0)};
   int i=0;
   int j=0;
+  bool _isBot=true;
+
 
 };
 
