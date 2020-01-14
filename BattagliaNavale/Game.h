@@ -13,6 +13,7 @@ public:
   virtual bool Start() = 0;
   virtual bool Endgame() = 0;
 };
+
 class Game : public AbstractGame
 {
 public:
@@ -23,8 +24,10 @@ public:
   bool Endgame();
 
 private:
-  Player * _player1;
-  Player * _player2;
+  Player ** _players = new Player*[2];
+  int _counter = 0;
+  int _focus = 0;
+  int _unfocused;
 
 };
 

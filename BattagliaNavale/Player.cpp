@@ -394,7 +394,7 @@ void Bot::Attack(Player * Other) //dichiara un attacco
 
       colpi_sparati++;
       //Other->_Plancia.setRadar(x,y);
-      Other->Sunk(x,y);
+
 
     }
   }
@@ -454,6 +454,7 @@ void Bot::Attack(Player * Other) //dichiara un attacco
        {
          this->targetAcquired=false;
          std::cout << "sunk" << "\n";
+         navi_affondate++;
        };
       }
       else
@@ -494,6 +495,7 @@ bool Bot::Sunk(int x, int y) // Dichiara se l'attacco ha Affondato una nave
     if(_navi[i].Hit(A))
     {
       std::cout << "Affondata nave di "<<_nome << '\n';
+      _funda = true;
 
       for (int j = 0; j < _navi[i].getlunghezza(); j++)
       {
@@ -501,9 +503,9 @@ bool Bot::Sunk(int x, int y) // Dichiara se l'attacco ha Affondato una nave
         {
           for(int k = (_navi[i])[j].getX()-1; k <= (_navi[i])[j].getX()+1; k++)
           {
-            if((h > -1) && (h < 10) && (k > -1) && (k < 10) && (_Plancia[h][k] != Flotta::Ship))
+            if((h > -1) && (h < _Plancia.getN()) && (k > -1) && (k < _Plancia.getN()) && (_Plancia.getRadar(k,h)))
             {
-              std::cout << "se funzionassi metterei @ in " << h << " " << k << "\n";
+              _Plancia.setRadar(k,h);
             }
           }
         }

@@ -1,5 +1,5 @@
 # TCF
-Repo del gruppo DDoS 
+Repo del gruppo DDoS
 ## Progetto 1 - Battaglia Navale in C++
 Stiamo a fare na battaglia navale
 Cioè forse è finita
@@ -15,6 +15,8 @@ l'eseguibile battaglia, da chiamare con `./battaglia`.
 - [x] Aggiungere istruzioni a inizio partita
 - [x] Aggiungere congratulazioni a fine partita
 - [x] Giocare una partita intera
+- [ ] Rimuovere messaggi inutili come "sto funzionando"
+
 ## Progetto 2 - Gravity Wars in Java
 
 
@@ -22,5 +24,3 @@ l'eseguibile battaglia, da chiamare con `./battaglia`.
 - [ ] Imparare a programmare in Java
 - [ ] Imparare a usare le librerie grafiche di Java
 - [ ] Success
-
-
