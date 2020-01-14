@@ -527,21 +527,21 @@ int Bot::getContatore() const //restituisce il numero delle navi sopravvissute
 void Bot::Riempimento() //Riempie la plancia chiamando mozzo nNavi volte
 {
   std::cout << std::string(100,'\n');
-  std::cout << _nome << ", inizia la fase di creazione..."<< '\n';
-  std::cout << "Inserisci la tua portaerei" << '\n';
+  // std::cout << _nome << ", inizia la fase di creazione..."<< '\n';
+  // std::cout << "Inserisci la tua portaerei" << '\n';
   Mozzo(0,5);
-  std::cout << "Inserisci la tua corazzata" << '\n';
+  // std::cout << "Inserisci la tua corazzata" << '\n';
   Mozzo(1,4);
-  std::cout << "Inserisci i tuoi incrociatori" << '\n';
+  // std::cout << "Inserisci i tuoi incrociatori" << '\n';
   Mozzo(2,3);
   Mozzo(3,3);
-  std::cout << "Inserisci il tuo cacciatorpediniere" << '\n';
+  // std::cout << "Inserisci il tuo cacciatorpediniere" << '\n';
   Mozzo(4,2);
   std::string a;
-  std::cout << "Premi un tasto qualsiasi" << '\n';
-  std::cin >> a;
+  // std::cout << "Premi un tasto qualsiasi" << '\n';
+  // std::cin >> a;
   _Plancia.Greta();
-  std::cout << std::string(100,'\n');
+  // std::cout << std::string(100,'\n');
 }
 void Player::Stats()
 {
