@@ -571,7 +571,7 @@ void Locale::Server()
 }
 void Locale::Client()
 {
-  _Scren.createRadar();
+  _Screen.createRadar();
   std::cout << "AAAAAAAAAAAAAA" << '\n';
   struct sockaddr_in serv_addr;
   char buffer[1024] = {0};
