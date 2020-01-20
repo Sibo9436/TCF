@@ -520,6 +520,7 @@ void Player::Stats()
 
 void Locale::Server()
 {
+  _Scren.createRadar();
   std::cout << "Inizializzazione server side" << '\n';
   int server_fd;
   struct sockaddr_in address;
@@ -570,6 +571,7 @@ void Locale::Server()
 }
 void Locale::Client()
 {
+  _Scren.createRadar();
   std::cout << "AAAAAAAAAAAAAA" << '\n';
   struct sockaddr_in serv_addr;
   char buffer[1024] = {0};
