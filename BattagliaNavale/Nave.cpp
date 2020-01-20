@@ -46,7 +46,7 @@ bool  Nave::Hit(Coordinate A)
       if (_contatore==0)
       {
         _affondato = true;
-        std::cout << "Affondato!" << '\n';
+        // std::cout << "Affondato!" << '\n';
         return true;
       }
     }

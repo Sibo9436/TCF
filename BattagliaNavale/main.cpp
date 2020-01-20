@@ -7,12 +7,12 @@
 
 int main()
 {
-
-
   int scelta;
   AbstractGame *partita;
   do {
-    std::cout << "Vuoi giocare in single player(1) o in multiplayer online?(2)" << '\n';
+    std::cout << std::string(100,'\n'); //"aggiorna" schermo
+    std::cout << "Vuoi giocare solo su questo computer(1) o online?(2)" << '\n';
+    std::cout << std::string(25,'\n'); //"aggiorna" schermo
     std::cin >> scelta;
     if (scelta == 1)
     {

@@ -32,7 +32,7 @@ public:
   void Attack(Player&);
   // void Riempimento();
   // int getContatore() const;
-
+  bool Sunk(int, int);
 
   bool Check(Coordinate, Coordinate);
   void Stats();
@@ -41,7 +41,6 @@ public:
   virtual void Mozzo(int, int) =0;
   // virtual void Print() =0;
   virtual void Attack(Player *) =0;
-  virtual bool Sunk(int, int) =0;
   virtual void Riempimento() =0;
   virtual int getContatore() const =0;
 
@@ -74,7 +73,7 @@ class Human: public Player
     void Mozzo(int, int);
     // void Print();
     void Attack(Player *);
-    bool Sunk(int, int);
+//    bool Sunk(int, int);
     void Riempimento();
     int getContatore() const;
     inline bool isBot(){return _isBot;}
@@ -95,7 +94,7 @@ public:
   void Mozzo(int, int);
   void Print();
   void Attack(Player *);
-  bool Sunk(int, int);
+  //bool Sunk(int, int);
   void Riempimento();
   int getContatore() const;
   inline bool isBot(){return _isBot;}

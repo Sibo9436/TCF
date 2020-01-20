@@ -15,6 +15,8 @@
   std::mt19937 mt(rd());
   std::uniform_int_distribution<int> dist(0,7);
   std::uniform_int_distribution<int> i_dist(0,3);
+  std::uniform_int_distribution<int> nameletters_dist(0,26);
+  std::uniform_int_distribution<int> namenumbers_dist(0,9);
 
 //---------------------------------------------------------------Comuni a player
 Player::Player()
@@ -108,25 +110,25 @@ Nave Human::setShips(int len, Coordinate coord){ //crea e pone le navi
     }
     if (u)
     {
-      std::cout << "Premi u per mettere la nave in ";
+      std::cout << "Premi u per posizionare l'altra estremità della nave in ";
       U.print();
       std::cout << "\n";
     }
     if (d)
     {
-      std::cout << "Premi d per mettere la nave in ";
+      std::cout << "Premi d per posizionare l'altra estremità della nave in ";
       D.print();
       std::cout << "\n";
     }
     if (le)
     {
-      std::cout << "Premi l per mettere la nave in ";
+      std::cout << "Premi l per posizionare l'altra estremità della nave in ";
       L.print();
       std::cout << "\n";
     }
     if (r)
     {
-      std::cout << "Premi r per mettere la nave in ";
+      std::cout << "Premi r per posizionare l'altra estremità della nave in ";
       R.print();
       std::cout << "\n";
     }
@@ -210,31 +212,32 @@ void Human::Attack(Player * Other) //dichiara un attacco
     std::cout << std::string(100,'\n'); //"aggiorna" schermo
     if(Other->_Plancia.setRadar(x,y)) //Possibilità di fare overload di setradar per non prendere necessariamente flotta
       {
-        std::cout << "Colpito!\n";
         colpi_a_segno++;
-      }
-      else
+        if(Other->Sunk(x,y))
+        {
+          std::cout << "Colpita e affondata nave di " << Other->getName() << "!\n";
+          navi_affondate++;
+        }else
+        {
+          std::cout << "Colpito!\n";
+        }
+      }else
       {
         std::cout << "Mancato!\n";
       }
-    if(Other->Sunk(x,y))
-    {
-      navi_affondate++;
-    }
-    //Spostiamo Other._Plancia.setRadar in Hit()?
     colpi_sparati++;
   }
 }
 
 //Eliminiamo Player::Hit e mettiamo direttamente il for in Attack?
-bool Human::Sunk(int x, int y) // Dichiara se l'attacco ha Affondato una nave
+bool Player::Sunk(int x, int y) // Dichiara se l'attacco ha Affondato una nave
 {
   Coordinate A(x,y);
   for (int i = 0; i < _n; i++)
   {
     if(_navi[i].Hit(A))
     {
-      std::cout << "Affondata nave di "<<_nome << '\n';
+      // std::cout << "Affondata nave di "<<_nome << '\n';
       _funda = true;
 
       for (int j = 0; j < _navi[i].getlunghezza(); j++)
@@ -266,18 +269,21 @@ int Human::getContatore() const //restituisce il numero delle navi sopravvissute
 void Human::Riempimento() //Riempie la plancia chiamando mozzo nNavi volte
 {
   std::cout << std::string(100,'\n');
-  std::cout << _nome << ", inizia la fase di creazione..."<< '\n';
-  std::cout << "Inserisci la tua portaerei" << '\n';
+  PrintFlo();
+  std::cout << std::string(12,'\n');
+  std::cout << _nome << ", inizia la fase di creazione...\n"<< '\n';
+  std::cout << "Posiziona un'estremità della tua portaerei" << '\n';
   Mozzo(0,5);
-  std::cout << "Inserisci la tua corazzata" << '\n';
+  std::cout << "Posiziona un'estremità della tua corazzata" << '\n';
   Mozzo(1,4);
-  std::cout << "Inserisci i tuoi incrociatori" << '\n';
+  std::cout << "Posiziona un'estremità del tuo primo incrociatore" << '\n';
   Mozzo(2,3);
+  std::cout << "Posiziona un'estremità del tuo secondo incrociatore" << '\n';
   Mozzo(3,3);
-  std::cout << "Inserisci il tuo cacciatorpediniere" << '\n';
+  std::cout << "Posiziona un'estremità del tuo cacciatorpediniere" << '\n';
   Mozzo(4,2);
   std::string a;
-  std::cout << "Premi un tasto qualsiasi" << '\n';
+  std::cout << "Premi un tasto qualsiasi e poi invio\n" << '\n';
   std::cin >> a;
   _Plancia.Greta();
   std::cout << std::string(100,'\n');
@@ -286,8 +292,9 @@ void Human::Riempimento() //Riempie la plancia chiamando mozzo nNavi volte
 //---------------------------------------------------------------------Solo CPU
 void Bot::setName(std::string Nome)
 {
-  _nome = "R2D2";
+  _nome = Nome;
 }
+
 
 Nave Bot::setShips(int len, Coordinate coord){ //crea e pone le navi
 
@@ -366,45 +373,46 @@ Coordinate Bot::random()
 void Bot::Attack(Player * Other) //dichiara un attacco
 {
   Coordinate A;
-  std::cout<< " target acquired: " << this->targetAcquired << "\n";
+  int x, y;
+  // std::cout<< " target acquired: " << this->targetAcquired << "\n";
   // "target not acquired"
-  if(!this->targetAcquired){
+  if(!this->targetAcquired)
+  {
     //srand(time(NULL));
     A = random();
     this->target = A;
 
-    int x = A.getX();
-    int y = A.getY();
+    x = A.getX();
+    y = A.getY();
 
     if (!Other->_Plancia.getRadar(x,y))
     {
-      std::cout << "Quadrante già colpito -" << '\n';
+      // std::cout << "Quadrante già colpito -" << '\n';
       Attack(Other);
-    }
-
-    else
-
+    }else
     {
-      if(Other->_Plancia.setRadar(x,y)){
-       this->targetAcquired=true;
-       this->firstStrike = A;
-       this->i = i_dist(mt);
-      }; //Possibilità di fare overload di setradar per non prendere necessariamente flotta
-
-
+      std::cout << "\n\n" << this->_nome << " attacca in ";
+      A.print();
+      std::cout <<  "...\n\n";
+      if(Other->_Plancia.setRadar(x,y))
+      {
+        std::cout << "Colpito!\n";
+        this->targetAcquired=true;
+        this->firstStrike = A;
+        this->i = i_dist(mt);
+        Other->Sunk(x,y);
+        colpi_a_segno ++;
+      }else
+      {
+        std::cout << "Mancato!\n";
+      }
+       //Possibilità di fare overload di setradar per non prendere necessariamente flotta
       colpi_sparati++;
       //Other->_Plancia.setRadar(x,y);
-
-
     }
-  }
-
-  else
-
-  {
+  }else if(this->targetAcquired)
 // "target acquired"
-  if(this->targetAcquired){
-
+  {
     this->isAcquired = this->target+this->targetDirection[this->i];
     A=this->isAcquired;
 
@@ -413,111 +421,74 @@ void Bot::Attack(Player * Other) //dichiara un attacco
 
     if (!Other->_Plancia.getRadar(x,y))
     {
-      std::cout << "Quadrante già colpito in " << x << " " << y << '\n';
+      // std::cout << "Quadrante già colpito in " << x << " " << y << '\n';
 
-      if(this->target==this->firstStrike){
-        std::cout << "target == firstStrike" << "\n";
-        std::cout << "i= " << i << " A: " << "\n";
+      if(this->target==this->firstStrike)
+      {
+        // std::cout << "target == firstStrike" << "\n";
+        // std::cout << "i= " << i << " A: " << "\n";
         this->i = (i+1)%4;
-        std::cout << "i= " << i << " A: " << "\n";
-        A.print();
-        std::cout<< "\n";
+        // std::cout << "i= " << i << " A: " << "\n";
+        // A.print();
+        // std::cout<< "\n";
       }
 
-      if(this->target!=this->firstStrike){
+      if(this->target!=this->firstStrike)
+      {
         this->target=this->firstStrike;
         this->i = (i+2)%4;
-        std::cout << "target != firstStrike" << "\n";
-        std::cout << "i= " << i << " A: " << "\n";
-        A.print();
-        std::cout<< "\n";
-
+        // std::cout << "target != firstStrike" << "\n";
+        // std::cout << "i= " << i << " A: " << "\n";
+        // A.print();
+        // std::cout<< "\n";
       }
-
       //this->target=this->firstStrike;
-
-      std::cout << "attack other 450" << "\n";
+      // std::cout << "attack other 450" << "\n";
       Attack(Other);
-    }
-
-    else
-
+    }else
     {
-      if(Other->_Plancia.setRadar(x,y)){
-        std::cout << "screen setRadar" << "\n";
+      std::cout << "\n\n" << this->_nome << " attacca in ";
+      A.print();
+      std::cout <<  "...\n\n";
+      if(Other->_Plancia.setRadar(x,y))
+      {
 
-       this->target = this->isAcquired;
+        this->target = this->isAcquired;
 
-       colpi_a_segno++;
+        colpi_a_segno++;
 
-       if(Other->Sunk(x,y))
-       {
+        if(Other->Sunk(x,y))
+        {
          this->targetAcquired=false;
-         std::cout << "sunk" << "\n";
+         std::cout << "Colpita e affondata nave di " << Other->getName() << "!\n";
          navi_affondate++;
-       };
+       }else
+       {
+         std::cout << "Colpito!\n";
+       }
       }
       else
       {
-        if(this->target==this->firstStrike){
-          std::cout << "target == firstStrike" << "\n";
+        std::cout << "Mancato!\n";
+        if(this->target==this->firstStrike)
+        {
+          // std::cout << "target == firstStrike" << "\n";
           this->i = (i+1)%4;
         }
-        if(this->target!=this->firstStrike){
+        if(this->target!=this->firstStrike)
+        {
           this->target=this->firstStrike;
-          std::cout << "target != firstStrike" << "\n";
+          // std::cout << "target != firstStrike" << "\n";
 
           this->i = (i+2)%4;
         }
-
       }
-
       //Other->_Plancia.setRadar(x,y);
-      std::cout << "plancia setradar" << "\n";
+      // std::cout << "plancia setradar" << "\n";
       colpi_sparati++;
-
-
-  }
-
-    //Spostiamo Other._Plancia.setRadar in Hit()?
-
-  }
- }
-}
-
-
-
-bool Bot::Sunk(int x, int y) // Dichiara se l'attacco ha Affondato una nave
-{
-  Coordinate A(x,y);
-  for (int i = 0; i < _n; i++)
-  {
-    if(_navi[i].Hit(A))
-    {
-      std::cout << "Affondata nave di "<<_nome << '\n';
-      _funda = true;
-
-      for (int j = 0; j < _navi[i].getlunghezza(); j++)
-      {
-        for(int h = (_navi[i])[j].getY()-1; h <= (_navi[i])[j].getY()+1; h++)
-        {
-          for(int k = (_navi[i])[j].getX()-1; k <= (_navi[i])[j].getX()+1; k++)
-          {
-            if((h > -1) && (h < _Plancia.getN()) && (k > -1) && (k < _Plancia.getN()) && (_Plancia.getRadar(k,h)))
-            {
-              _Plancia.setRadar(k,h);
-            }
-          }
-        }
-      }
-      _contatore--;
-      return true;
     }
   }
-  return false;
 }
-
-
 
 int Bot::getContatore() const //restituisce il numero delle navi sopravvissute
 {
@@ -527,27 +498,18 @@ int Bot::getContatore() const //restituisce il numero delle navi sopravvissute
 void Bot::Riempimento() //Riempie la plancia chiamando mozzo nNavi volte
 {
   std::cout << std::string(100,'\n');
-  // std::cout << _nome << ", inizia la fase di creazione..."<< '\n';
-  // std::cout << "Inserisci la tua portaerei" << '\n';
   Mozzo(0,5);
-  // std::cout << "Inserisci la tua corazzata" << '\n';
   Mozzo(1,4);
-  // std::cout << "Inserisci i tuoi incrociatori" << '\n';
   Mozzo(2,3);
   Mozzo(3,3);
-  // std::cout << "Inserisci il tuo cacciatorpediniere" << '\n';
   Mozzo(4,2);
-  std::string a;
-  // std::cout << "Premi un tasto qualsiasi" << '\n';
-  // std::cin >> a;
   _Plancia.Greta();
-  // std::cout << std::string(100,'\n');
 }
 void Player::Stats()
 {
   std::cout << _nome << ":" << '\n';
   std::cout << "\tNumero di colpi sparati:\t\t" << colpi_sparati << '\n';
-  std::cout << "\tNumero di colpi a segno:\t\t " << colpi_a_segno << '\n';
+  std::cout << "\tNumero di colpi a segno:\t\t" << colpi_a_segno << '\n';
   std::cout << "\tPrecisione:\t\t\t\t" << 100*(float)colpi_a_segno/(float)colpi_sparati << "%\n\n";
   std::cout << "\tNumero di navi nemiche affondate:\t" << navi_affondate << '\n';
   std::cout << "\tNumero di navi superstiti:\t\t" << _contatore << '\n';

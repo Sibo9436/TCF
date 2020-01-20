@@ -21,21 +21,31 @@ bool Game::Generate() //genera il nome dei giocatori e le loro plancie
   _players[0] = new Human();
 
   std::string nome;
+  std::cout << std::string(100,'\n'); //"aggiorna" schermo
   std::cout << "Giocatore 1 inserisci il tuo nome... " << '\n';
+  std::cout << std::string(25,'\n'); //"aggiorna" schermo
   std::cin >> nome;
   _players[0]->setName(nome);
   int scelta;
   do {
+    std::cout << std::string(100,'\n'); //"aggiorna" schermo
     std::cout << "Giocherai da solo(1) o in compagnia(2)?" << '\n';
+    std::cout << std::string(25,'\n'); //"aggiorna" schermo
     std::cin >> scelta;
     if (scelta==1)
     {
       _players[1] = new Bot();
-
+      std::cout << std::string(100,'\n'); //"aggiorna" schermo
+      std::cout << "Battezza il tuo avversario: " << '\n';
+      std::cout << std::string(25,'\n'); //"aggiorna" schermo
+      std::cin >> nome;
+      _players[1]->setName(nome);
     }else if (scelta == 2)
     {
       _players[1] = new Human();
+      std::cout << std::string(100,'\n'); //"aggiorna" schermo
       std::cout << "Giocatore 2 inserisci il tuo nome... " << '\n';
+      std::cout << std::string(25,'\n'); //"aggiorna" schermo
       std::cin >> nome;
       _players[1]->setName(nome);
     }else if(scelta == 0)
@@ -46,73 +56,50 @@ bool Game::Generate() //genera il nome dei giocatori e le loro plancie
   } while(scelta != 1 && scelta != 2 && scelta != 0);
   _players[0]->Riempimento();
   _players[1]->Riempimento();
+  std::cout << std::string(100,'\n'); //"aggiorna" schermo
   return true;
 }
 
 bool Game::Start() //contiene il game loop
 {
-
   std::string a;
   while(true)
   {
     _focus = _counter%2;
     _unfocused = (_counter + 1)%2;
-//     std::cout << _players[_focus]->getName()<< " premi un tasto qualsiasi per iniziare il tuo turno" << '\n';
-//     std::cin >> a;
-//     std::cin.ignore(10000,'\n');
-//     std::cout << std::string(100,'\n'); //"aggiorna" schermo
-//     Print(_players[_focus], _players[_unfocused]);
-//     _players[_focus]->Attack(_players[_unfocused]);
-//     Print(_players[_focus], _players[_unfocused]);
-// //NON CE N'È BISOGNO
-// //BASTA USARE FOCUS
-//     for (Player i : _players)
-//     {
-//       if (i->getContatore() == 0)
-//       {
-//         std::cout << "Ha vinto " << i->getName() << "!\n";
-//         return true;
-//       }
-//     }
-//     std::cout << "Premi un tasto qualsiasi e passa il turno a " << _players[_unfocused]->getName() << '\n';
-//     std::cin >> a;
-//     std::cin.ignore(10000,'\n');
+
     if (!_players[_focus]->isBot())
     {
-      std::cout << std::string(100,'\n'); //"aggiorna" schermo
       if (!_players[_unfocused]->isBot())
       {
-        std::cout << _players[_focus]->getName()<< " premi un tasto qualsiasi per iniziare il tuo turno" << '\n';
+        std::cout << std::string(100,'\n'); //"aggiorna" schermo
+        std::cout << _players[_focus]->getName()<< " premi un tasto qualsiasi e poi invio per iniziare il tuo turno" << '\n';
+        std::cout << std::string(25,'\n'); //"aggiorna" schermo
         std::cin >> a;
         std::cin.ignore(10000,'\n');
+        std::cout << std::string(100,'\n'); //"aggiorna" schermo
       }
-      std::cout << std::string(100,'\n'); //"aggiorna" schermo
       Print(_players[_focus], _players[_unfocused]);
     }
     _players[_focus]->Attack(_players[_unfocused]);
-    if (!_players[_focus]->isBot())
-    {
-      Print(_players[_focus], _players[_unfocused]);
-
-      if (!_players[_unfocused]->isBot())
-      {
-        std::cout << "Premi un tasto qualsiasi e passa il turno a " << _players[_unfocused]->getName() << '\n';
-        std::cin >> a;
-        std::cin.ignore(10000,'\n');
-      }
-      std::cout << std::string(100,'\n'); //"aggiorna" schermo
-
-    }
     if(_players[_unfocused]->getContatore() == 0)
     {
-      std::cout << "Ha vinto " << _players[1]->getName() << "!\n";
+      Print(_players[_focus], _players[_unfocused]);
+      std::cout << "Ha vinto " << _players[_focus]->getName() << "!\n";
       return true;
     }
-    //std::cin >> a;
-    std::cout << std::string(1,'\n'); //"aggiorna" schermo
-    //std::cin.ignore(10000,'\n');
+    if (!_players[_focus]->isBot())
+    {
+      if (!_players[_unfocused]->isBot())
+      {
+        Print(_players[_focus], _players[_unfocused]);
+        std::cout << "Premi un tasto qualsiasi e poi invio e passa il turno a " << _players[_unfocused]->getName() << '\n';
+        std::cin >> a;
+        std::cin.ignore(10000,'\n');
+        std::cout << std::string(100,'\n'); //"aggiorna" schermo
+      }
+    }
     _counter++;
-
   }
   return false;
 }
@@ -130,7 +117,7 @@ bool Game::Endgame()//ancora niente
   std::string a;
   char go;
 
-  std::cout << "\nPremi un tasto qualsiasi per terminare la partita\n";
+  std::cout << "\nPremi un tasto qualsiasi e poi invio per terminare la partita\n";
   std::cin >> a;
   std::cin.ignore(10000,'\n');
   std::cout << std::string(100,'\n'); //"aggiorna" schermo
@@ -148,7 +135,8 @@ bool Game::Endgame()//ancora niente
 
   if(go=='y')
   {
-    std::cout << "\t\tD'accordo!\n\n\tAllora premi un tasto qualsiasi per ricominciare\n";
+    std::cout << "\t\tD'accordo!\n\n\tAllora premi un tasto qualsiasi e poi invio per ricominciare\n";
+    std::cout << std::string(25,'\n'); //"aggiorna" schermo
     std::cin >> a;
     std::cin.ignore(10000,'\n');
     std::cout << std::string(100,'\n'); //"aggiorna" schermo
@@ -157,7 +145,7 @@ bool Game::Endgame()//ancora niente
 
   std::cout << "Grazie per avere giocato al nostro gioco!\n" << '\n';
   std::cout << "Autori (in ordine di altezza): \n\tDamiano Cabiati\n\tAndrea Sibona\n\tDaniel Siciliano\n" << '\n';
-  std::cout << "Si ringraziano inoltre per il loro supporto e per il playtesting: \n\tRiccardo Riente, Marco Mosagna, Lidia Albera e Paolo Maria Oreste Carlo Cabiati" << '\n';
+  std::cout << "Si ringraziano inoltre per il loro supporto e per il playtesting: \n\tRiccardo Riente, Marco Mosagna, Lidia Albera e Michele Risino aka Toras" << '\n';
   std::cout << std::string(25,'\n'); //"aggiorna" schermo
   return false;
 }
@@ -221,7 +209,7 @@ bool OnlineGame::Endgame()
   std::string a;
   char go;
 
-  std::cout << "\nPremi un tasto qualsiasi per terminare la partita\n";
+  std::cout << "\nPremi un tasto qualsiasi e poi invio per terminare la partita\n";
   std::cin >> a;
   std::cin.ignore(10000,'\n');
   std::cout << std::string(100,'\n'); //"aggiorna" schermo
@@ -237,7 +225,8 @@ bool OnlineGame::Endgame()
 
   if(go=='y')
   {
-    std::cout << "\t\tD'accordo!\n\n\tAllora premi un tasto qualsiasi per ricominciare\n";
+    std::cout << "\t\tD'accordo!\n\n\tAllora premi un tasto qualsiasi e poi invio per ricominciare\n";
+    std::cout << std::string(25,'\n'); //"aggiorna" schermo
     std::cin >> a;
     std::cin.ignore(10000,'\n');
     std::cout << std::string(100,'\n'); //"aggiorna" schermo
