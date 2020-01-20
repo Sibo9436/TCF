@@ -655,7 +655,8 @@ void Locale::Down()
   Co subito;
   int valread = read(_socket,&subito, sizeof(subito));
   int snd;
-  std::cout << subito._x << "," << subito._y << '\n';
+  Coordinate Colpo(subito);
+  Colpo.Print();
   _Plancia.setRadar(subito._x,subito._y);
   Sunk(subito._x,subito._y);
   snd = (_Plancia[subito._y][subito._x]==Flotta::Ship)? 1 : 0;
