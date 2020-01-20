@@ -51,7 +51,6 @@ bool  Nave::Hit(Coordinate A)
       }
     }
   }
-
   return false;
 }
 

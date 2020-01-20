@@ -489,6 +489,7 @@ void Bot::Attack(Player * Other) //dichiara un attacco
 
 bool Bot::Sunk(int x, int y) // Dichiara se l'attacco ha Affondato una nave
 {
+  std::cout << "AAAAAAAAAAAAAAAAAA" << '\n';
   Coordinate A(x,y);
   for (int i = 0; i < _n; i++)
   {
