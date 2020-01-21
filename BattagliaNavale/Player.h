@@ -39,7 +39,7 @@ protected:
   int colpi_sparati=0;
   int colpi_a_segno=0;
   int navi_affondate=0;
-  bool _funda = false;
+  Nave _funda;
 
   std::string _nome;
 
@@ -70,7 +70,6 @@ public:
   void Mozzo(int, int);
   void Print();
   void Attack(Player *);
-  //bool Sunk(int, int);
   void Riempimento();
   int getContatore() const;
   inline bool isBot(){return _isBot;}
@@ -93,6 +92,7 @@ public:
   void PrintRad();
   bool Server();
   bool Client();
+  void sunk(Nave);
   inline bool IsServer() {return _isServer;};
   inline bool IsClient() {return _isClient;};
   inline bool Won() {return _win;}

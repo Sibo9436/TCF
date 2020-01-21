@@ -249,7 +249,7 @@ bool Player::Sunk(int x, int y) // Dichiara se l'attacco ha Affondato una nave
     if(_navi[i].Hit(A))
     {
       // std::cout << "Affondata nave di "<<_nome << '\n';
-      _funda = true;
+      _funda = _navi[i];
 
       for (int j = 0; j < _navi[i].getlunghezza(); j++)
       {
@@ -269,6 +269,23 @@ bool Player::Sunk(int x, int y) // Dichiara se l'attacco ha Affondato una nave
     }
   }
   return false;
+}
+
+void Locale::sunk(Nave relitto)
+{
+  for (int j = 0; j < relitto.getlunghezza(); j++)
+  {
+    for(int h = relitto[j].getY()-1; h <= relitto[j].getY()+1; h++)
+    {
+      for(int k = relitto[j].getX()-1; k <= relitto[j].getX()+1; k++)
+      {
+        if((h > -1) && (h < _Screen.getN()) && (k > -1) && (k < _Screen.getN()) && (_Screen.getRadar(k,h)))
+        {
+          _Screen.setRadar(k, h, Flotta::Sea);
+        }
+      }
+    }
+  }
 }
 
 
@@ -587,7 +604,6 @@ bool Locale::Server()
 bool Locale::Client()
 {
   _Screen.createRadar();
-  // std::cout << "AAAAAAAAAAAAAA" << '\n';
   struct sockaddr_in serv_addr;
   char buffer[1024] = {0};
   char* indirizzo = new char[15];
@@ -651,6 +667,11 @@ void Locale::Attack()
       if (result == 2 || result == -1)
       {
         std::cout << "Colpito e affondato!\n" << '\n';
+        Co inizio, fine;
+        read(_socket, &inizio, sizeof(inizio));
+        read(_socket, &fine, sizeof(fine));
+        Nave relitto(inizio, fine);
+        sunk(relitto);
         navi_affondate++;
       }else if (result == 1)
       {
@@ -698,18 +719,18 @@ void Locale::Down()
     std::cout << "Mancato!\n\n";
     snd = 0;
   }
-  // snd = (_Plancia[subito._y][subito._x]==Flotta::Ship)? 1 : 0;
-  // if (_funda)
-  // {
-  //   snd = 2;
-  //   _funda = false;
-  // }
-  //
   if (getContatore() == 0)
   {
     snd = -1;
-    // send(_socket,&snd,sizeof(int),0);
-    // return;
   }
   send(_socket,&snd,sizeof(int),0);
+  if (snd == 2 || snd == -1)
+  {
+    Coordinate prua = _funda[0];
+    Coordinate poppa = _funda[_funda.getlunghezza()-1];
+    Co testa = prua.getStruct();
+    Co coda = poppa.getStruct();
+    send(_socket, &testa, sizeof(testa), 0);
+    send(_socket, &coda, sizeof(coda), 0);
+  }
 }
