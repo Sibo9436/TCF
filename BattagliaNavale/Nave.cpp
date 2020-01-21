@@ -2,10 +2,13 @@
 #include <iostream>
 #include<cmath>
 #include "Coordinate.h"
+
+
 Nave::Nave()
 {
 
 }
+
 
 Nave::~Nave()
 {

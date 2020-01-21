@@ -14,6 +14,7 @@ public:
   virtual bool Endgame() = 0;
 };
 
+
 class Game : public AbstractGame
 {
 public:
@@ -28,8 +29,8 @@ private:
   int _counter = 0;
   int _focus = 0;
   int _unfocused;
-
 };
+
 
 class OnlineGame : public AbstractGame
 {
@@ -37,7 +38,7 @@ public:
   bool Generate();
   bool Start();
   bool Endgame();
-
+  void Print();
 private:
   Locale _player;
 };

@@ -6,18 +6,15 @@
 #include <string>
 
 
-
 Game::Game(){
-
-
-  std::cout << """\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nBenvenuto! Questo è un gioco di battaglia navale per due giocatori. \n Una volta inseriti i vostri nomi, il primo giocatore inserirà le 5 navi a sua disposizione, seguirà poi il turno del giocatore 2.\nSi susseguiranno poi i rispettivi turni di attacco. Scopo del gioco è annientare la flotta nemica. \nSulla parte alta dell schermo apparirà la plancia di gioco con le proprie navi e i punti in cui l'avversario ha sparato.\nSotto avrete invece il radar, ad indicarvi dove i vostri colpi siano andati a segno o meno.\n\n\t\t\t\t\t\t\t\t \033[43;1;5m Buona Partita \033[0m \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n""" << '\n';
-
+  std::cout << std::string(100,'\n'); //"aggiorna" schermo
+  std::cout << """Benvenuto! Questo è un gioco di battaglia navale per due giocatori.\nUna volta inseriti i vostri nomi, il primo giocatore inserirà le 5 navi a sua disposizione, seguirà poi il turno del giocatore 2.\nSi susseguiranno poi i rispettivi turni di attacco. Scopo del gioco è annientare la flotta nemica. \nSulla parte alta dell schermo apparirà la plancia di gioco con le proprie navi e i punti in cui l'avversario ha sparato.\nSotto avrete invece il radar, ad indicarvi dove i vostri colpi siano andati a segno o meno.\n\n\t\t\t\t\t\t\t\t \033[43;1;5m Buona Partita \033[0m""";
+  std::cout << std::string(25,'\n'); //"aggiorna" schermo
 }
+
 
 bool Game::Generate() //genera il nome dei giocatori e le loro plancie
 {
-  // _players[0] = new Human();
-  // _players[0] = new Bot();
   _players[0] = new Human();
 
   std::string nome;
@@ -59,6 +56,7 @@ bool Game::Generate() //genera il nome dei giocatori e le loro plancie
   std::cout << std::string(100,'\n'); //"aggiorna" schermo
   return true;
 }
+
 
 bool Game::Start() //contiene il game loop
 {
@@ -104,13 +102,23 @@ bool Game::Start() //contiene il game loop
   return false;
 }
 
+
 void Game::Print(Player *giocatore, Player *avversario)
 {
 //  std::cout << std::string(100,'\n'); //"aggiorna" schermo
-  std::cout << "\n\n --------------------- Turno " << giocatore->getName() <<" -------------------- \n";
+  std::cout << "\n\n ---------------- Turno " << giocatore->getColpi_sparati() + 1 << " di " << giocatore->getName() <<" ---------------- \n";
   avversario->PrintRad();
   giocatore->PrintFlo();
 }
+
+void OnlineGame::Print()
+{
+//  std::cout << std::string(100,'\n'); //"aggiorna" schermo
+  std::cout << "\n\n ---------------- Turno " << _player.getColpi_sparati() + 1 << " ---------------- \n";
+  _player.PrintRad();
+  _player.PrintFlo();
+}
+
 
 bool Game::Endgame()//ancora niente
 {
@@ -125,7 +133,6 @@ bool Game::Endgame()//ancora niente
   _players[0]->Stats();
   std::cout << std::string(5,'\n');
   _players[1]->Stats();
-
   std::cout << std::string(10,'\n');
   std::cout << "\n\t\t\tVuoi giocare ancora?\n\n\t\t(Premi y per giocare ancora, qualsiasi altro tasto per uscire)";
   std::cout << std::string(10,'\n');
@@ -140,6 +147,7 @@ bool Game::Endgame()//ancora niente
     std::cin >> a;
     std::cin.ignore(10000,'\n');
     std::cout << std::string(100,'\n'); //"aggiorna" schermo
+
     return true;
   }
 
@@ -147,63 +155,89 @@ bool Game::Endgame()//ancora niente
   std::cout << "Autori (in ordine di altezza): \n\tDamiano Cabiati\n\tAndrea Sibona\n\tDaniel Siciliano\n" << '\n';
   std::cout << "Si ringraziano inoltre per il loro supporto e per il playtesting: \n\tRiccardo Riente, Marco Mosagna, Lidia Albera e Michele Risino aka Toras" << '\n';
   std::cout << std::string(25,'\n'); //"aggiorna" schermo
+
   return false;
 }
+
+
 bool OnlineGame::Generate() //genera il nome dei giocatori e le loro plancie
 {
   std::string nome;
+  std::cout << std::string(100,'\n'); //"aggiorna" schermo
   std::cout << "Inserisci il tuo nome... " << '\n';
+  std::cout << std::string(25,'\n'); //"aggiorna" schermo
   std::cin >> nome;
   _player.setName(nome);
   int scelta;
-  std::cout << "Sarai server(1) o client(2)?" << '\n';
-  std::cin >> scelta;
-  if (scelta == 1)
+  bool connected=false;
+  std::cout << std::string(100,'\n'); //"aggiorna" schermo
+  do
   {
-    _player.Server();
-  } else if(scelta == 2)
-  {
-    _player.Client();
-  }
+    std::cout << "Sarai server(1) o client(2)?" << '\n';
+    std::cout << std::string(25,'\n'); //"aggiorna" schermo
+    std::cin >> scelta;
+    if (scelta == 1)
+    {
+      connected = _player.Server();
+    } else if(scelta == 2)
+    {
+      connected = _player.Client();
+    }else
+    {
+      std::cout << "Ritenta, sarai più fortunato" << '\n';
+    }
+  } while(!connected);
   _player.Riempimento();
   return true;
 }
+
+
 bool OnlineGame::Start()
 {
   while(true)
   {
     if (_player.IsServer())
     {
+      // std::cout << std::string(100,'\n'); //"aggiorna" schermo
+      Print();
       _player.Attack();
       if (_player.Won())
       {
+        Print();
         return true;
       }
+      Print();
       _player.Down();
       if (_player.getContatore() == 0 )
       {
+        Print();
         std::cout << "Sorry bro" << '\n';
         return true;
       }
       // _player.Print();
     }else if(_player.IsClient())
     {
+      Print();
       _player.Down();
       if (_player.getContatore() == 0 )
       {
+        Print();
         std::cout << "Sorry bro" << '\n';
         return true;
       }
+      Print();
       _player.Attack();
       if (_player.Won())
       {
+        Print();
         return true;
       }
       // _player.Print();
     }
   }
-
 }
+
+
 bool OnlineGame::Endgame()
 {
   std::string a;

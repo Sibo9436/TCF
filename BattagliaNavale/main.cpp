@@ -9,6 +9,7 @@ int main()
 {
   int scelta;
   AbstractGame *partita;
+
   do {
     std::cout << std::string(100,'\n'); //"aggiorna" schermo
     std::cout << "Vuoi giocare solo su questo computer(1) o online?(2)" << '\n';
@@ -22,6 +23,7 @@ int main()
       partita = new OnlineGame();
     }
   } while(scelta != 1 && scelta != 2);
+
   bool again = false;
 
   do{

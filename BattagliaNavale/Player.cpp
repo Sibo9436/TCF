@@ -177,12 +177,23 @@ void Human::Mozzo(int i, int lunghezza) //chiede le coordinate delle navi da cre
 
 }
 
+int Player::getColpi_sparati()
+{
+  return colpi_sparati;
+}
 
 void Player::PrintRad() //stampa lo schermo di un giocatore senza la flotta
 {
   std::cout << "\n\t\t\tCampo nemico\n\n";
   _Plancia.PrintRadar();
 }
+
+void Locale::PrintRad() //stampa lo schermo di un giocatore senza la flotta
+{
+  std::cout << "\n\t\t\tCampo nemico\n\n";
+  _Screen.PrintRadar();
+}
+
 
 void Player::PrintFlo() //stampa lo schermo di un giocatore con la flotta
 {
@@ -518,10 +529,13 @@ void Player::Stats()
 
 
 
-void Locale::Server()
+bool Locale::Server()
 {
   _Screen.createRadar();
-  std::cout << "Inizializzazione server side" << '\n';
+
+  std::cout << std::string(100,'\n');
+  std::cout << "In attesa di uno sfidante...";
+  std::cout << std::string(25,'\n');
   int server_fd;
   struct sockaddr_in address;
   int opt = 1;
@@ -532,14 +546,14 @@ void Locale::Server()
 
   if ((server_fd = socket(AF_INET,SOCK_STREAM, 0)) == 0)
   {
-    perror("Socket failed");
-    exit(EXIT_FAILURE);
+    std::cout << "Socket fallito\n\n";
+    return false;
   }
 
   if (setsockopt(server_fd,SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)))
   {
-    perror("setsockopt fallito");
-    exit(EXIT_FAILURE);
+    std::cout << "setsockopt fallito\n\n";
+    return false;
   }
   address.sin_family = AF_INET;
   address.sin_addr.s_addr = INADDR_ANY;
@@ -547,18 +561,18 @@ void Locale::Server()
 
   if (bind(server_fd,(struct sockaddr *)&address, sizeof(address))<0)
   {
-    perror("Bind fallito");
-    exit(EXIT_FAILURE);
+    std::cout << "Bind fallito\n\n";
+    return false;
   }
   if (listen(server_fd, 3) < 0 )
   {
-    perror("Listen fallito");
-    exit(EXIT_FAILURE);
+    std::cout << "Listen fallito\n\n";
+    return false;
   }
   if ((_socket = accept(server_fd, (struct sockaddr *)&address,(socklen_t*)&addrlen))<0)
   {
-      perror("accept");
-      exit(EXIT_FAILURE);
+    std::cout << "Connessione fallita\n\n";
+    return false;
   }
   struct sockaddr_in* pV4Addr = (struct sockaddr_in*)&address;
   struct in_addr ipAddr = pV4Addr->sin_addr;
@@ -566,22 +580,25 @@ void Locale::Server()
   inet_ntop( AF_INET, &ipAddr, indie, INET_ADDRSTRLEN );
   std::cout << "Connessione stabilita con " << indie << '\n';
   _isServer=true;
-
-
+  return true;
 }
-void Locale::Client()
+
+
+bool Locale::Client()
 {
   _Screen.createRadar();
-  std::cout << "AAAAAAAAAAAAAA" << '\n';
+  // std::cout << "AAAAAAAAAAAAAA" << '\n';
   struct sockaddr_in serv_addr;
   char buffer[1024] = {0};
   char* indirizzo = new char[15];
+  std::cout << std::string(100,'\n');
 	std::cout << "Digita l'indirizzo a cui connetterti" << '\n';
+  std::cout << std::string(25,'\n');
 	std::cin >> indirizzo;
   if ((_socket = socket(AF_INET, SOCK_STREAM, 0)) < 0)
   {
     printf("\n Errore nella creazione del socket \n");
-    return;
+    return false;
   }
 
   serv_addr.sin_family = AF_INET;
@@ -591,28 +608,29 @@ void Locale::Client()
   if(inet_pton(AF_INET, indirizzo, &serv_addr.sin_addr)<=0)
   {
     printf("\nInvalid address/ Address not supported \n");
-    return;
+    return false;
   }
 
   if (connect(_socket, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
   {
     printf("\nConnection Failed \n");
-    return;
+    return false;
   }
   _isClient = true;
+  return true;
 }
+
 
 void Locale::Attack()
 {
-
   Coordinate A;
   int valread;
+
   if(!A.getFromPlayer(_Plancia.getN()))
   {
     std::cout << "Coordinate fuori range \n";
     Attack();
   }
-
   int x = A.getX();
   int y = A.getY();
   if (!_Screen.getRadar(x,y)) //RICORDARSI DI CAMBIARE TABELLA PERCHÉ USI COORDINATE
@@ -621,50 +639,72 @@ void Locale::Attack()
     Attack();
   }else
   {
-
+    std::cout << std::string(100,'\n'); //"aggiorna" schermo
     Co att = A.getStruct();
-    send(_socket, &att, sizeof(att),0);
+    send(_socket, &att, sizeof(att), 0);
     int result;
-    valread = read(_socket, &result,sizeof(int));
+    valread = read(_socket, &result, sizeof(int));
+    Flotta colpo = (result == 1 || result == 2 || result == -1)? Flotta::Ship : Flotta::Sea;
+    if(_Screen.setRadar(x,y,colpo))
+    {
+      colpi_a_segno++;
+      if (result == 2 || result == -1)
+      {
+        std::cout << "Colpito e affondato!\n" << '\n';
+        navi_affondate++;
+      }else if (result == 1)
+      {
+        std::cout << "Colpito!\n" << '\n';
+      }
+    }else
+    {
+      std::cout << "Mancato!\n" << '\n';
+    }
     if (result == -1)
     {
       std::cout << "Grande Frate Hai VINICIO" << '\n';
-      result = 1;
       _win = true;
-    }else if (result == 2)
-    {
-      std::cout << "Hai affondato una nave nemica" << '\n';
-      result = 1;
-    }
-    //RICORDARSI DI METTERLA IN DOWN
-    // Other._Plancia.setRadar(x,y); //Possibilità di fare overload di setradar per non prendere necessariamente flotta
-    // Other.Sunk(x,y);
-    //Spostiamo Other._Plancia.setRadar in Hit()?
-
-    Flotta colpo = (result == 1)? Flotta::Ship : Flotta::Sea;
-    if(_Screen.setRadar(x,y,colpo))
-      colpi_a_segno++;
+    }else
     colpi_sparati++;
-    _Screen.PrintRadar();
-    PrintFlo();
   }
 }
+
+
 void Locale::Down()
 {
-  std::cout << "Turno del giocatore avverso" << '\n';
+  std::cout << "In attesa dell'avversario..." << '\n';
   Co subito;
-  int valread = read(_socket,&subito, sizeof(subito));
+  int valread = read(_socket, &subito, sizeof(subito));
   int snd;
   Coordinate Colpo(subito);
-  Colpo.Print();
-  _Plancia.setRadar(subito._x,subito._y);
-  Sunk(subito._x,subito._y);
-  snd = (_Plancia[subito._y][subito._x]==Flotta::Ship)? 1 : 0;
-  if (_funda)
+  std::cin.ignore(10000,'\n');
+  std::cout << std::string(100,'\n'); //"aggiorna" schermo
+  std::cout << "Il tuo avversario spara in ";
+  Colpo.print();
+  std::cout << "...\n\n";
+  if(_Plancia.setRadar(subito._x,subito._y))
   {
-    snd = 2;
-    _funda = false;
+    if(Sunk(subito._x,subito._y))
+    {
+      std::cout << "Colpito e affondato!\n\n";
+      snd = 2;
+    }else
+    {
+      std::cout << "Colpito!\n\n";
+      snd = 1;
+    }
+  }else
+  {
+    std::cout << "Mancato!\n\n";
+    snd = 0;
   }
+  // snd = (_Plancia[subito._y][subito._x]==Flotta::Ship)? 1 : 0;
+  // if (_funda)
+  // {
+  //   snd = 2;
+  //   _funda = false;
+  // }
+  //
   if (getContatore() == 0)
   {
     snd = -1;
@@ -672,6 +712,4 @@ void Locale::Down()
     // return;
   }
   send(_socket,&snd,sizeof(int),0);
-  _Screen.PrintRadar();
-  PrintFlo();
 }

@@ -27,18 +27,10 @@ public:
   bool operator!=(Coordinate)const;
   void print()const;
 
-
-
 private:
-
   int _x;
   int _y;
-
 };
-
-
-
-
 
 
 #endif
