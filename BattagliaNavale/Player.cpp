@@ -557,9 +557,8 @@ bool Locale::Server()
   struct sockaddr_in address;
   int opt = 1;
   int addrlen = sizeof(address);
-  char buffer[1024] = {0};
-  char *hello = "Sta funzionando!";
-  char *ciao = "Incredibbbbile!";
+  // char *hello = "Sta funzionando!";
+  // char *ciao = "Incredibbbbile!";
 
   if ((server_fd = socket(AF_INET,SOCK_STREAM, 0)) == 0)
   {
@@ -597,6 +596,21 @@ bool Locale::Server()
   inet_ntop( AF_INET, &ipAddr, indie, INET_ADDRSTRLEN );
   std::cout << "Connessione stabilita con " << indie << '\n';
   _isServer=true;
+  char * nomino = new char[_nome.size()];
+  int l = _nome.size();
+
+  std::copy(_nome.begin(),_nome.end(),nomino);
+  send(_socket,&l, sizeof(int),0);
+  send(_socket,nomino, sizeof(char)*l,0);
+  int l2;
+  read(_socket,&l2,sizeof(int));
+  char buffer[l2] = {0};
+  read(_socket,&buffer,sizeof(char)*l2);
+  for (int i = 0; i < l2 ; i++)
+  {
+    _oppo = _oppo + buffer[i];
+  }
+
   return true;
 }
 
@@ -605,7 +619,6 @@ bool Locale::Client()
 {
   _Screen.createRadar();
   struct sockaddr_in serv_addr;
-  char buffer[1024] = {0};
   char* indirizzo = new char[15];
   std::cout << std::string(100,'\n');
 	std::cout << "Digita l'indirizzo a cui connetterti" << '\n';
@@ -633,6 +646,20 @@ bool Locale::Client()
     return false;
   }
   _isClient = true;
+  char * nomino = new char[_nome.size()];
+  int l = _nome.size();
+
+  std::copy(_nome.begin(),_nome.end(),nomino);
+  send(_socket,&l, sizeof(int),0);
+  send(_socket,nomino, sizeof(char)*l,0);
+  int l2;
+  read(_socket,&l2,sizeof(int));
+  char buffer[l2] = {0};
+  read(_socket,&buffer,sizeof(char)*l2);
+  for (int i = 0; i < l2 ; i++)
+  {
+    _oppo = _oppo + buffer[i];
+  }
   return true;
 }
 
@@ -693,14 +720,14 @@ void Locale::Attack()
 
 void Locale::Down()
 {
-  std::cout << "In attesa dell'avversario..." << '\n';
+  std::cout << "In attesa di "<< _oppo << "..." << '\n';
   Co subito;
   int valread = read(_socket, &subito, sizeof(subito));
   int snd;
   Coordinate Colpo(subito);
   std::cin.ignore(10000,'\n');
   std::cout << std::string(100,'\n'); //"aggiorna" schermo
-  std::cout << "Il tuo avversario spara in ";
+  std::cout << _oppo << " spara in ";
   Colpo.print();
   std::cout << "...\n\n";
   if(_Plancia.setRadar(subito._x,subito._y))

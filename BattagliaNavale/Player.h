@@ -105,6 +105,8 @@ private:
   bool _isServer = false;
   bool _isClient = false;
   bool _win = false;
+  std::string _oppo;
+
 };
 
 

@@ -12,6 +12,8 @@ public:
   virtual bool Generate() = 0;
   virtual bool Start() = 0;
   virtual bool Endgame() = 0;
+protected:
+  int _turno=0;
 };
 
 
@@ -40,7 +42,7 @@ public:
   bool Endgame();
   void Print();
 private:
-  Locale _player;
+  Locale *_player;
 };
 
 
