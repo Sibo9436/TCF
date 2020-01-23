@@ -96,6 +96,7 @@ public:
   inline bool IsServer() {return _isServer;};
   inline bool IsClient() {return _isClient;};
   inline bool Won() {return _win;}
+  void Stats();
   void Attack();
   void Down();
 
