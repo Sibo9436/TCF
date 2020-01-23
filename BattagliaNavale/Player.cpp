@@ -667,7 +667,6 @@ bool Locale::Client()
 void Locale::Attack()
 {
   Coordinate A;
-  int valread;
 
   if(!A.getFromPlayer(_Plancia.getN()))
   {
@@ -686,7 +685,7 @@ void Locale::Attack()
     Co att = A.getStruct();
     send(_socket, &att, sizeof(att), 0);
     int result;
-    valread = read(_socket, &result, sizeof(int));
+    read(_socket, &result, sizeof(int));
     Flotta colpo = (result == 1 || result == 2 || result == -1)? Flotta::Ship : Flotta::Sea;
     if(_Screen.setRadar(x,y,colpo))
     {
@@ -712,7 +711,7 @@ void Locale::Attack()
     {
       std::cout << "Grande Frate Hai VINICIO" << '\n';
       _win = true;
-    }else
+    }
     colpi_sparati++;
   }
 }
