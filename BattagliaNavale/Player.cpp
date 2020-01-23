@@ -726,7 +726,7 @@ void Locale::Down()
   read(_socket, &subito, sizeof(subito));
   int snd;
   Coordinate Colpo(subito);
-  std::cin.ignore(10000,'\n');
+  // std::cin.ignore(10000,'\n');
   std::cout << std::string(100,'\n'); //"aggiorna" schermo
   std::cout << _oppo << " spara in ";
   Colpo.print();
