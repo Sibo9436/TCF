@@ -6,8 +6,8 @@
 #include <string>
 
 
-Game::Game(){
-  // std::cout << """Benvenuto! Questo è un gioco di battaglia navale per due giocatori.\nUna volta inseriti i vostri nomi, il primo giocatore inserirà le 5 navi a sua disposizione, seguirà poi il turno del giocatore 2.\nSi susseguiranno poi i rispettivi turni di attacco. Scopo del gioco è annientare la flotta nemica. \nSulla parte alta dell schermo apparirà la plancia di gioco con le proprie navi e i punti in cui l'avversario ha sparato.\nSotto avrete invece il radar, ad indicarvi dove i vostri colpi siano andati a segno o meno.\n\n\t\t\t\t\t\t\t\t \033[43;1;5m Buona Partita \033[0m""";
+Game::Game()
+{
 
 }
 
@@ -19,16 +19,18 @@ bool Game::Generate() //genera il nome dei giocatori e le loro plancie
 
   std::string nome;
   std::cout << std::string(100,'\n'); //"aggiorna" schermo
-  std::cout << "Giocatore 1 inserisci il tuo nome... " << '\n';
+  std::cout << "Giocatore 1 inserisci il tuo nome: " << '\n';
   std::cout << std::string(25,'\n'); //"aggiorna" schermo
   std::cin >> nome;
   _players[0]->setName(nome);
+  std::cin.ignore(10000,'\n');
   int scelta;
   do {
     std::cout << std::string(100,'\n'); //"aggiorna" schermo
-    std::cout << "Giocherai da solo(1) o in compagnia(2)?" << '\n';
+    std::cout << "\t\t\tBenvenuto " << _players[0]->getName() << "!\n\nPer giocare contro un bot\t\t->\t \033[43;1;5m PREMI 1 \033[0m \nPer giocare contro un tuo amico\t\t->\t \033[43;1;5m PREMI 2 \033[0m" << '\n';
     std::cout << std::string(25,'\n'); //"aggiorna" schermo
     std::cin >> scelta;
+    std::cin.ignore(10000,'\n');
     if (scelta==1)
     {
       _players[1] = new Bot();
@@ -37,14 +39,16 @@ bool Game::Generate() //genera il nome dei giocatori e le loro plancie
       std::cout << std::string(25,'\n'); //"aggiorna" schermo
       std::cin >> nome;
       _players[1]->setName(nome);
+      std::cin.ignore(10000,'\n');
     }else if (scelta == 2)
     {
       _players[1] = new Human();
       std::cout << std::string(100,'\n'); //"aggiorna" schermo
-      std::cout << "Giocatore 2 inserisci il tuo nome... " << '\n';
+      std::cout << "Giocatore 2 inserisci il tuo nome: " << '\n';
       std::cout << std::string(25,'\n'); //"aggiorna" schermo
       std::cin >> nome;
       _players[1]->setName(nome);
+      std::cin.ignore(10000,'\n');
     }else if(scelta == 0)
     {
       _players[0] = new Bot();
@@ -111,8 +115,7 @@ bool Game::Start() //contiene il game loop
 
 void Game::Print(Player *giocatore, Player *avversario)
 {
-//  std::cout << std::string(100,'\n'); //"aggiorna" schermo
-  std::cout << "\n\n ---------------- Turno "<<_turno<<" di " << giocatore->getName() <<" ---------------- \n";
+  std::cout << "\n\n ---------------- Turno " << _turno << " di " << giocatore->getName() << " ---------------- \n";
   avversario->PrintRad();
   giocatore->PrintFlo();
 }
@@ -123,18 +126,20 @@ bool OnlineGame::Generate() //genera il nome dei giocatori e le loro plancie
   _player = new Locale();
   std::string nome;
   std::cout << std::string(100,'\n'); //"aggiorna" schermo
-  std::cout << "Inserisci il tuo nome... " << '\n';
+  std::cout << "Inserisci il tuo nome:" << '\n';
   std::cout << std::string(25,'\n'); //"aggiorna" schermo
   std::cin >> nome;
   _player->setName(nome);
+  std::cin.ignore(10000,'\n');
   int scelta;
   bool connected=false;
   std::cout << std::string(100,'\n'); //"aggiorna" schermo
   do
   {
-    std::cout << "Sarai server(1) o client(2)?" << '\n';
+    std::cout << "Per usare il tuo computer come server\t\t->\t \033[43;1;5m PREMI 1 \033[0m \nPer connetterti al computer del tuo avversario\t\t->\t \033[43;1;5m PREMI 2 \033[0m" << '\n';
     std::cout << std::string(25,'\n'); //"aggiorna" schermo
     std::cin >> scelta;
+    std::cin.ignore(10000,'\n');
     if (scelta == 1)
     {
       connected = _player->Server();
@@ -143,7 +148,8 @@ bool OnlineGame::Generate() //genera il nome dei giocatori e le loro plancie
       connected = _player->Client();
     }else
     {
-      std::cout << "Ritenta, sarai più fortunato" << '\n';
+      std::cout << std::string(100,'\n'); //"aggiorna" schermo
+      std::cout << "Ritenta, sarai più fortunato\n" << '\n';
     }
   } while(!connected);
   _player->Riempimento();
@@ -167,12 +173,12 @@ bool Game::Endgame()//ancora niente
   std::cin >> a;
   std::cin.ignore(10000,'\n');
   std::cout << std::string(100,'\n'); //"aggiorna" schermo
-  std::cout << "Congratulazioni! Ecco alcune statistiche sulla vostra partita:\n\n\n"<< '\n';
+  std::cout << "Ecco alcune statistiche sulla vostra partita:\n\n\n"<< '\n';
   _players[0]->Stats();
   std::cout << std::string(5,'\n');
   _players[1]->Stats();
   std::cout << std::string(10,'\n');
-  std::cout << "\n\t\t\tVuoi giocare ancora?\n\n\t\t(Premi y per giocare ancora, qualsiasi altro tasto per uscire)";
+  std::cout << "\n\t\t\tVuoi giocare ancora?\n\nPer giocare ancora\t\t->\t \033[43;1;5m PREMI y \033[0m \n\n(Premi un tasto qualsiasi e poi invio per uscire)";
   std::cout << std::string(10,'\n');
   std::cin >> go;
   std::cin.ignore(10000,'\n');
@@ -213,6 +219,7 @@ bool OnlineGame::Start()
       if (_player->Won())
       {
         Print();
+        std::cout << "\033[43;1;5m HAI VINTO! \033[0m" << '\n';
         return true;
       }
       Print();
@@ -256,11 +263,11 @@ bool OnlineGame::Endgame()
   std::cin >> a;
   std::cin.ignore(10000,'\n');
   std::cout << std::string(100,'\n'); //"aggiorna" schermo
-  std::cout << "Congratulazioni! Ecco alcune statistiche sulla vostra partita:\n\n\n"<< '\n';
+  std::cout << "Ecco alcune statistiche sulla vostra partita:\n\n\n"<< '\n';
   _player->Stats();
 
   std::cout << std::string(10,'\n');
-  std::cout << "\n\t\t\tVuoi giocare ancora?\n\n\t\t(Premi y per giocare ancora, qualsiasi altro tasto per uscire)";
+  std::cout << "\n\t\t\tVuoi giocare ancora?\n\nPer giocare ancora\t\t->\t \033[43;1;5m PREMI y \033[0m \n\n(Premi un tasto qualsiasi e poi invio per uscire)";
   std::cout << std::string(10,'\n');
   std::cin >> go;
   std::cin.ignore(10000,'\n');
@@ -278,7 +285,7 @@ bool OnlineGame::Endgame()
 
   std::cout << "Grazie per avere giocato al nostro gioco!\n" << '\n';
   std::cout << "Autori (in ordine di altezza): \n\tDamiano Cabiati\n\tAndrea Sibona\n\tDaniel Siciliano\n" << '\n';
-  std::cout << "Si ringraziano inoltre per il loro supporto e per il playtesting: \n\tRiccardo Riente, Marco Mosagna, Lidia Albera e Paolo Maria Oreste Carlo Cabiati" << '\n';
+  std::cout << "Si ringraziano inoltre per il loro supporto e per il playtesting: \n\tRiccardo Riente, Marco Mosagna, Lidia Albera e Michele Risino aka Toras" << '\n';
   std::cout << std::string(25,'\n'); //"aggiorna" schermo
   return false;
 }

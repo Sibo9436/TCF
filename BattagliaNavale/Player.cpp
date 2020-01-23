@@ -103,6 +103,7 @@ Nave Human::setShips(int len, Coordinate coord){ //crea e pone le navi
     if(!u && !d && !r && !le)
     {
       std::cout << "not valid\n Prova coordinate valide\n";
+      std::cin.ignore(10000,'\n');
 
       Coordinate A;
       A.getFromPlayer(_Plancia.getN());
@@ -624,6 +625,7 @@ bool Locale::Client()
 	std::cout << "Digita l'indirizzo a cui connetterti" << '\n';
   std::cout << std::string(25,'\n');
 	std::cin >> indirizzo;
+  std::cin.ignore(10000,'\n');
   if ((_socket = socket(AF_INET, SOCK_STREAM, 0)) < 0)
   {
     printf("\n Errore nella creazione del socket \n");
@@ -667,9 +669,8 @@ bool Locale::Client()
 void Locale::Attack()
 {
   Coordinate A;
-  int valread;
 
-  if(!A.getFromPlayer(_Plancia.getN()))
+  if(!A.getFromPlayer(_Screen.getN()))
   {
     std::cout << "Coordinate fuori range \n";
     Attack();
@@ -686,7 +687,7 @@ void Locale::Attack()
     Co att = A.getStruct();
     send(_socket, &att, sizeof(att), 0);
     int result;
-    valread = read(_socket, &result, sizeof(int));
+    read(_socket, &result, sizeof(int));
     Flotta colpo = (result == 1 || result == 2 || result == -1)? Flotta::Ship : Flotta::Sea;
     if(_Screen.setRadar(x,y,colpo))
     {
@@ -710,7 +711,7 @@ void Locale::Attack()
     }
     if (result == -1)
     {
-      std::cout << "Grande Frate Hai VINICIO" << '\n';
+      // std::cout << "Grande Frate Hai VINICIO" << '\n';
       _win = true;
     }else
     colpi_sparati++;
@@ -722,7 +723,7 @@ void Locale::Down()
 {
   std::cout << "In attesa di "<< _oppo << "..." << '\n';
   Co subito;
-  int valread = read(_socket, &subito, sizeof(subito));
+  read(_socket, &subito, sizeof(subito));
   int snd;
   Coordinate Colpo(subito);
   std::cin.ignore(10000,'\n');

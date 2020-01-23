@@ -26,10 +26,9 @@ int main()
   std::cout << std::string(25,'\n'); //"aggiorna" schermo
 
   do {
-    // std::cout << std::string(100,'\n'); //"aggiorna" schermo
-    std::cout << "Vuoi giocare solo su questo computer(1) o online?(2)" << '\n';
-    // std::cout << std::string(25,'\n'); //"aggiorna" schermo
+    std::cout << "Per giocare su questo computer\t\t->\t \033[43;1;5m PREMI 1 \033[0m \nPer giocare online\t\t\t->\t \033[43;1;5m PREMI 2 \033[0m" << '\n';
     std::cin >> scelta;
+    std::cin.ignore(10000,'\n');
     if (scelta == 1)
     {
       partita = new Game();

@@ -47,6 +47,7 @@ bool Coordinate::getFromPlayer(int N) // include i cin per impostare le coordina
   {
     std::cout << "Inserisci x e y (es: A 5):" << '\n';
     std::cin >> k >> y;
+    std::cin.ignore(10000,'\n');
     if(std::cin.fail())
     {
       std::cout << "Inserimento non valido, ritenta:\n";
