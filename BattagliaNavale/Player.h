@@ -23,6 +23,7 @@ public:
   bool Check(Coordinate, Coordinate);
   void Stats();
   int getColpi_sparati();
+  void setName();
   virtual void setName(std::string)=0;
   virtual bool isBot()=0;
   virtual Nave setShips(int, Coordinate) =0;
@@ -65,7 +66,7 @@ class Bot: public Player
 {
 public:
   Coordinate random();
-  void setName(std::string);
+  void setName(std::string) {_nome = "T-800";};
   Nave setShips(int, Coordinate);
   void Mozzo(int, int);
   void Print();

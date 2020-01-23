@@ -34,12 +34,12 @@ bool Game::Generate() //genera il nome dei giocatori e le loro plancie
     if (scelta==1)
     {
       _players[1] = new Bot();
-      std::cout << std::string(100,'\n'); //"aggiorna" schermo
-      std::cout << "Battezza il tuo avversario: " << '\n';
-      std::cout << std::string(25,'\n'); //"aggiorna" schermo
-      std::cin >> nome;
-      _players[1]->setName(nome);
-      std::cin.ignore(10000,'\n');
+      // std::cout << std::string(100,'\n'); //"aggiorna" schermo
+      // std::cout << "Battezza il tuo avversario: " << '\n';
+      // std::cout << std::string(25,'\n'); //"aggiorna" schermo
+      // std::cin >> nome;
+      _players[1]->setName();
+      // std::cin.ignore(10000,'\n');
     }else if (scelta == 2)
     {
       _players[1] = new Human();

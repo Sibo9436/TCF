@@ -319,9 +319,19 @@ void Human::Riempimento() //Riempie la plancia chiamando mozzo nNavi volte
 }
 
 //---------------------------------------------------------------------Solo CPU
-void Bot::setName(std::string Nome)
+void Player::setName()
 {
-  _nome = Nome;
+  srand(time(NULL));
+  char a = (char)(rand()%25+65);
+  std::string b = std::to_string(rand()%10);
+  char c = (char)(rand()%25+65);
+  std::string d = std::to_string(rand()%10);
+  _nome += a;
+  _nome += b;
+  _nome += c;
+  _nome += d;
+
+
 }
 
 
