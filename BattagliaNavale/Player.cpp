@@ -722,7 +722,7 @@ void Locale::Down()
 {
   std::cout << "In attesa di "<< _oppo << "..." << '\n';
   Co subito;
-  int valread = read(_socket, &subito, sizeof(subito));
+  read(_socket, &subito, sizeof(subito));
   int snd;
   Coordinate Colpo(subito);
   std::cin.ignore(10000,'\n');
@@ -760,4 +760,27 @@ void Locale::Down()
     send(_socket, &testa, sizeof(testa), 0);
     send(_socket, &coda, sizeof(coda), 0);
   }
+}
+void Locale::Stats()
+{
+  int mystats[5] = {colpi_sparati, colpi_a_segno, (int)(100*(float)colpi_a_segno/(float)colpi_sparati),navi_affondate,_contatore};
+  int hisstats[5]={0};
+  send(_socket,&mystats,sizeof(int)*5,0);
+  read(_socket, &hisstats,sizeof(int)*5);
+
+
+  std::cout << _nome << ":" << '\n';
+  std::cout << "\tNumero di colpi sparati:\t\t" << mystats[0] << '\n';
+  std::cout << "\tNumero di colpi a segno:\t\t" << mystats[1] << '\n';
+  std::cout << "\tPrecisione:\t\t\t\t" << mystats[2] << "%\n\n";
+  std::cout << "\tNumero di navi nemiche affondate:\t" << mystats[3] << '\n';
+  std::cout << "\tNumero di navi superstiti:\t\t" << mystats[4] << '\n';
+
+  std::cout << _oppo << ":" << '\n';
+  std::cout << "\tNumero di colpi sparati:\t\t" << hisstats[0] << '\n';
+  std::cout << "\tNumero di colpi a segno:\t\t" << hisstats[1] << '\n';
+  std::cout << "\tPrecisione:\t\t\t\t" << hisstats[2] << "%\n\n";
+  std::cout << "\tNumero di navi nemiche affondate:\t" << hisstats[3] << '\n';
+  std::cout << "\tNumero di navi superstiti:\t\t" << hisstats[4] << '\n';
+
 }
