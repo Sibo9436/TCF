@@ -20,9 +20,6 @@ enum class Radar
 class Tabella
 {
 public:
-  //Tabella();  //Questo crea radar
-  //lTabella();  //Questo crea flotta
-  //void Print();
   ~Tabella();
   int getN();
   void PrintRadar();

@@ -3,7 +3,7 @@
 #include <iostream>
 using namespace std;
 
-
+// Distruttore
 Tabella::~Tabella() //distrugge flotta e radar se creati
 {
   for (int i = 0; i < n ; i++)
@@ -25,7 +25,7 @@ int Tabella::getN()
 
 }
 
-void Tabella::setNave(Nave boat)
+void Tabella::setNave(Nave boat)//Posizionamento di una nave sulla plancia
 {
   for (int i = 0 ; i < boat.getlunghezza() ; i++ )
   {
@@ -113,15 +113,27 @@ void Tabella::createFlotta() //crea una matrice flotta con puntatori e le riempi
 
 void Tabella::PrintFlotta() //output della Flotta
 {
-  cout << " \t";
+  cout << "\t ";
   for (int i = 0; i < n; i++)
   {
     cout <<"  " << (char)(65+i) << "  ";//97
   }
-  cout << "\n\n";
+  cout <<"\n";
+  cout << "\t┌";
+  for (int k=0; k<n;k++)
+  {
+    cout << "─────";
+  }
+  cout << "┐\n";
+
+  // for (int k = 0 ; k < n-3; k++)
+  // {
+  //   cout << "\t";
+  // }
+  // cout <<" │\n";
   for (int i = 0 ; i < n ; i++)
   {
-    cout << i+1 << "\t";
+    cout << "       "<<i+1 << "│";
     for (int j =0; j < n; j++)
     {
       if (_radar[i][j]==Radar::Sea)
@@ -140,22 +152,43 @@ void Tabella::PrintFlotta() //output della Flotta
           cout << "\033[35;1;1m  @  \033[0m";
       }
     }
-    cout <<"\n\n";
+    cout << "│";
+    if (i != n-1)
+    {
+      cout <<"\n\t│";
+      for (int k = 0 ; k < n-3; k++)
+      {
+        cout << "\t";
+      }
+      cout <<" │";
+    }
+    cout << "\n";
   }
+  cout << "\t└";
+  for (int k=0; k<n;k++)
+  {
+    cout << "─────";
+  }
+  cout << "┘\n";
 }
 
 void Tabella::PrintRadar() // output del radar
 {
-  cout << " \t";
+  cout << "\t ";
   for (int i = 0; i < n; i++)
   {
-    cout <<"  " << (char)(65+i) << "  ";
+    cout <<"  " << (char)(65+i) << "  ";//97
   }
-  cout << "\n\n";
+  cout <<"\n";
+  cout << "\t┌";
+  for (int k=0; k<n;k++)
+  {
+    cout << "─────";
+  }
+  cout << "┐\n";
 
   for (int i=0; i< n; i++){
-    cout << i+1 <<" \t";
-
+    cout << "       "<<i+1 << "│";
     for(int j=0; j<n; j++){
       switch (_radar[i][j]) {
         case Radar::Sea :
@@ -169,8 +202,24 @@ void Tabella::PrintRadar() // output del radar
           break;
       }
     }
-    cout << "\n\n";
+    cout << "│";
+    if (i != n-1)
+    {
+      cout <<"\n\t│";
+      for (int k = 0 ; k < n-3; k++)
+      {
+        cout << "\t";
+      }
+      cout <<" │";
+    }
+    cout << "\n";
   }
+  cout << "\t└";
+  for (int k=0; k<n;k++)
+  {
+    cout << "─────";
+  }
+  cout << "┘\n";
 }
 
 Flotta * & Tabella::operator[](int i) const // ridefinisce l'operatore [][]

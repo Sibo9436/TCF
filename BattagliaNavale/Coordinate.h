@@ -1,7 +1,7 @@
 //sibo iloveyou
 #ifndef COORDINATE_H
 #define COORDINATE_H
-
+// Struttura coordinata, utilizzata per l'invio dei dati via socket
 struct Co
 {
   int _x;

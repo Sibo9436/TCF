@@ -2,6 +2,8 @@
 #include <iostream>
 #include <cmath>
 
+
+// Costruttori
 Coordinate::Coordinate()
 {
 
@@ -13,7 +15,7 @@ Coordinate::Coordinate(int x, int y):_x(x),_y(y)
 
 }
 
-
+// Getters e Setters
 int Coordinate::getX() const
 {
   return _x;
@@ -72,20 +74,20 @@ bool Coordinate::getFromPlayer(int N) // include i cin per impostare le coordina
   return true;
 }
 
-
+// Operatore di assegnazione
 void Coordinate::operator=(Coordinate Other)
 {
-  _x = Other.getX();
+  _x = Other.getX();//non sono necessari i get
   _y = Other.getY();
 }
 
-
+// Somma di due coordinate
 Coordinate Coordinate::operator+(Coordinate Other)
 {
   return Coordinate(_x+Other.getX(),_y+Other.getY());
 }
 
-
+// Distanza verticale o orizzontale tra due coordinate
 int Coordinate::operator-(Coordinate Other) //NON SONO SICURO CHE IL MENO SIA IL MIGLIOR OPERATORE POSSIBILE PER STA COSA
 {
   if (_x == Other.getX())
@@ -100,7 +102,7 @@ int Coordinate::operator-(Coordinate Other) //NON SONO SICURO CHE IL MENO SIA IL
   }
 }
 
-
+// Confronto tra due coordinate
 bool Coordinate::operator==(Coordinate Other) const
 {
   if (_x == Other.getX() && _y==Other.getY())
@@ -114,7 +116,7 @@ void Coordinate::print()const
   std::cout << "(" << (char)(_x + 65) << ", " << _y+1 << ")";
 }
 
-
+// Interazione con la struttura Co
 Co Coordinate::getStruct()
 {
   Co a;

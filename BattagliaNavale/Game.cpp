@@ -11,7 +11,6 @@ Game::Game()
 
 }
 
-
 bool Game::Generate() //genera il nome dei giocatori e le loro plancie
 {
   _turno = 0;
@@ -51,8 +50,12 @@ bool Game::Generate() //genera il nome dei giocatori e le loro plancie
       std::cin.ignore(10000,'\n');
     }else if(scelta == 0)
     {
-      _players[0] = new Bot();
-      _players[1] = new Bot();
+      for (int i= 0; i < 2; i++)
+      {
+        _players[i] = new Bot();
+        _players[i]->setName();
+      }
+
     }
   } while(scelta != 1 && scelta != 2 && scelta != 0);
   _players[0]->Riempimento();
@@ -60,7 +63,6 @@ bool Game::Generate() //genera il nome dei giocatori e le loro plancie
   std::cout << std::string(100,'\n'); //"aggiorna" schermo
   return true;
 }
-
 
 bool Game::Start() //contiene il game loop
 {
@@ -112,59 +114,14 @@ bool Game::Start() //contiene il game loop
   return false;
 }
 
-
-void Game::Print(Player *giocatore, Player *avversario)
+void Game::Print(Player *giocatore, Player *avversario)// mostra a schermo il radar e la situazione della flotta
 {
   std::cout << "\n\n ---------------- Turno " << _turno << " di " << giocatore->getName() << " ---------------- \n";
   avversario->PrintRad();
   giocatore->PrintFlo();
 }
 
-bool OnlineGame::Generate() //genera il nome dei giocatori e le loro plancie
-{
-  _turno = 0;
-  _player = new Locale();
-  std::string nome;
-  std::cout << std::string(100,'\n'); //"aggiorna" schermo
-  std::cout << "Inserisci il tuo nome:" << '\n';
-  std::cout << std::string(25,'\n'); //"aggiorna" schermo
-  std::cin >> nome;
-  _player->setName(nome);
-  std::cin.ignore(10000,'\n');
-  int scelta;
-  bool connected=false;
-  std::cout << std::string(100,'\n'); //"aggiorna" schermo
-  do
-  {
-    std::cout << "Per usare il tuo computer come server\t\t->\t \033[43;1;5m PREMI 1 \033[0m \nPer connetterti al computer del tuo avversario\t\t->\t \033[43;1;5m PREMI 2 \033[0m" << '\n';
-    std::cout << std::string(25,'\n'); //"aggiorna" schermo
-    std::cin >> scelta;
-    std::cin.ignore(10000,'\n');
-    if (scelta == 1)
-    {
-      connected = _player->Server();
-    } else if(scelta == 2)
-    {
-      connected = _player->Client();
-    }else
-    {
-      std::cout << std::string(100,'\n'); //"aggiorna" schermo
-      std::cout << "Ritenta, sarai più fortunato\n" << '\n';
-    }
-  } while(!connected);
-  _player->Riempimento();
-  return true;
-}
-void OnlineGame::Print()
-{
-//  std::cout << std::string(100,'\n'); //"aggiorna" schermo
-  std::cout << "\n\n ---------------- Turno " << _turno << " ---------------- \n";
-  _player->PrintRad();
-  _player->PrintFlo();
-}
-
-
-bool Game::Endgame()//ancora niente
+bool Game::Endgame()// Giunge al termine della partita stampando statistiche e ringraziamenti
 {
   std::string a;
   char go;
@@ -203,8 +160,51 @@ bool Game::Endgame()//ancora niente
   return false;
 }
 
+//---------------------------------------------------------------------OnlineGame-----------------------------
 
+bool OnlineGame::Generate() //genera il nome dei giocatori e le loro plancie
+{
+  _turno = 0;
+  _player = new Locale();
+  std::string nome;
+  std::cout << std::string(100,'\n'); //"aggiorna" schermo
+  std::cout << "Inserisci il tuo nome:" << '\n';
+  std::cout << std::string(25,'\n'); //"aggiorna" schermo
+  std::cin >> nome;
+  _player->setName(nome);
+  std::cin.ignore(10000,'\n');
+  int scelta;
+  bool connected=false;
+  std::cout << std::string(100,'\n'); //"aggiorna" schermo
+  do
+  {
+    std::cout << "Per usare il tuo computer come server\t\t->\t \033[43;1;5m PREMI 1 \033[0m \nPer connetterti al computer del tuo avversario\t\t->\t \033[43;1;5m PREMI 2 \033[0m" << '\n';
+    std::cout << std::string(25,'\n'); //"aggiorna" schermo
+    std::cin >> scelta;
+    std::cin.ignore(10000,'\n');
+    if (scelta == 1)
+    {
+      connected = _player->Server();
+    } else if(scelta == 2)
+    {
+      connected = _player->Client();
+    }else
+    {
+      std::cout << std::string(100,'\n'); //"aggiorna" schermo
+      std::cout << "Ritenta, sarai più fortunato\n" << '\n';
+    }
+  } while(!connected);
+  _player->Riempimento();
+  return true;
+}
 
+void OnlineGame::Print()
+{
+//  std::cout << std::string(100,'\n'); //"aggiorna" schermo
+  std::cout << "\n\n ---------------- Turno " << _turno << " ---------------- \n";
+  _player->PrintRad();
+  _player->PrintFlo();
+}
 
 bool OnlineGame::Start()
 {
@@ -252,7 +252,6 @@ bool OnlineGame::Start()
     }
   }
 }
-
 
 bool OnlineGame::Endgame()
 {
