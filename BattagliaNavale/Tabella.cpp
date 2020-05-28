@@ -1,5 +1,6 @@
 #include <cmath>
 #include <iostream>
+#include "Tabella.h"
 using namespace std;
 
 // Distruttore
