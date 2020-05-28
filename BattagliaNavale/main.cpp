@@ -32,12 +32,25 @@ int main()
   std::cin.ignore(10000,'\n');
   if (rulez == 'n')
   {
-    std::cout << "A inizio partita ad entrambi i giocatori sarà chiesto di posizionare la propia flotta sulla plancia di gioco, le restrizioni riguardanti il posizionamento della nave sono le seguenti:" << '\n';
-    std::cout << "\t ·le navi possono essere disposte solo verticalmente o orizzontalmente;"<< '\n';
-    std::cout << "\t ·le navi devono essere interamente incluse nella plancia di gioco;" << '\n';
-    std::cout << "\t ·le navi non possono sovrapporsi o toccarsi." << '\n';
-    std::cout << "Una volta terminata la prima fase, inizia la partita vera e propria. Lo scopo di ogni giocatore sarà quello di affondare la flotta dell'avversario, si avrà a disposizione un proiettile per turno, corrispondente alla dichiarazione del quadrante che si desidera colpire." << '\n';
-    std::cout << "Sono inoltre presenti due(tre) differenti modalità di gioco, in locale, contro un amico o contro la CPU, o in condivisione su rete locale, quest'ultima richiede che un giocatore assuma il ruolo di client e uno di server.\n\n\n";
+    std::cout << std::string(25,'\n'); //"aggiorna" schermo
+    std::cout << "A inizio partita ad entrambi i giocatori sarà chiesto di posizionare la propia flotta sulla plancia di gioco;" << '\n';
+    std::cout << "le restrizioni riguardanti il posizionamento della nave sono le seguenti:" << '\n';
+    std::cout << "\t · le navi possono essere disposte solo verticalmente o orizzontalmente;"<< '\n';
+    std::cout << "\t · le navi devono essere interamente incluse nella plancia di gioco;" << '\n';
+    std::cout << "\t · le navi non possono sovrapporsi o toccarsi." << '\n';
+    std::cout << "" << '\n';
+    std::cout << "Una volta terminata la prima fase, inizia la partita vera e propria." << '\n';
+    std::cout << "Lo scopo di ogni giocatore sarà quello di affondare la flotta dell'avversario." << '\n';
+    std::cout << "Ogni turno bisognerà inserire le coorinate corrispondenti al quadrante che si desidera colpire." << '\n';
+    std::cout << "\n" << '\n';
+    std::cout << "Sono disponibili le seguenti modalità di gioco:" << '\n';
+    std::cout << "\t · in locale (ossia solo su questo computer), con la possibilità di giocare:" << '\n';
+    std::cout << "\t\t · contro un amico;" << '\n';
+    std::cout << "\t\t · contro la CPU;" << '\n';
+    std::cout << "\t · in condivisione su rete locale; in questo caso:" << '\n';
+    std::cout << "\t\t · un giocatore assume il ruolo di server e comunica all'altro il proprio indirizzo IP;" << '\n';
+    std::cout << "\t\t · l'altro giocatore assume il ruolo di client e si collega all'indirizzo IP del server." << '\n';
+    std::cout << std::string(15,'\n'); //"aggiorna" schermo
   }
   do {
     std::cout << "Per giocare su questo computer\t\t->\t \033[43;1;5m PREMI 1 \033[0m \nPer giocare online\t\t\t->\t \033[43;1;5m PREMI 2 \033[0m" << '\n';

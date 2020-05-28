@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <random>
+#include<cstring>
 
 //numeri random
   std::random_device rd;
@@ -528,6 +529,24 @@ bool Locale::Server()
   _Screen.createRadar();
 
   std::cout << std::string(100,'\n');
+
+  int sock = socket(PF_INET, SOCK_DGRAM, 0);
+  sockaddr_in loopback;
+  memset(&loopback, 0, sizeof(loopback));
+  loopback.sin_family = AF_INET;
+  loopback.sin_addr.s_addr = INADDR_LOOPBACK;
+  loopback.sin_port = htons(9);
+  connect(sock, reinterpret_cast<sockaddr*>(&loopback),sizeof(loopback));
+  socklen_t addlen = sizeof(loopback);
+  getsockname(sock, reinterpret_cast<sockaddr*>(&loopback), &addlen);
+  close(sock);
+  char buf[INET_ADDRSTRLEN];
+  inet_ntop(AF_INET, &loopback.sin_addr, buf, INET_ADDRSTRLEN);
+
+
+
+
+  std::cout << "Il tuo indirizzo ip è " << buf << "\n";
   std::cout << "In attesa di uno sfidante...";
   std::cout << std::string(25,'\n');
   int server_fd;
