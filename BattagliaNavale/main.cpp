@@ -26,11 +26,12 @@ int main()
   std::cout << std::string(25,'\n'); //"aggiorna" schermo
 
 
-  std::cout << "Conosci già le regole del gioco? (s/n): ";
+  std::cout << "Premi 'r' per conoscere le regole del gioco ";
   char rulez;
   std::cin >> rulez;
+  
   std::cin.ignore(10000,'\n');
-  if (rulez == 'n')
+  if (rulez == 'r')
   {
     std::cout << std::string(25,'\n'); //"aggiorna" schermo
     std::cout << "A inizio partita ad entrambi i giocatori sarà chiesto di posizionare la propia flotta sulla plancia di gioco;" << '\n';
@@ -44,7 +45,7 @@ int main()
     std::cout << "Ogni turno bisognerà inserire le coorinate corrispondenti al quadrante che si desidera colpire." << '\n';
     std::cout << "\n" << '\n';
     std::cout << "Sono disponibili le seguenti modalità di gioco:" << '\n';
-    std::cout << "\t · in locale (ossia solo su questo computer), con la possibilità di giocare:" << '\n';
+    std::cout << "\t · in locale, con la possibilità di giocare:" << '\n';
     std::cout << "\t\t · contro un amico;" << '\n';
     std::cout << "\t\t · contro la CPU;" << '\n';
     std::cout << "\t · in condivisione su rete locale; in questo caso:" << '\n';
@@ -60,8 +61,8 @@ int main()
     {
       partita = new Game();
     }else if ( scelta == 2)
+    partita = new OnlineGame();
     {
-      partita = new OnlineGame();
     }
   } while(scelta != 1 && scelta != 2);
 

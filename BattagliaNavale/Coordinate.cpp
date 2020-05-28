@@ -15,7 +15,7 @@ Coordinate::Coordinate(int x, int y):_x(x),_y(y)
 
 }
 
-// Getters e Setters
+// ------- Getters e Setters -------
 int Coordinate::getX() const
 {
   return _x;
@@ -39,6 +39,7 @@ void Coordinate::setY(int y)
   _y = y;
 }
 
+// --------------------------
 
 bool Coordinate::getFromPlayer(int N) // include i cin per impostare le coordinate
 {
@@ -74,21 +75,21 @@ bool Coordinate::getFromPlayer(int N) // include i cin per impostare le coordina
   return true;
 }
 
-// Operatore di assegnazione
-void Coordinate::operator=(Coordinate Other)
+
+void Coordinate::operator=(Coordinate Other) // Operatore di assegnazione
 {
   _x = Other.getX();//non sono necessari i get
   _y = Other.getY();
 }
 
-// Somma di due coordinate
-Coordinate Coordinate::operator+(Coordinate Other)
+
+Coordinate Coordinate::operator+(Coordinate Other) // Somma di due coordinate
 {
   return Coordinate(_x+Other.getX(),_y+Other.getY());
 }
 
-// Distanza verticale o orizzontale tra due coordinate
-int Coordinate::operator-(Coordinate Other) //NON SONO SICURO CHE IL MENO SIA IL MIGLIOR OPERATORE POSSIBILE PER STA COSA
+
+int Coordinate::operator-(Coordinate Other) // Distanza verticale o orizzontale tra due coordinate
 {
   if (_x == Other.getX())
   {
@@ -102,8 +103,8 @@ int Coordinate::operator-(Coordinate Other) //NON SONO SICURO CHE IL MENO SIA IL
   }
 }
 
-// Confronto tra due coordinate
-bool Coordinate::operator==(Coordinate Other) const
+
+bool Coordinate::operator==(Coordinate Other) const// Confronto tra due coordinate
 {
   if (_x == Other.getX() && _y==Other.getY())
     return true;
@@ -111,13 +112,13 @@ bool Coordinate::operator==(Coordinate Other) const
 }
 
 
-void Coordinate::print()const
+void Coordinate::print()const//stampa le coordinate nel formato scelto
 {
   std::cout << "(" << (char)(_x + 65) << ", " << _y+1 << ")";
 }
 
-// Interazione con la struttura Co
-Co Coordinate::getStruct()
+
+Co Coordinate::getStruct()// Interazione con la struttura Co, inviabile tramite la rete
 {
   Co a;
   a._x = _x;
@@ -126,16 +127,13 @@ Co Coordinate::getStruct()
 }
 
 
-Coordinate::Coordinate(Co strutt):_x(strutt._x),_y(strutt._y)
+Coordinate::Coordinate(Co strutt):_x(strutt._x),_y(strutt._y)// Passaggio delle coordinate alla struttura Co
 {
 
 }
 
 
-bool Coordinate::operator!=(Coordinate Other) const
+bool Coordinate::operator!=(Coordinate Other) const // ridefinizione disuguaglianza tra coordinate
 {
   return !(*this==Other);
-  // if (_x != Other._x || _y!=Other._y)
-  //   return true;
-  // return false;
 }

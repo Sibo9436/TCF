@@ -33,12 +33,7 @@ bool Game::Generate() //genera il nome dei giocatori e le loro plancie
     if (scelta==1)
     {
       _players[1] = new Bot();
-      // std::cout << std::string(100,'\n'); //"aggiorna" schermo
-      // std::cout << "Battezza il tuo avversario: " << '\n';
-      // std::cout << std::string(25,'\n'); //"aggiorna" schermo
-      // std::cin >> nome;
       _players[1]->setName();
-      // std::cin.ignore(10000,'\n');
     }else if (scelta == 2)
     {
       _players[1] = new Human();
@@ -69,8 +64,6 @@ bool Game::Start() //contiene il game loop
   std::string a;
   while(true)
   {
-
-
     _focus = _counter%2;
     if (_focus==0)
     {
@@ -198,22 +191,20 @@ bool OnlineGame::Generate() //genera il nome dei giocatori e le loro plancie
   return true;
 }
 
-void OnlineGame::Print()
+void OnlineGame::Print()//stampa il separatore dei turni
 {
-//  std::cout << std::string(100,'\n'); //"aggiorna" schermo
   std::cout << "\n\n ---------------- Turno " << _turno << " ---------------- \n";
   _player->PrintRad();
   _player->PrintFlo();
 }
 
-bool OnlineGame::Start()
+bool OnlineGame::Start()//contiene il game loop
 {
   while(true)
   {
     _turno++;
     if (_player->IsServer())
     {
-      // std::cout << std::string(100,'\n'); //"aggiorna" schermo
       Print();
       _player->Attack();
       if (_player->Won())
@@ -230,7 +221,6 @@ bool OnlineGame::Start()
         std::cout << "Hai perso..." << '\n';
         return true;
       }
-      // _player->Print();
     }else if(_player->IsClient())
     {
       Print();
@@ -248,12 +238,11 @@ bool OnlineGame::Start()
         Print();
         return true;
       }
-      // _player->Print();
     }
   }
 }
 
-bool OnlineGame::Endgame()
+bool OnlineGame::Endgame()// Giunge al termine della partita stampando statistiche e ringraziamenti
 {
   std::string a;
   char go;

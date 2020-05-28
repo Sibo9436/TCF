@@ -4,7 +4,7 @@
 #include "Nave.h"
 
 enum class Flotta
-{  // SI possono chiamare solo es. Flotta::Sea
+{
   Sea,
   Ship,
   Near

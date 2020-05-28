@@ -730,6 +730,7 @@ void Locale::Attack()
 
 void Locale::Down()
 {
+
   std::cout << "In attesa di "<< _oppo << "..." << '\n';
   Co subito;
   read(_socket, &subito, sizeof(subito));
