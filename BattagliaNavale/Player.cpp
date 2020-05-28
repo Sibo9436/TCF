@@ -94,8 +94,7 @@ bool Player::Sunk(int x, int y) // Dichiara se l'attacco ha Affondato una nave
   {
     if(_navi[i].Hit(A))
     {
-      // std::cout << "Affondata nave di "<<_nome << '\n';
-      _funda = _navi[i];
+     _funda = _navi[i];
 
       for (int j = 0; j < _navi[i].getlunghezza(); j++)
       {
@@ -678,6 +677,8 @@ bool Locale::Client()
 
 void Locale::Attack()
 {
+  std::cin.clear();
+  std::cin.ignore(10000,'~');
   Coordinate A;
 
   if(!A.getFromPlayer(_Screen.getN()))
