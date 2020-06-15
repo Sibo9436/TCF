@@ -4,6 +4,8 @@
 #include "Game.h"
 #include <iostream>
 
+// Qui il giocatore sceglie se giocare online o in locale
+// il gioco viene quindi generato e lanciato, con la possibilità di fare più partite dello stesso tipo
 
 int main()
 {
@@ -29,7 +31,7 @@ int main()
   std::cout << "Premi 'r' per conoscere le regole del gioco ";
   char rulez;
   std::cin >> rulez;
-  
+
   std::cin.ignore(10000,'\n');
   if (rulez == 'r')
   {

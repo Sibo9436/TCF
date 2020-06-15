@@ -171,7 +171,7 @@ bool OnlineGame::Generate() //genera il nome dei giocatori e le loro plancie
   std::cout << std::string(100,'\n'); //"aggiorna" schermo
   do
   {
-    std::cout << "Per usare il tuo computer come server\t\t->\t \033[43;1;5m PREMI 1 \033[0m \nPer connetterti al computer del tuo avversario\t\t->\t \033[43;1;5m PREMI 2 \033[0m" << '\n';
+    std::cout << "Per usare il tuo computer come server\t\t->\t \033[43;1;5m PREMI 1 \033[0m \nPer connetterti al computer del tuo avversario\t->\t \033[43;1;5m PREMI 2 \033[0m" << '\n';
     std::cout << std::string(25,'\n'); //"aggiorna" schermo
     std::cin >> scelta;
     std::cin.ignore(10000,'\n');

@@ -257,7 +257,7 @@ bool Tabella::setRadar(int x, int y,Flotta flo) //chiamato dopo un attacco, dich
   }
 }
 
-void Tabella::Greta()//Pulisce il mare
+void Tabella::Greta() //Pulisce il mare
 {
   for (int i=0; i<n; i++)
   {

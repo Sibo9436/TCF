@@ -14,7 +14,6 @@ Coordinate::Coordinate(int x, int y):_x(x),_y(y)
 {
 
 }
-
 // ------- Getters e Setters -------
 int Coordinate::getX() const
 {
