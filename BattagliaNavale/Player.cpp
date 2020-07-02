@@ -3,48 +3,64 @@
 #include "Nave.h"
 #include "Coordinate.h"
 #include <iostream>
+#include <netinet/in.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <cstdlib>
+#include <ctime>
+#include <random>
+#include<cstring>
 
+//numeri random
+  std::random_device rd;
+  std::mt19937 mt(rd());
+  std::uniform_int_distribution<int> dist(0,7);
+  std::uniform_int_distribution<int> i_dist(0,3);
+  std::uniform_int_distribution<int> CharDist(0,25);
+  std::uniform_int_distribution<int> NumDist(0,9);
+
+//---------------------------------------------------------------Comuni a player---------------------------------------//
 
 Player::Player()
 {
-
   _Plancia.createFlotta();
   _Plancia.createRadar();
-  _Screen.createRadar();
 }
 
 std::string Player::getName()
 {
   return _nome;
 }
-void Player::setName(std::string Nome)
-{
-  _nome = Nome;
-}
 
-bool Player::Check(Coordinate c1, Coordinate c2) //controlla se casella di partenza e di arrivo sono compatibili
+bool Player::Check(Coordinate c1, Coordinate c2) //controlla se casella di partenza e di arrivo sono compatibili quando posiziono una nave
 {
-  if (c2.getX() < 0 || c2.getX() > 9)
+  int x1 = c1.getX();
+  int y1 = c1.getY();
+  int x2 = c2.getX();
+  int y2 = c2.getY();
+
+  if (x2 < 0 || x2 > _Plancia.getN()-1)
     return false;
-  if (c2.getY() < 0 || c2.getY() > 9)
+  if (y2 < 0 || y2 > _Plancia.getN()-1)
     return false;
-  if (c1.getX()==c2.getX())
+  if (x1==x2)
   {
-    int max = (c2.getY() > c1.getY())? c2.getY() : c1.getY();
-    int min = (c2.getY() < c1.getY())? c2.getY() : c1.getY();
+    int max = (y2 > y1)? y2 : y1;
+    int min = (y2 < y1)? y2 : y1;
     for (int i = min; i <=  max; i++)
     {
-      if (_Plancia[i][c1.getX()] != Flotta::Sea)
+      if (_Plancia[i][x1] != Flotta::Sea)
         return false;
     }
     return true;
-  } else if (c1.getY()==c2.getY())
+  } else if (y1==y2)
   {
-    int max = (c2.getX() > c1.getX())? c2.getX() : c1.getX();
-    int min = (c2.getX() < c1.getX())? c2.getX() : c1.getX();
+    int max = (x2 > x1)? x2 : x1;
+    int min = (x2 < x1)? x2 : x1;
     for (int i = min; i <= max; i++)
     {
-      if (_Plancia[c1.getY()][i] != Flotta::Sea)
+      if (_Plancia[y1][i] != Flotta::Sea)
         return false;
     }
     return true;
@@ -53,12 +69,72 @@ bool Player::Check(Coordinate c1, Coordinate c2) //controlla se casella di parte
     std::cout << "ERRORE IN CHECK(Player.cpp) \n";
     return false;
   }
-
 }
 
+int Player::getColpi_sparati()
+{
+  return colpi_sparati;
+}
 
+void Player::PrintRad() //stampa lo schermo di un giocatore senza la flotta
+{
+  std::cout << "\n\t\t\tCampo nemico\n\n";
+  _Plancia.PrintRadar();
+}
 
-Nave Player::setShips(int len, Coordinate coord){ //crea e pone le navi
+void Player::PrintFlo() //stampa lo schermo di un giocatore con la flotta
+{
+  std::cout << "\n\t\t\tLa tua flotta\n\n";
+  _Plancia.PrintFlotta();
+}
+
+bool Player::Sunk(int x, int y) // Determina se l'attacco ha Affondato una nave e nel caso rivela le caselle attorno al relitto
+{
+  Coordinate A(x,y);
+  for (int i = 0; i < _n; i++)
+  {
+    if(_navi[i].Hit(A))
+    {
+     _funda = _navi[i];
+
+      for (int j = 0; j < _navi[i].getlunghezza(); j++)
+      {
+        for(int h = (_navi[i])[j].getY()-1; h <= (_navi[i])[j].getY()+1; h++)
+        {
+          for(int k = (_navi[i])[j].getX()-1; k <= (_navi[i])[j].getX()+1; k++)
+          {
+            if((h > -1) && (h < _Plancia.getN()) && (k > -1) && (k < _Plancia.getN()) && (_Plancia.getRadar(k,h)))
+            {
+              _Plancia.setRadar(k,h);
+            }
+          }
+        }
+      }
+      _contatore--;
+      return true;
+    }
+  }
+  return false;
+}
+
+void Player::Stats() // Stampa le statistiche di gioco di un giocatore
+{
+  std::cout << _nome << ":" << '\n';
+  std::cout << "\tNumero di colpi sparati:\t\t" << colpi_sparati << '\n';
+  std::cout << "\tNumero di colpi a segno:\t\t" << colpi_a_segno << '\n';
+  std::cout << "\tPrecisione:\t\t\t\t" << 100*(float)colpi_a_segno/(float)colpi_sparati << "%\n\n";
+  std::cout << "\tNumero di navi nemiche affondate:\t" << navi_affondate << '\n';
+  std::cout << "\tNumero di navi superstiti:\t\t" << _contatore << '\n';
+}
+//--------------------------------------------------------------------Solo Human---------------------------------------
+
+void Human::setName(std::string Nome)
+{
+  _nome = Nome;
+}
+
+Nave Human::setShips(int len, Coordinate coord) //crea e pone le navi
+{
     int l = len - 1;
     Coordinate U,D,R,L;
     U = coord + Coordinate(0,-l);
@@ -66,47 +142,47 @@ Nave Player::setShips(int len, Coordinate coord){ //crea e pone le navi
     R = coord + Coordinate(+l,0);
     L = coord + Coordinate(-l,0);
 
+    //stabilisce quali direzioni sono valide
     bool u = Check(coord, U);
     bool d = Check(coord, D);
     bool r = Check(coord, R);
     bool le = Check(coord, L);
 
-    //bool le = Check(x1,y1,x1-l,y1);
-    //bool u = Check(x1,y1,x1,y1-l);
-    //bool d = Check(x1,y1,x1,y1+l);
-
     if(!u && !d && !r && !le)
     {
       std::cout << "not valid\n Prova coordinate valide\n";
+      std::cin.ignore(10000,'\n');
 
       Coordinate A;
-      A.getFromPlayer();
+      A.getFromPlayer(_Plancia.getN());
       return setShips(len,A);
     }
+
     if (u)
     {
-      std::cout << "Premi u per mettere la nave in ";
+      std::cout << "Premi u per posizionare l'altra estremità della nave in ";
       U.print();
       std::cout << "\n";
     }
     if (d)
     {
-      std::cout << "Premi d per mettere la nave in ";
+      std::cout << "Premi d per posizionare l'altra estremità della nave in ";
       D.print();
       std::cout << "\n";
     }
     if (le)
     {
-      std::cout << "Premi l per mettere la nave in ";
+      std::cout << "Premi l per posizionare l'altra estremità della nave in ";
       L.print();
       std::cout << "\n";
     }
     if (r)
     {
-      std::cout << "Premi r per mettere la nave in ";
+      std::cout << "Premi r per posizionare l'altra estremità della nave in ";
       R.print();
       std::cout << "\n";
     }
+
     char direzione;
     std::cin >> direzione;
     std::cin.ignore(10000,'\n');
@@ -131,16 +207,17 @@ Nave Player::setShips(int len, Coordinate coord){ //crea e pone le navi
       return Nave(coord, R);
     }
     std::cout << "not valid \n Prova direzione valida\n";
-    return setShips(len,coord);
-}
+    return setShips(len,coord);}
 
-void Player::Mozzo(int i, int lunghezza) //chiede le coordinate delle navi da creare
+void Human::Mozzo(int i, int lunghezza) //chiede le coordinate delle navi da creare
 {
   Coordinate A;
-  if(A.getFromPlayer())
+  if(A.getFromPlayer(_Plancia.getN()))
   {
     _navi[i] = setShips(lunghezza, A);
-    Print();
+    std::cout << std::string(100,'\n'); //"aggiorna" schermo
+    PrintFlo();
+    std::cout << std::string(12,'\n');
 
   }else
   {
@@ -149,20 +226,11 @@ void Player::Mozzo(int i, int lunghezza) //chiede le coordinate delle navi da cr
 
 }
 
-void Player::Print() //stampa lo schermo di un giocatore
-{
-  std::cout << "\n\t\t\tCampo nemico\n\n";
-  _Screen.PrintRadar();
-  std::cout << "\n\t\t\tLa tua Flotta\n\n";
-  _Plancia.PrintFlotta();
-
-}
-
-void Player::Attack(Player &Other) //dichiara un attacco
+void Human::Attack(Player * Other) //dichiara un attacco
 {
   Coordinate A;
 
-  if(!A.getFromPlayer())
+  if(!A.getFromPlayer(_Plancia.getN()))
   {
     std::cout << "Coordinate fuori range \n";
     Attack(Other);
@@ -170,79 +238,537 @@ void Player::Attack(Player &Other) //dichiara un attacco
 
   int x = A.getX();
   int y = A.getY();
-  if (!_Screen.getRadar(x,y))
+  if (!Other->_Plancia.getRadar(x,y))
   {
     std::cout << "Quadrante già colpito" << '\n';
     Attack(Other);
   }else
   {
-    Other._Plancia.setRadar(x,y); //Possibilità di fare overload di setradar per non prendere necessariamente flotta
-    Other.Sunk(x,y);
-    //Spostiamo Other._Plancia.setRadar in Hit()?
-    if(_Screen.setRadar(x,y,Other._Plancia[y][x]))
-      colpi_a_segno++;
+    std::cout << std::string(100,'\n'); //"aggiorna" schermo
+    if(Other->_Plancia.setRadar(x,y)) //Possibilità di fare overload di setradar per non prendere necessariamente flotta
+      {
+        colpi_a_segno++;
+        if(Other->Sunk(x,y))
+        {
+          std::cout << "Colpita e affondata nave di " << Other->getName() << "!\n";
+          navi_affondate++;
+        }else
+        {
+          std::cout << "Colpito!\n";
+        }
+      }else
+      {
+        std::cout << "Mancato!\n";
+      }
     colpi_sparati++;
   }
 }
 
-//Eliminiamo Player::Hit e mettiamo direttamente il for in Attack?
-void Player::Sunk(int x, int y) // Dichiara se l'attacco ha Affondato una nave
-{
-  Coordinate A(x,y);
-  for (int i = 0; i < _n; i++)
-  {
-    if(_navi[i].Hit(A))
-    {
-      std::cout << "Affondata nave di "<<_nome << '\n';
-
-      for (int j = 0; j < _navi[i].getlunghezza(); j++)
-      {
-        for(int h = (_navi[i])[j].getY()-1; h <= (_navi[i])[j].getY()+1; h++)
-        {
-          for(int k = (_navi[i])[j].getX()-1; k <= (_navi[i])[j].getX()+1; k++)
-          {
-            if((h > -1) && (h < 10) && (k > -1) && (k < 10) && (_Plancia[h][k] != Flotta::Ship))
-            {
-              std::cout << "se funzionassi metterei @ in " << h << " " << k << "\n";
-            }
-          }
-        }
-      }
-      _contatore--;
-    }
-  }
-}
-
-
-int Player::getContatore() const //restituisce il numero delle navi sopravvissute
+int Human::getContatore() const //restituisce il numero delle navi sopravvissute
 {
   return _contatore;
 }
 
-void Player::Riempimento() //Riempie la plancia chiamando mozzo nNavi volte
+void Human::Riempimento() //Riempie la plancia chiamando mozzo nNavi volte
 {
   std::cout << std::string(100,'\n');
-  std::cout << _nome << ", inizia la fase di creazione..."<< '\n';
-  std::cout << "Inserisci la tua portaerei" << '\n';
+  PrintFlo();
+  std::cout << std::string(12,'\n');
+  std::cout << _nome << ", inizia la fase di creazione...\n"<< '\n';
+  std::cout << "Posiziona un'estremità della tua portaerei (5 caselle)" << '\n';
   Mozzo(0,5);
-  std::cout << "Inserisci la tua corazzata" << '\n';
+  std::cout << "Posiziona un'estremità della tua corazzata (4 caselle)" << '\n';
   Mozzo(1,4);
-  std::cout << "Inserisci i tuoi incrociatori" << '\n';
+  std::cout << "Posiziona un'estremità del tuo primo incrociatore (3 caselle)" << '\n';
   Mozzo(2,3);
+  std::cout << "Posiziona un'estremità del tuo secondo incrociatore (3 caselle)" << '\n';
   Mozzo(3,3);
-  std::cout << "Inserisci il tuo cacciatorpediniere" << '\n';
+  std::cout << "Posiziona un'estremità del tuo cacciatorpediniere (2 caselle)" << '\n';
   Mozzo(4,2);
   std::string a;
-  std::cout << "Premi un tasto qualsiasi" << '\n';
+  std::cout << "Premi un tasto qualsiasi e poi invio\n" << '\n';
   std::cin >> a;
   _Plancia.Greta();
   std::cout << std::string(100,'\n');
 }
 
-void Player::Stats()
+//---------------------------------------------------------------------Solo CPU
+
+
+
+void Player::setName() //genera un nome per il bot simile a R2D2
 {
+  char a = (char)(CharDist(mt)+65);
+  std::string b = std::to_string(NumDist(mt));
+  char c = (char)(CharDist(mt)+65);
+  std::string d = std::to_string(NumDist(mt));
+
+  _nome += a;
+  _nome += b;
+  _nome += c;
+  _nome += d;
+}
+
+Nave Bot::setShips(int len, Coordinate coord) //crea e pone le navi in maniera casuale
+{
+
+    int l = len - 1;
+    Coordinate U,D,R,L;
+
+    U = coord + Coordinate(0,-l);
+    D = coord + Coordinate(0,+l);
+    R = coord + Coordinate(+l,0);
+    L = coord + Coordinate(-l,0);
+
+    bool u = Check(coord, U);
+    bool d = Check(coord, D);
+    bool r = Check(coord, R);
+    bool le = Check(coord, L);
+
+    if(!u && !d && !r && !le)
+    {
+      Coordinate A = random();
+      return setShips(len,A);
+    }
+
+    int direzione = i_dist(mt);
+
+    if (direzione == 0 && u)
+    {
+      _Plancia.setNave(coord, U);
+      return Nave(coord, U);
+    }
+    if (direzione == 1 && d)
+    {
+      _Plancia.setNave(coord, D);
+      return Nave(coord, D);
+    }
+    if (direzione == 2 && le)
+    {
+      _Plancia.setNave(coord, L);
+      return Nave(coord, L);
+    }
+    if (direzione == 3 && r)
+    {
+      _Plancia.setNave(coord, R);
+      return Nave(coord, R);
+    }
+    return setShips(len,coord);
+}
+
+void Bot::Mozzo(int i, int lunghezza) //chiede le coordinate delle navi da creare
+{
+  Coordinate A = random();
+  _navi[i] = setShips(lunghezza, A);
+}
+
+void Bot::Riempimento() //Riempie la plancia chiamando mozzo nNavi volte
+{
+  std::cout << std::string(100,'\n');
+  Mozzo(0,5);
+  Mozzo(1,4);
+  Mozzo(2,3);
+  Mozzo(3,3);
+  Mozzo(4,2);
+  _Plancia.Greta();
+}
+
+void Bot::Print() //stampa lo schermo di un giocatore
+{
+  std::cout << "\n\t\t\tCampo nemico\n\n";
+  std::cout << "\n\t\t\tLa tua Flotta\n\n";
+  _Plancia.PrintFlotta();
+}
+
+Coordinate Bot::random() //coordinate random
+{
+  int x = dist(mt);
+  int y = dist(mt);
+  Coordinate coord = Coordinate(x,y);
+  return coord;
+}
+
+void Bot::Attack(Player * Other) //dichiara un attacco random se non ha ancora individuato una nave, altrimenti cerca di colpire il bersaglio individuato
+{
+  Coordinate A;
+  int x, y;
+  if(!this->targetAcquired) //attacco random
+  {
+    A = random();
+    this->target = A;
+    x = A.getX();
+    y = A.getY();
+
+    if (!Other->_Plancia.getRadar(x,y)) //controlla che la casella random A sia attaccabile, se non lo è richiama se stessa
+    {
+      Attack(Other);
+    }
+
+    else
+    {
+      std::cout << "\n\n" << this->_nome << " attacca in ";
+      A.print();
+      std::cout <<  "...\n\n";
+      if(Other->_Plancia.setRadar(x,y))
+      {
+        std::cout << "Colpito!\n";
+        this->targetAcquired=true;
+        this->firstStrike = A;
+        this->i = i_dist(mt);
+        Other->Sunk(x,y);
+        colpi_a_segno ++;
+      }
+
+      else
+
+      {
+        std::cout << "Mancato!\n";
+      }
+      colpi_sparati++;
+    }
+
+  }else if(this->targetAcquired) //se il bot ha acquisito un bersaglio nei turni precedenti cerca di affondare la nave
+  {
+    this->isAcquired = this->target+this->targetDirection[this->i];
+    A=this->isAcquired;
+
+    int x = A.getX();
+    int y = A.getY();
+
+    if (!Other->_Plancia.getRadar(x,y))
+    {
+      if(this->target==this->firstStrike)
+      {
+        this->i = (i+1)%4;
+      }
+
+      if(this->target!=this->firstStrike)
+      {
+        this->target=this->firstStrike;
+        this->i = (i+2)%4;
+      }
+      Attack(Other);
+    }else
+    {
+      std::cout << "\n\n" << this->_nome << " attacca in ";
+      A.print();
+      std::cout <<  "...\n\n";
+      if(Other->_Plancia.setRadar(x,y))
+      {
+
+        this->target = this->isAcquired;
+
+        colpi_a_segno++;
+
+        if(Other->Sunk(x,y))
+        {
+         this->targetAcquired=false;
+         std::cout << "Colpita e affondata nave di " << Other->getName() << "!\n";
+         navi_affondate++;
+       }else
+       {
+         std::cout << "Colpito!\n";
+       }
+      }
+      else
+      {
+        std::cout << "Mancato!\n";
+        if(this->target==this->firstStrike)
+        {
+          this->i = (i+1)%4;
+        }
+        if(this->target!=this->firstStrike)
+        {
+          this->target=this->firstStrike;
+
+          this->i = (i+2)%4;
+        }
+      }
+      colpi_sparati++;
+    }
+  }
+}
+
+int Bot::getContatore() const //restituisce il numero delle navi sopravvissute
+{
+  return _contatore;
+}
+
+
+
+//-------------------------------------------------------------------solo online---------------------------------
+
+void Locale::PrintRad() //stampa lo schermo di un giocatore senza la flotta
+{
+  std::cout << "\n\t\t\tCampo nemico\n\n";
+  _Screen.PrintRadar();
+}
+
+bool Locale::Server() //inizializza la partita per il giocatore e lo mette in condizione di ricevere connessioni da altre macchine
+{
+  _Screen.createRadar();
+
+  std::cout << std::string(100,'\n');
+
+  int sock = socket(PF_INET, SOCK_DGRAM, 0);
+  sockaddr_in loopback;
+  memset(&loopback, 0, sizeof(loopback));
+  loopback.sin_family = AF_INET;
+  loopback.sin_addr.s_addr = INADDR_LOOPBACK;
+  loopback.sin_port = htons(9);
+  connect(sock, reinterpret_cast<sockaddr*>(&loopback),sizeof(loopback));
+  socklen_t addlen = sizeof(loopback);
+  getsockname(sock, reinterpret_cast<sockaddr*>(&loopback), &addlen);
+  close(sock);
+  char buf[INET_ADDRSTRLEN];
+  inet_ntop(AF_INET, &loopback.sin_addr, buf, INET_ADDRSTRLEN);
+
+  std::cout << "Il tuo indirizzo IP è " << buf << "\n";
+  std::cout << "In attesa di uno sfidante...";
+  std::cout << std::string(25,'\n');
+  int server_fd;
+  struct sockaddr_in address;
+  int opt = 1;
+  int addrlen = sizeof(address);
+
+  if ((server_fd = socket(AF_INET,SOCK_STREAM, 0)) == 0)
+  {
+    std::cout << "Socket fallito\n\n";
+    return false;
+  }
+
+  if (setsockopt(server_fd,SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)))
+  {
+    std::cout << "setsockopt fallito\n\n";
+    return false;
+  }
+  address.sin_family = AF_INET;
+  address.sin_addr.s_addr = INADDR_ANY;
+  address.sin_port = htons(8080);
+
+  if (bind(server_fd,(struct sockaddr *)&address, sizeof(address))<0)
+  {
+    std::cout << "Bind fallito\n\n";
+    return false;
+  }
+  if (listen(server_fd, 3) < 0 )
+  {
+    std::cout << "Listen fallito\n\n";
+    return false;
+  }
+  if ((_socket = accept(server_fd, (struct sockaddr *)&address,(socklen_t*)&addrlen))<0)
+  {
+    std::cout << "Connessione fallita\n\n";
+    return false;
+  }
+  struct sockaddr_in* pV4Addr = (struct sockaddr_in*)&address;
+  struct in_addr ipAddr = pV4Addr->sin_addr;
+  char indie[INET_ADDRSTRLEN];
+  inet_ntop( AF_INET, &ipAddr, indie, INET_ADDRSTRLEN );
+  std::cout << "Connessione stabilita con " << indie << '\n';
+  _isServer=true;
+
+  char * nomino = new char[_nome.size()];
+  int l = _nome.size();
+
+  std::copy(_nome.begin(),_nome.end(),nomino);
+  send(_socket,&l, sizeof(int),0);
+  send(_socket,nomino, sizeof(char)*l,0);
+  int l2;
+  read(_socket,&l2,sizeof(int));
+  char buffer[l2] = {0};
+  read(_socket,&buffer,sizeof(char)*l2);
+  for (int i = 0; i < l2 ; i++)
+  {
+    _oppo = _oppo + buffer[i];
+  }
+
+  return true;
+}
+
+void Locale::sunk(Nave relitto)//si occupa di controllare gli effetti del colpo dell'avversario
+{
+  for (int j = 0; j < relitto.getlunghezza(); j++)
+  {
+    for(int h = relitto[j].getY()-1; h <= relitto[j].getY()+1; h++)
+    {
+      for(int k = relitto[j].getX()-1; k <= relitto[j].getX()+1; k++)
+      {
+        if((h > -1) && (h < _Screen.getN()) && (k > -1) && (k < _Screen.getN()) && (_Screen.getRadar(k,h)))
+        {
+          _Screen.setRadar(k, h, Flotta::Sea);
+        }
+      }
+    }
+  }
+}
+
+bool Locale::Client()//inizializza la partita per il giocatore e lo mette in condizione di collegarsi ad un'altra macchina
+{
+  _Screen.createRadar();
+  struct sockaddr_in serv_addr;
+  char* indirizzo = new char[15];
+  std::cout << std::string(100,'\n');
+	std::cout << "Digita l'indirizzo a cui connetterti" << '\n';
+  std::cout << std::string(25,'\n');
+	std::cin >> indirizzo;
+  std::cin.ignore(10000,'\n');
+  if ((_socket = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+  {
+    printf("\n Errore nella creazione del socket \n");
+    return false;
+  }
+
+  serv_addr.sin_family = AF_INET;
+  serv_addr.sin_port = htons(8080);
+
+  // Converte gli indirizzi IPv4 and IPv6 da testo a binario
+  if(inet_pton(AF_INET, indirizzo, &serv_addr.sin_addr)<=0)
+  {
+    printf("\nInvalid address/ Address not supported \n");
+    return false;
+  }
+
+  if (connect(_socket, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+  {
+    printf("\nConnection Failed \n");
+    return false;
+  }
+  _isClient = true;
+
+  char * nomino = new char[_nome.size()];
+  int l = _nome.size();
+
+  std::copy(_nome.begin(),_nome.end(),nomino);
+  send(_socket,&l, sizeof(int),0);
+  send(_socket,nomino, sizeof(char)*l,0);
+  int l2;
+  read(_socket,&l2,sizeof(int));
+  char buffer[l2] = {0};
+  read(_socket,&buffer,sizeof(char)*l2);
+  for (int i = 0; i < l2 ; i++)
+  {
+    _oppo = _oppo + buffer[i];
+  }
+  return true;
+}
+
+void Locale::Attack() //rivece le coordinate di attacco del giocatore, le invia all'altra macchina e studia la risposta
+{
+  Coordinate A;
+
+  if(!A.getFromPlayer(_Screen.getN()))
+  {
+    std::cout << "Coordinate fuori range \n";
+    Attack();
+  }
+  int x = A.getX();
+  int y = A.getY();
+  if (!_Screen.getRadar(x,y))
+  {
+    std::cout << "Quadrante già colpito" << '\n';
+    Attack();
+  }else
+  {
+    std::cout << std::string(100,'\n'); //"aggiorna" schermo
+    Co att = A.getStruct();
+    send(_socket, &att, sizeof(att), 0);
+    int result;
+    read(_socket, &result, sizeof(int));
+    Flotta colpo = (result == 1 || result == 2 || result == -1)? Flotta::Ship : Flotta::Sea;
+    if(_Screen.setRadar(x,y,colpo))
+    {
+      colpi_a_segno++;
+      if (result == 2 || result == -1)
+      {
+        std::cout << "Colpito e affondato!\n" << '\n';
+        Co inizio, fine;
+        read(_socket, &inizio, sizeof(inizio));
+        read(_socket, &fine, sizeof(fine));
+        Nave relitto(inizio, fine);
+        sunk(relitto);
+        navi_affondate++;
+      }else if (result == 1)
+      {
+        std::cout << "Colpito!\n" << '\n';
+      }
+    }else
+    {
+      std::cout << "Mancato!\n" << '\n';
+    }
+    if (result == -1)
+    {
+      _win = true;
+    }
+    colpi_sparati++;
+  }
+}
+
+void Locale::Down()//fase di "attesa" durante il turno dell'avversario, riceve l'attacco, aggiorna la plancia e invia il risultato
+{
+
+  std::cout << "In attesa di "<< _oppo << "..." << '\n';
+  Co subito;
+  read(_socket, &subito, sizeof(subito));
+  int snd;
+  Coordinate Colpo(subito);
+  // std::cin.ignore(10000,'\n');
+  std::cout << std::string(100,'\n'); //"aggiorna" schermo
+  std::cout << _oppo << " spara in ";
+  Colpo.print();
+  std::cout << "...\n\n";
+  if(_Plancia.setRadar(subito._x,subito._y))
+  {
+    if(Sunk(subito._x,subito._y))
+    {
+      std::cout << "Colpito e affondato!\n\n";
+      snd = 2;
+    }else
+    {
+      std::cout << "Colpito!\n\n";
+      snd = 1;
+    }
+  }else
+  {
+    std::cout << "Mancato!\n\n";
+    snd = 0;
+  }
+  if (getContatore() == 0)
+  {
+    snd = -1;
+  }
+  send(_socket,&snd,sizeof(int),0);
+  if (snd == 2 || snd == -1)
+  {
+    Coordinate prua = _funda[0];
+    Coordinate poppa = _funda[_funda.getlunghezza()-1];
+    Co testa = prua.getStruct();
+    Co coda = poppa.getStruct();
+    send(_socket, &testa, sizeof(testa), 0);
+    send(_socket, &coda, sizeof(coda), 0);
+  }
+}
+
+void Locale::Stats()//invia le proprie statistiche e riceve quelle dell'avversario per poi stamparle a schermo
+{
+  int mystats[5] = {colpi_sparati, colpi_a_segno, (int)(100*(float)colpi_a_segno/(float)colpi_sparati),navi_affondate,_contatore};
+  int hisstats[5]={0};
+  send(_socket,&mystats,sizeof(int)*5,0);
+  read(_socket, &hisstats,sizeof(int)*5);
+
+
   std::cout << _nome << ":" << '\n';
-  std::cout << "\tNumero di colpi sparati: " << colpi_sparati<< '\n';
-  std::cout << "\tNumero di colpi a segno: " << colpi_a_segno<< '\n';
-  std::cout << "\tPrecisione: " << 100*(float)colpi_a_segno/(float)colpi_sparati<< "%\n\n\n";
+  std::cout << "\tNumero di colpi sparati:\t\t" << mystats[0] << '\n';
+  std::cout << "\tNumero di colpi a segno:\t\t" << mystats[1] << '\n';
+  std::cout << "\tPrecisione:\t\t\t\t" << mystats[2] << "%\n\n";
+  std::cout << "\tNumero di navi nemiche affondate:\t" << mystats[3] << '\n';
+  std::cout << "\tNumero di navi superstiti:\t\t" << mystats[4] << '\n';
+
+  std::cout << _oppo << ":" << '\n';
+  std::cout << "\tNumero di colpi sparati:\t\t" << hisstats[0] << '\n';
+  std::cout << "\tNumero di colpi a segno:\t\t" << hisstats[1] << '\n';
+  std::cout << "\tPrecisione:\t\t\t\t" << hisstats[2] << "%\n\n";
+  std::cout << "\tNumero di navi nemiche affondate:\t" << hisstats[3] << '\n';
+  std::cout << "\tNumero di navi superstiti:\t\t" << hisstats[4] << '\n';
+
 }

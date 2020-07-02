@@ -5,21 +5,45 @@
 #include "Nave.h"
 #include <iostream>
 
-class Game
+
+class AbstractGame
+{
+public:
+  virtual bool Generate() = 0;
+  virtual bool Start() = 0;
+  virtual bool Endgame() = 0;
+protected:
+  int _turno=0;
+};
+
+
+class Game : public AbstractGame
 {
 public:
   Game();
   bool Generate();
   bool Start();
-  void Endgame();
-
+  void Print(Player*, Player*);
+  bool Endgame();
 
 private:
-  Player _player1;
-  Player _player2;
-
+  Player ** _players = new Player*[2];
+  int _counter = 0;
+  int _focus = 0;
+  int _unfocused;
 };
 
+
+class OnlineGame : public AbstractGame
+{
+public:
+  bool Generate();
+  bool Start();
+  bool Endgame();
+  void Print();
+private:
+  Locale *_player;
+};
 
 
 #endif

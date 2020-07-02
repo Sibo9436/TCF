@@ -22,43 +22,5 @@ private:
   bool _affondato;
 };
 
-// class CacciaTorpediniere : public Nave
-// {
-// public:
-//   CacciaTorpediniere(int,int,int,int);
-// private:
-//   const int _lunghezza = 2;
-//
-// };
-//
-//
-// class Corazzata : public Nave
-// {
-// public:
-//   Corazzata(int,int,int,int);
-// private:
-//   const int _lunghezza = 4;
-//
-// };
-//
-//
-// class Incrociatore : public Nave
-// {
-// public:
-//   Incrociatore(int,int,int,int);
-// private:
-//   const int _lunghezza = 3;
-//
-// };
-//
-//
-// class Portaerei : public Nave
-// {
-// public:
-//   Portaerei(int,int,int,int);
-// private:
-//   const int _lunghezza = 5;
-//
-// };
 
 #endif
