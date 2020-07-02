@@ -28,7 +28,7 @@ int main()
   std::cout << std::string(25,'\n'); //"aggiorna" schermo
 
 
-  std::cout << "Per conoscere le regole del gioco premi 'r'\nPremi qualsiasi altro tasto per continuare";
+  std::cout << "Per conoscere le regole del gioco premi 'r'\nPremi qualsiasi altro tasto per continuare: ";
   char rulez;
   std::cin >> rulez;
 
