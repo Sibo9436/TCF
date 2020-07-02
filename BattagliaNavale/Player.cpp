@@ -523,9 +523,6 @@ bool Locale::Server() //inizializza la partita per il giocatore e lo mette in co
   char buf[INET_ADDRSTRLEN];
   inet_ntop(AF_INET, &loopback.sin_addr, buf, INET_ADDRSTRLEN);
 
-
-
-
   std::cout << "Il tuo indirizzo IP è " << buf << "\n";
   std::cout << "In attesa di uno sfidante...";
   std::cout << std::string(25,'\n');
@@ -570,6 +567,7 @@ bool Locale::Server() //inizializza la partita per il giocatore e lo mette in co
   inet_ntop( AF_INET, &ipAddr, indie, INET_ADDRSTRLEN );
   std::cout << "Connessione stabilita con " << indie << '\n';
   _isServer=true;
+
   char * nomino = new char[_nome.size()];
   int l = _nome.size();
 
@@ -637,6 +635,7 @@ bool Locale::Client()//inizializza la partita per il giocatore e lo mette in con
     return false;
   }
   _isClient = true;
+
   char * nomino = new char[_nome.size()];
   int l = _nome.size();
 
@@ -665,7 +664,7 @@ void Locale::Attack() //rivece le coordinate di attacco del giocatore, le invia 
   }
   int x = A.getX();
   int y = A.getY();
-  if (!_Screen.getRadar(x,y)) 
+  if (!_Screen.getRadar(x,y))
   {
     std::cout << "Quadrante già colpito" << '\n';
     Attack();

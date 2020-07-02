@@ -28,7 +28,7 @@ int main()
   std::cout << std::string(25,'\n'); //"aggiorna" schermo
 
 
-  std::cout << "Premi 'r' per conoscere le regole del gioco ";
+  std::cout << "Per conoscere le regole del gioco premi 'r'\nPremi qualsiasi altro tasto per continuare";
   char rulez;
   std::cin >> rulez;
 
@@ -63,8 +63,8 @@ int main()
     {
       partita = new Game();
     }else if ( scelta == 2)
-    partita = new OnlineGame();
     {
+      partita = new OnlineGame();
     }
   } while(scelta != 1 && scelta != 2);
 
